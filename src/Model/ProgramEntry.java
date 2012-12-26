@@ -14,12 +14,13 @@ public class ProgramEntry {
     public static void main(String[] args){
         CarGenerator carGenerator = new CarGenerator();
         Engine engine = new Engine(new UniformCarFlow(carGenerator));
-        engine.setStepTime(1);
+        engine.setStepTime(5);
+        engine.setAutoTickTime(1);
         engine.enableAuto();
 
         while (1==1){
             try {
-                System.out.println("Inside Engine simulation println to be replaced with Swing thread");
+                System.out.println("Inside Engine simulation println to be replaced iwth Swing thread");
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();

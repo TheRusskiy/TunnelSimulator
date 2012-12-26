@@ -27,7 +27,7 @@ public class CarGenerator {
         it should load models from a file
          */
         LinkedList<CarModel>  loadedModels = new LinkedList<>();
-        CarModel stubModel = new CarModel(100, "StubCar", new CarIcon());
+        CarModel stubModel = new CarModel(16, "StubCar", new CarIcon());
         loadedModels.add(stubModel);
         return loadedModels;
     }

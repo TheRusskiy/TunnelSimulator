@@ -24,12 +24,6 @@ public abstract class CarFlow {
         else return null;
     }
 
-    private Car createCar(){
-        //todo implement
-        assert false: "implement";
-        return null;
-    }
-
     abstract boolean hasNextCar(int time);
 
 }

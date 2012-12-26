@@ -12,7 +12,7 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public class UniformCarFlow extends CarFlow{
-    private int secondsEachCarAppears = 10;
+    private int secondsEachCarAppears = 4;
     private Random randomGenerator = new Random();
     public UniformCarFlow(CarGenerator carGenerator){
         super(carGenerator);

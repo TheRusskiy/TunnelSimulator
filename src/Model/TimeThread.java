@@ -35,7 +35,7 @@ public class TimeThread extends Thread {
         while (true){
         try {
                 if(enabled) engine.step();
-                sleep(tickTimeInSeconds * 1000);
+                Thread.sleep(tickTimeInSeconds * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 assert false: "Time thread was interrupted";

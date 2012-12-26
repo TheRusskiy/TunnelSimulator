@@ -8,5 +8,5 @@ package Model;
  * To change this template use File | Settings | File Templates.
  */
 public interface Movable {
-    void move(int time);
+    boolean move(int time);
 }

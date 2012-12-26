@@ -16,10 +16,11 @@ public class Engine {
     private LinkedList<Movable> cars = new LinkedList<>();
     private int timePast;
     private int stepTime;
-    private static final int DEFAULT_SPEED_LIMIT=60;
+    private static final int DEFAULT_SPEED_LIMIT=16; //16~60Km/h
     private Road road = new Road(DEFAULT_SPEED_LIMIT);
     private CarFlow carFlow;
     private TimeThread timeThread;
+    public static final boolean DEBUG_MODE = true;
 
     public void setStepTime(int stepTime) {
         this.stepTime = stepTime;
@@ -40,6 +41,9 @@ public class Engine {
     public void disableAuto(){
         timeThread.setEnabled(false);
     }
+    public void setAutoTickTime(int tickTime){
+        timeThread.setTickTimeInSeconds(tickTime);
+    }
 
     public void step(){
         assert stepTime!=0:"SET STEP TIME!";
@@ -47,15 +51,28 @@ public class Engine {
     }
 
     private void step(int time){
+        timePast+=time;
         moveAllFromLastToFirst(cars, time);
         Car possibleCar = createCarAtTheBeginningIfPossible(time);
-        if (possibleCar!=null) cars.push(possibleCar);
+        if (possibleCar!=null){
+            cars.push(possibleCar);
+            possibleCar.setRoad(road);
+        }
+        road.textVisualize(timePast);
     }
 
     private void moveAllFromLastToFirst(LinkedList<Movable> movables, int time) {
+        LinkedList<Movable> toExcludeFromRoad = new LinkedList<>();
+        Movable current;
         for(int i=movables.size()-1; i>=0; i--){
-            movables.get(i).move(time);
+            road.textVisualize(timePast);
+            current=movables.get(i);
+            if (current.move(time)==false){
+                toExcludeFromRoad.add(current);
+            }
         }
+        road.textVisualize(timePast);
+        movables.removeAll(toExcludeFromRoad);
     }
 
     private Car createCarAtTheBeginningIfPossible(int time){
@@ -64,8 +81,9 @@ public class Engine {
             Car possibleCar = carFlow.getCar(time);
             if (possibleCar!=null)
             {
-                possibleCar.setPosition(road.nextCoordinate(roadStart, Car.CAR_LENGTH));
-                road.moveBy(roadStart, Car.CAR_LENGTH-1, Car.CAR_LENGTH); // Set starting coordinates to be occupied
+                possibleCar.setPosition(road.nextCoordinate(roadStart, Car.CAR_LENGTH-1));
+                road.nextCoordinate(roadStart, Car.CAR_LENGTH-1).setOccupier(possibleCar);
+                road.setOccupation(roadStart.getXAxis(), Car.CAR_LENGTH - 1, true); // Set starting coordinates to be occupied
                 return possibleCar;
             }
         }

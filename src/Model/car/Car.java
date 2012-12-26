@@ -2,6 +2,7 @@ package Model.car;
 
 import Model.Coordinate;
 import Model.Movable;
+import Model.Road;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +16,8 @@ public class Car implements Movable {
     private Coordinate position;
     private int speed;
     private CarModel model;
-    public final static int MINIMUM_SPEED = 1;
+    private Road road;
+    public final static int MINIMUM_SPEED = 1; //METERS!!
     public static final int CAR_LENGTH = 5;
 
     public Car(CarModel model, int speed){
@@ -27,15 +29,29 @@ public class Car implements Movable {
         this.position = position;
     }
 
-    @Override
-    public void move(int time) {
-        assert position!=null: "Car coordinate wasn't set!";
-        //old coordinate occupier = null
-        //new = this
+    public void setRoad(Road road) {
+        this.road = road;
+    }
 
-        //todo implement
-        assert false: "implement";
-        //FIXME CHECK ROAD SPEED RESTRICTION!!!
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    @Override
+    public boolean move(int time) {
+        assert position!=null: "Car coordinate wasn't set!";
+        assert road!=null: "Car's road wasn't set!";
+        if (speed>road.getSpeedLimitation()) speed=road.getSpeedLimitation();
+        int wantsToDrive = speed*time;
+        position=road.moveBy(position, wantsToDrive, CAR_LENGTH);
+        if (position==null){
+            return false;  //REACHED END OF TUNNEL
+        }
+        return true;
     }
 
 

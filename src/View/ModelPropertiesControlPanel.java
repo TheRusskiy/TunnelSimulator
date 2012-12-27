@@ -52,7 +52,17 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
     }
 
     @Override
-    public void notifyOfChange() {
+    public void notifyOfDataChange() {
+
+    }
+
+    @Override
+    public void notifyOfPropertiesChange() {
+
+    }
+
+    @Override
+    public void notifyOfStructureChange() {
 
     }
 }

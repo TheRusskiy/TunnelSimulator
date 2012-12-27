@@ -15,9 +15,9 @@ public class ProgramEntry {
     public static void main(String[] args){
         CarGenerator carGenerator = new CarGenerator();
         Engine engine = new Engine(new UniformCarFlow(carGenerator));
-        engine.setStepTime(5);
-        engine.setAutoTickTime(1);
-        engine.enableAuto();
+        engine.setStepTime(1);
+        engine.setAutoTickTime(0.2);
+//        engine.enableAuto();
 
         TunnelController controller = new TunnelController(engine);
 

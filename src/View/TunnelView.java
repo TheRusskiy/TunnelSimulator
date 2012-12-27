@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,9 +21,12 @@ public class TunnelView{
     private TimeControlsPanel timeControlsPanel;
     private CarControlsPanel carControlsPanel;
     private ModelPropertiesControlPanel modelPropertiesControlPanel;
+    private RoadPropertiesControlPanel roadPropertiesControlPanel;
+    JScrollPane scrollPane;
     private VisualPanel visualPanel;
     private Dimension timeControlsDimension = new Dimension(140, 180);
     private Dimension modelPropertiesDimension = new Dimension(140, 180);
+    private Dimension roadPropertiesDimension = new Dimension(140, 180);
     private Dimension carControlsDimension = new Dimension(140, 180);
     private Dimension visualPanelDimension = new Dimension(800, 200);
     private Container controlPanel;
@@ -31,18 +36,45 @@ public class TunnelView{
 
     public TunnelView(TunnelController controller){
         this.controller = controller;
-        frame = new JFrame("Tunnel simulator");
+        frame = new JFrame("Tunnel simulator")
+        {
+
+            @Override
+            public void paint(Graphics g) {
+                Dimension d = getSize();
+                Dimension m = getMaximumSize();
+                boolean resize = d.width > m.width || d.height > m.height;
+                d.width = Math.min(m.width, d.width);
+                d.height = Math.min(m.height, d.height);
+                if (resize) {
+                    Point p = getLocation();
+                    setVisible(false);
+                    setSize(d);
+                    setLocation(p);
+                    setVisible(true);
+                }
+                super.paint(g);
+            }
+        }
+        ;
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         parentPanel=new JPanel();
         parentPanel.setLayout(new BoxLayout(parentPanel, BoxLayout.Y_AXIS));
-        //parentPanel.setPreferredSize(new Dimension(600, 600));
-        frame.add(parentPanel);
+        frame.setContentPane(parentPanel);
 
-        visualPanel = new VisualPanel(controller);//visualPanelInsideDimension);
-        JScrollPane scrollPane = new JScrollPane(visualPanel);//Pass inside constructor!
-        scrollPane.setPreferredSize(visualPanelDimension);
+
+        visualPanel = new VisualPanel(controller, this);//visualPanelInsideDimension);
+        scrollPane = new JScrollPane(visualPanel);//Pass inside constructor!
+        updateScrollPane();
         parentPanel.add(scrollPane);
+
+        visualPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                updateScrollPane();
+            }
+        });
 
 
         controlPanel =new JPanel();
@@ -57,6 +89,9 @@ public class TunnelView{
 
         carControlsPanel = new CarControlsPanel(modelPropertiesDimension, controller);
         controlPanel.add(carControlsPanel);
+
+        roadPropertiesControlPanel = new RoadPropertiesControlPanel(roadPropertiesDimension, controller);
+        controlPanel.add(roadPropertiesControlPanel);
 
         //EmptyLabel emptyLabel = new EmptyLabel(controlPanel, EmptyLabel.Direction.X_AXIS);
 
@@ -73,7 +108,37 @@ public class TunnelView{
             }
         });
 
-        frame.pack();
+
+        //frame.setIconImage(new CarIcon().getImage());
+        //frame.setLocationRelativeTo(null);
+
+        //frame.setResizable(false);
+        updateSize();
         frame.setVisible(true);
+        controller.askForNotify();
     }
+
+    private void updateScrollPane() {
+        Dimension scrollPanePreferredDimension =new Dimension(
+                visualPanelDimension.width,
+                visualPanel.getHeight()+30
+        );
+        Dimension scrollPaneMaximumDimension =new Dimension(
+                2000,
+                visualPanel.getHeight()+30
+        );
+        scrollPane.setMaximumSize(scrollPaneMaximumDimension);
+        scrollPane.setPreferredSize(scrollPanePreferredDimension);
+       //scrollPane.setSize(scrollPanePreferredDimension);
+    }
+
+    public void updateSize(){
+        frame.pack();
+        Dimension frameMaxDimension = new Dimension(2000, frame.getPreferredSize().height);
+        Dimension frameMinDimension = new Dimension(1024, frame.getPreferredSize().height);
+        frame.setMinimumSize(frameMinDimension);
+        frame.setMaximumSize(frameMaxDimension);
+    }
+
+
 }

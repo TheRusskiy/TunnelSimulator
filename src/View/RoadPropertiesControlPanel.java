@@ -13,30 +13,32 @@ import java.awt.*;
  * Time: 3:26
  * To change this template use File | Settings | File Templates.
  */
-public class CarControlsPanel extends JPanel implements ModelListener{
-    private JLabel title = new JLabel("Car controls");
+public class RoadPropertiesControlPanel extends JPanel implements ModelListener {
+    private JLabel title = new JLabel("Road Properties");
 
-    private JButton nextButton = new JButton("Next Car");
-    private JButton previousButton = new JButton("Previous Car");
-
-    private JLabel speedLabel = new JLabel("Speed:");
+    private JLabel roadLengthLabel = new JLabel("Road length:");
     //TODO get load default values from somewhere to both model and view
-    private JTextField speedTextField = new JTextField();
-    private JButton speedApplyButton = new JButton("Apply speed");
+    private JTextField roadLengthTextField = new JTextField();
 
+    private JLabel zoomLabel = new JLabel("zoom:");
+    private JTextField zoomTimeField = new JTextField();
+
+    private JButton applyButton = new JButton("Apply ");
+    private JLabel emptyLabel = new JLabel();
     private TunnelController controller;
 
-    public CarControlsPanel(Dimension preferredSize, TunnelController controller){
+    public RoadPropertiesControlPanel(Dimension preferredSize, TunnelController controller){
         this.controller=controller;
         controller.registerListener(this);
 
         this.add(title);
         this.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.LINE_START);
-        this.add(nextButton);
-        this.add(previousButton);
-        this.add(speedLabel);
-        this.add(speedTextField);
-        this.add(speedApplyButton);
+        this.add(roadLengthLabel);
+        this.add(roadLengthTextField);
+        this.add(zoomLabel);
+        this.add(zoomTimeField);
+        this.add(applyButton);
+
 
         BoxLayout layoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layoutManager);
@@ -46,16 +48,9 @@ public class CarControlsPanel extends JPanel implements ModelListener{
         this.setMaximumSize(preferredSize);
         this.setMinimumSize(preferredSize);
 
-//        Component[] components = this.getComponents();
-//        for(Component component:components){
-//            component.setSize(
-//                    new Dimension(
-//                            preferredSize.width,component.getPreferredSize().height
-//                    )
-//            );
-//        }
-
         EmptyLabel emptyLabel = new EmptyLabel(this, EmptyLabel.Direction.Y_AXIS);
+
+//        applyButton
     }
 
     @Override

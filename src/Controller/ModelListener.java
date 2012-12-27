@@ -8,5 +8,7 @@ package Controller;
  * To change this template use File | Settings | File Templates.
  */
 public interface ModelListener {
-    public void notifyOfChange();
+    public void notifyOfDataChange();
+    public void notifyOfPropertiesChange();
+    public void notifyOfStructureChange();
 }

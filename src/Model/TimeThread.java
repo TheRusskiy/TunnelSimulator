@@ -8,7 +8,7 @@ package Model;
  * To change this template use File | Settings | File Templates.
  */
 public class TimeThread extends Thread {
-    private int tickTimeInSeconds=0;
+    private int tickTimeInMilis=0;
     private Engine engine;
     private boolean enabled = false;
 
@@ -25,9 +25,9 @@ public class TimeThread extends Thread {
         this.engine=engine;
     }
 
-    public void setTickTimeInSeconds(int newTimeInSeconds) {
+    public void setTickTimeInSeconds(double newTimeInSeconds) {
         assert newTimeInSeconds>0 : "Tick time has to be positive";
-        tickTimeInSeconds = newTimeInSeconds;
+        tickTimeInMilis = new Double(newTimeInSeconds*1000).intValue();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class TimeThread extends Thread {
         while (true){
         try {
                 if(enabled) engine.step();
-                Thread.sleep(tickTimeInSeconds * 1000);
+                Thread.sleep(tickTimeInMilis);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 assert false: "Time thread was interrupted";

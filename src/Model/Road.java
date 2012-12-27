@@ -15,15 +15,23 @@ import java.io.PrintWriter;
  */
 public class Road {
     private Coordinate[] coordinates;
-    private int roadLengthInMetres =200;
+    private int roadLengthInMetres;
     private int speedLimitation;
-    public Road(int speedLimitation){
+
+    public Road(int speedLimitation, int roadLengthInMetres){
         this.speedLimitation=speedLimitation;
+        this.roadLengthInMetres=roadLengthInMetres;
         coordinates=new Coordinate[roadLengthInMetres];
         for(int i=0; i<coordinates.length; i++){
             coordinates[i]=new Coordinate(i);
         }
     }
+
+    public Coordinate[] getCoordinates() {
+        assert coordinates!=null:"Coordinates == null!";
+        return coordinates;
+    }
+
     public Coordinate getStartingCoordinate(){
         return coordinates[0];
     }

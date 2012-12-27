@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Coordinate;
 import Model.Engine;
 
 /**
@@ -18,5 +19,13 @@ public class TunnelController {
 
     public void registerListener(ModelListener listener){
         engine.registerListener(listener);
+    }
+
+    public Coordinate[] getRoadCoordinates(){
+        return engine.getRoad().getCoordinates();
+    }
+
+    public void askForNotify(){
+        engine.notifyAllListeners();
     }
 }

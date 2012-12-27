@@ -41,6 +41,10 @@ public class Car implements Movable {
         this.speed = speed;
     }
 
+    public CarIcon getIcon(){
+        return model.getIcon();
+    }
+
     @Override
     public boolean move(int time) {
         assert position!=null: "Car coordinate wasn't set!";

@@ -21,13 +21,24 @@ public class Engine {
     private int timePast;
     private int stepTime;
     private static final int DEFAULT_SPEED_LIMIT=16; //16~60Km/h
-    private Road road = new Road(DEFAULT_SPEED_LIMIT);
+    private static final int DEFAULT_ROAD_LENGTH=200;
+    private Road road = new Road(DEFAULT_SPEED_LIMIT, DEFAULT_ROAD_LENGTH);
     private CarFlow carFlow;
     private TimeThread timeThread;
     private VisualPanel visualPanel;
+    private int carsOutOfRange=0;
+    private int carsOutOfRangeToGC=100;
     private Set<ModelListener> listeners= new LinkedHashSet<>();
 
     public static final boolean DEBUG_MODE = false;
+
+    public Road getRoad() {
+        return road;
+    }
+
+    public int getTimePast() {
+        return timePast;
+    }
 
     public void setStepTime(int stepTime) {
         this.stepTime = stepTime;
@@ -36,6 +47,7 @@ public class Engine {
     public Engine(CarFlow carFlow){
         assert carFlow!=null:"Engine received null carFlow";
         this.carFlow=carFlow;
+        timePast=0;
 
         timeThread = new TimeThread(this);
         timeThread.setDaemon(true);
@@ -48,8 +60,8 @@ public class Engine {
     public void disableAuto(){
         timeThread.setEnabled(false);
     }
-    public void setAutoTickTime(int tickTime){
-        timeThread.setTickTimeInSeconds(tickTime);
+    public void setAutoTickTime(double tickTimeInSeconds){
+        timeThread.setTickTimeInSeconds(tickTimeInSeconds);
     }
 
     public void setVisualPanel(VisualPanel visualPanel) {
@@ -70,7 +82,7 @@ public class Engine {
             possibleCar.setRoad(road);
         }
         road.textVisualize(timePast);
-        notifyListeners();
+        notifyListenersOfDataChange();
     }
 
     private void moveAllFromLastToFirst(LinkedList<Movable> movables, int time) {
@@ -84,6 +96,11 @@ public class Engine {
             }
         }
         road.textVisualize(timePast);
+        carsOutOfRange+=toExcludeFromRoad.size();
+        if (carsOutOfRange>=carsOutOfRangeToGC){
+            System.gc();
+            carsOutOfRange=0;
+        }
         movables.removeAll(toExcludeFromRoad);
     }
 
@@ -106,10 +123,28 @@ public class Engine {
         listeners.add(listener);
     }
 
-    private void notifyListeners(){
+    private void notifyListenersOfDataChange(){
         for(ModelListener listener: listeners){
-            listener.notifyOfChange();
+            listener.notifyOfDataChange();
         }
+    }
+
+    private void notifyListenersOfStructureChange(){
+        for(ModelListener listener: listeners){
+            listener.notifyOfStructureChange();
+        }
+    }
+
+    private void notifyListenersOfPropertiesChange(){
+        for(ModelListener listener: listeners){
+            listener.notifyOfPropertiesChange();
+        }
+    }
+
+    public void notifyAllListeners(){
+        notifyListenersOfDataChange();
+        notifyListenersOfPropertiesChange();
+        notifyListenersOfStructureChange();
     }
 
 

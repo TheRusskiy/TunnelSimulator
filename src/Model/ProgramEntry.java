@@ -2,6 +2,7 @@ package Model;
 
 import Model.car.CarGenerator;
 import Model.carflow.UniformCarFlow;
+import View.TunnelView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,13 +19,14 @@ public class ProgramEntry {
         engine.setAutoTickTime(1);
         engine.enableAuto();
 
-        while (1==1){
-            try {
-                System.out.println("Inside Engine simulation println to be replaced iwth Swing thread");
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        TunnelView view = new TunnelView();
+//        while (1==1){
+//            try {
+//                System.out.println("Inside Engine simulation println to be replaced iwth Swing thread");
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 }

@@ -11,7 +11,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class ModelPropertiesControlPanel extends JPanel {
-    private JLabel title = new JLabel("Car controls:");
+    private JLabel title = new JLabel("Model Properties");
 
     private JLabel vMaxLabel = new JLabel("Vmax:");
     //TODO get load default values from somewhere to both model and view
@@ -21,6 +21,7 @@ public class ModelPropertiesControlPanel extends JPanel {
     private JTextField stepTimeField = new JTextField();
 
     private JButton applyButton = new JButton("Apply ");
+    private JLabel emptyLabel = new JLabel();
 
     public ModelPropertiesControlPanel(Dimension preferredSize){
         this.add(title);
@@ -30,9 +31,19 @@ public class ModelPropertiesControlPanel extends JPanel {
         this.add(stepTimeLabel);
         this.add(stepTimeField);
         this.add(applyButton);
+
+
         BoxLayout layoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layoutManager);
+        this.setPreferredSize(preferredSize);
 
-        this.setSize(preferredSize);
+        JLabel emptyLabel = new JLabel();
+        int preferredHeight = this.getPreferredSize().height;
+        Component[] components = this.getComponents();
+        for(Component component:components){
+            preferredHeight-=component.getPreferredSize().height;
+        }
+        emptyLabel.setPreferredSize(new Dimension(1, preferredHeight));
+        this.add(emptyLabel);
     }
 }

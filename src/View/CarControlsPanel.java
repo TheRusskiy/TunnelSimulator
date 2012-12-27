@@ -11,7 +11,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class CarControlsPanel extends JPanel {
-    private JLabel title = new JLabel("Model properties:");
+    private JLabel title = new JLabel("Car controls");
 
     private JButton nextButton = new JButton("Next Car");
     private JButton previousButton = new JButton("Previous Car");
@@ -29,9 +29,19 @@ public class CarControlsPanel extends JPanel {
         this.add(speedLabel);
         this.add(speedTextField);
         this.add(speedApplyButton);
+
         BoxLayout layoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layoutManager);
 
-        this.setSize(preferredSize);
+        this.setPreferredSize(preferredSize);
+
+        JLabel emptyLabel = new JLabel();
+        int preferredHeight = this.getPreferredSize().height;
+        Component[] components = this.getComponents();
+        for(Component component:components){
+            preferredHeight-=component.getPreferredSize().height;
+        }
+        emptyLabel.setPreferredSize(new Dimension(1, preferredHeight));
+        this.add(emptyLabel);
     }
 }

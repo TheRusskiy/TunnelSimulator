@@ -1,3 +1,4 @@
+import Controller.TunnelController;
 import Model.Engine;
 import Model.car.CarGenerator;
 import Model.carflow.UniformCarFlow;
@@ -18,7 +19,9 @@ public class ProgramEntry {
         engine.setAutoTickTime(1);
         engine.enableAuto();
 
-        TunnelView view = new TunnelView();
+        TunnelController controller = new TunnelController(engine);
+
+        TunnelView view = new TunnelView(controller);
 //        while (1==1){
 //            try {
 //                System.out.println("Inside Engine simulation println to be replaced iwth Swing thread");

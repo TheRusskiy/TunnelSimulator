@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.Engine;
+
 /**
  * Created with IntelliJ IDEA.
  * User: TheRusskiy
@@ -8,4 +10,13 @@ package Controller;
  * To change this template use File | Settings | File Templates.
  */
 public class TunnelController {
+    Engine engine;
+
+    public TunnelController(Engine engine) {
+        this.engine = engine;
+    }
+
+    public void registerListener(ModelListener listener){
+        engine.registerListener(listener);
+    }
 }

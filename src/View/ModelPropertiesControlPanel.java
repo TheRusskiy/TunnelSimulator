@@ -1,5 +1,8 @@
 package View;
 
+import Controller.ModelListener;
+import Controller.TunnelController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,7 +13,7 @@ import java.awt.*;
  * Time: 3:26
  * To change this template use File | Settings | File Templates.
  */
-public class ModelPropertiesControlPanel extends JPanel {
+public class ModelPropertiesControlPanel extends JPanel implements ModelListener {
     private JLabel title = new JLabel("Model Properties");
 
     private JLabel vMaxLabel = new JLabel("Vmax:");
@@ -22,8 +25,12 @@ public class ModelPropertiesControlPanel extends JPanel {
 
     private JButton applyButton = new JButton("Apply ");
     private JLabel emptyLabel = new JLabel();
+    private TunnelController controller;
 
-    public ModelPropertiesControlPanel(Dimension preferredSize){
+    public ModelPropertiesControlPanel(Dimension preferredSize, TunnelController controller){
+        this.controller=controller;
+        controller.registerListener(this);
+
         this.add(title);
         this.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.LINE_START);
         this.add(vMaxLabel);
@@ -35,15 +42,17 @@ public class ModelPropertiesControlPanel extends JPanel {
 
         BoxLayout layoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layoutManager);
-        this.setPreferredSize(preferredSize);
 
-        JLabel emptyLabel = new JLabel();
-        int preferredHeight = this.getPreferredSize().height;
-        Component[] components = this.getComponents();
-        for(Component component:components){
-            preferredHeight-=component.getPreferredSize().height;
-        }
-        emptyLabel.setPreferredSize(new Dimension(1, preferredHeight));
-        this.add(emptyLabel);
+        this.setPreferredSize(preferredSize);
+        this.setSize(preferredSize);
+        this.setMaximumSize(preferredSize);
+        this.setMinimumSize(preferredSize);
+
+        EmptyLabel emptyLabel = new EmptyLabel(this, EmptyLabel.Direction.Y_AXIS);
+    }
+
+    @Override
+    public void notifyOfChange() {
+
     }
 }

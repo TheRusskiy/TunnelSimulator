@@ -1,9 +1,13 @@
 package Model;
 
+import Controller.ModelListener;
 import Model.car.Car;
 import Model.carflow.CarFlow;
+import View.VisualPanel;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +24,10 @@ public class Engine {
     private Road road = new Road(DEFAULT_SPEED_LIMIT);
     private CarFlow carFlow;
     private TimeThread timeThread;
-    public static final boolean DEBUG_MODE = true;
+    private VisualPanel visualPanel;
+    private Set<ModelListener> listeners= new LinkedHashSet<>();
+
+    public static final boolean DEBUG_MODE = false;
 
     public void setStepTime(int stepTime) {
         this.stepTime = stepTime;
@@ -45,6 +52,10 @@ public class Engine {
         timeThread.setTickTimeInSeconds(tickTime);
     }
 
+    public void setVisualPanel(VisualPanel visualPanel) {
+        this.visualPanel = visualPanel;
+    }
+
     public void step(){
         assert stepTime!=0:"SET STEP TIME!";
         step(stepTime);
@@ -59,6 +70,7 @@ public class Engine {
             possibleCar.setRoad(road);
         }
         road.textVisualize(timePast);
+        notifyListeners();
     }
 
     private void moveAllFromLastToFirst(LinkedList<Movable> movables, int time) {
@@ -89,5 +101,16 @@ public class Engine {
         }
         return null;
     }
+
+    public void registerListener(ModelListener listener){
+        listeners.add(listener);
+    }
+
+    private void notifyListeners(){
+        for(ModelListener listener: listeners){
+            listener.notifyOfChange();
+        }
+    }
+
 
 }

@@ -1,5 +1,7 @@
 package View;
 
+import Controller.TunnelController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
@@ -15,30 +17,49 @@ import java.awt.event.AdjustmentListener;
 public class TunnelView{
     private JFrame frame;
     private TimeControlsPanel timeControlsPanel;
-    private CarControlsPanel CarControlsPanel;
+    private CarControlsPanel carControlsPanel;
     private ModelPropertiesControlPanel modelPropertiesControlPanel;
     private VisualPanel visualPanel;
-    private Dimension timeControlsDimension = new Dimension(120, 180);
-    private Dimension modelPropertiesDimension = new Dimension(120, 180);
-    private Dimension carControlsDimension = new Dimension(120, 180);
-    private Dimension visualPanelInsideDimension = new Dimension(600, 600);
-    private Dimension visualPanelDimension = new Dimension(200, 200);
+    private Dimension timeControlsDimension = new Dimension(140, 180);
+    private Dimension modelPropertiesDimension = new Dimension(140, 180);
+    private Dimension carControlsDimension = new Dimension(140, 180);
+    private Dimension visualPanelDimension = new Dimension(800, 200);
     private Container controlPanel;
     private Container parentPanel;
+    private TunnelController controller;
 
 
-    public TunnelView(){
+    public TunnelView(TunnelController controller){
+        this.controller = controller;
         frame = new JFrame("Tunnel simulator");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         parentPanel=new JPanel();
         parentPanel.setLayout(new BoxLayout(parentPanel, BoxLayout.Y_AXIS));
+        //parentPanel.setPreferredSize(new Dimension(600, 600));
         frame.add(parentPanel);
 
-        visualPanel = new VisualPanel(visualPanelInsideDimension);
+        visualPanel = new VisualPanel(controller);//visualPanelInsideDimension);
         JScrollPane scrollPane = new JScrollPane(visualPanel);//Pass inside constructor!
         scrollPane.setPreferredSize(visualPanelDimension);
         parentPanel.add(scrollPane);
+
+
+        controlPanel =new JPanel();
+        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
+        parentPanel.add(controlPanel);
+
+        timeControlsPanel = new TimeControlsPanel(timeControlsDimension, controller);
+        controlPanel.add(timeControlsPanel);
+
+        modelPropertiesControlPanel = new ModelPropertiesControlPanel(carControlsDimension, controller);
+        controlPanel.add(modelPropertiesControlPanel);
+
+        carControlsPanel = new CarControlsPanel(modelPropertiesDimension, controller);
+        controlPanel.add(carControlsPanel);
+
+        //EmptyLabel emptyLabel = new EmptyLabel(controlPanel, EmptyLabel.Direction.X_AXIS);
+
         scrollPane.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -51,20 +72,6 @@ public class TunnelView{
                 frame.repaint();
             }
         });
-        controlPanel =new JPanel();
-        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
-        parentPanel.add(controlPanel);
-
-        timeControlsPanel = new TimeControlsPanel(timeControlsDimension);
-        controlPanel.add(timeControlsPanel);
-
-        modelPropertiesControlPanel = new ModelPropertiesControlPanel(carControlsDimension);
-        controlPanel.add(modelPropertiesControlPanel);
-
-        CarControlsPanel = new CarControlsPanel(modelPropertiesDimension);
-        controlPanel.add(CarControlsPanel);
-
-
 
         frame.pack();
         frame.setVisible(true);

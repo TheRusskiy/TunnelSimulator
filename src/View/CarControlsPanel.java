@@ -1,5 +1,8 @@
 package View;
 
+import Controller.ModelListener;
+import Controller.TunnelController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,7 +13,7 @@ import java.awt.*;
  * Time: 3:26
  * To change this template use File | Settings | File Templates.
  */
-public class CarControlsPanel extends JPanel {
+public class CarControlsPanel extends JPanel implements ModelListener{
     private JLabel title = new JLabel("Car controls");
 
     private JButton nextButton = new JButton("Next Car");
@@ -21,7 +24,12 @@ public class CarControlsPanel extends JPanel {
     private JTextField speedTextField = new JTextField();
     private JButton speedApplyButton = new JButton("Apply speed");
 
-    public CarControlsPanel(Dimension preferredSize){
+    private TunnelController controller;
+
+    public CarControlsPanel(Dimension preferredSize, TunnelController controller){
+        this.controller=controller;
+        controller.registerListener(this);
+
         this.add(title);
         this.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.LINE_START);
         this.add(nextButton);
@@ -34,14 +42,24 @@ public class CarControlsPanel extends JPanel {
         this.setLayout(layoutManager);
 
         this.setPreferredSize(preferredSize);
+        this.setSize(preferredSize);
+        this.setMaximumSize(preferredSize);
+        this.setMinimumSize(preferredSize);
 
-        JLabel emptyLabel = new JLabel();
-        int preferredHeight = this.getPreferredSize().height;
-        Component[] components = this.getComponents();
-        for(Component component:components){
-            preferredHeight-=component.getPreferredSize().height;
-        }
-        emptyLabel.setPreferredSize(new Dimension(1, preferredHeight));
-        this.add(emptyLabel);
+//        Component[] components = this.getComponents();
+//        for(Component component:components){
+//            component.setSize(
+//                    new Dimension(
+//                            preferredSize.width,component.getPreferredSize().height
+//                    )
+//            );
+//        }
+
+        EmptyLabel emptyLabel = new EmptyLabel(this, EmptyLabel.Direction.Y_AXIS);
+    }
+
+    @Override
+    public void notifyOfChange() {
+
     }
 }

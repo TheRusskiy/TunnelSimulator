@@ -78,6 +78,8 @@ public class VisualPanel extends JPanel implements ModelListener {
     private int speedLineY0;
     private int speedLineY1;
     private int speedXShift;
+    private int carHeight;
+    private int carLength;
 
     private void calculateMargins() {
 
@@ -102,8 +104,12 @@ public class VisualPanel extends JPanel implements ModelListener {
         speedLineY1=carY0;
         speedXShift=carXShift+Car.CAR_LENGTH/2*meter;
 
+        carHeight = Spaces.CAR_HEIGHT.meters*meter;
+        carLength = Car.CAR_LENGTH*meter;
+
         setSize();
         font = new Font("Arial", Font.PLAIN, new Double(Math.sqrt(meter)*6).intValue());
+        engine.notifyListenersOfStructureChange();
 
     }
 
@@ -156,7 +162,8 @@ public class VisualPanel extends JPanel implements ModelListener {
             if (coordinate.getOccupier()!=null){
                 car = (Car)coordinate.getOccupier();
                 fromStart=coordinate.getXAxis()*meter;
-                g.drawImage(car.getIcon().getImage(), carXShift+fromStart, carY0, null);
+//                g.drawImage(car.getIcon().getImage(), carXShift+fromStart, carY0, null);   //NON-ADAPTIVE
+                g.drawImage(car.getIcon().getImage(), carXShift+fromStart, carY0, carLength, carHeight, null);    //ADAPTIVE
                 if (car.isSelected()) {
                     g.setColor(selectedCarColor);
                 }else{

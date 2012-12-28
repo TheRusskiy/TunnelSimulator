@@ -15,10 +15,13 @@ import java.awt.event.ActionListener;
  * To change this template use File | Settings | File Templates.
  */
 public class TunnelMenu extends JMenuBar {
-        TunnelController controller;
+    private TunnelController controller;
+    private CarModelsDialog carModelsDialog;
 
     public TunnelMenu(JFrame frame, final TunnelController controller){
         this.controller=controller;
+        carModelsDialog = new CarModelsDialog(frame, controller);
+
         //File  menu:
         JMenu fileMenu = new JMenu("File");
         this.add(fileMenu);
@@ -70,6 +73,20 @@ public class TunnelMenu extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.changeCarFlow(Engine.CarFlows.NORMAL);
+            }
+        });
+
+        showCarsItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carModelsDialog.showDialog();
+            }
+        });
+
+        exitFileItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
             }
         });
 

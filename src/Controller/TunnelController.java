@@ -80,9 +80,9 @@ public class TunnelController {
     public void changeRoadLengthAndScale(String roadLength, String roadScale) {
         int digital=new Integer(roadLength);
         engine.setRoadLength(digital);
-
         digital=new Integer(roadScale);
         visualPanel.setScale(digital);
+
     }
 
     public void changeUniformT(String newT) {
@@ -104,5 +104,10 @@ public class TunnelController {
         engine.getNormalCarFlow().setParam_M(digital);
         digital=new Integer(param_D);
         engine.getNormalCarFlow().setParam_D(digital);
+    }
+
+    public void changeDeterminedT(String newT) {
+        int digital=new Integer(newT);
+        engine.getDeterminedCarFlow().setParam_T(digital);
     }
 }

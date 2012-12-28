@@ -1,5 +1,7 @@
 package Model.car;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: TheRusskiy
@@ -7,7 +9,7 @@ package Model.car;
  * Time: 14:21
  * To change this template use File | Settings | File Templates.
  */
-public class CarModel {
+public class CarModel implements Serializable {
     private int maxSpeed;
     private String name;
     private CarIcon icon;

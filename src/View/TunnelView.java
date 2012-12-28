@@ -2,6 +2,7 @@ package View;
 
 import Controller.TunnelController;
 import View.Controls.*;
+import View.FlowControls.DeterminedControlPanel;
 import View.FlowControls.ExponentialControlPanel;
 import View.FlowControls.NormalControlPanel;
 import View.FlowControls.UniformControlPanel;
@@ -29,6 +30,7 @@ public class TunnelView extends JFrame{
     private UniformControlPanel uniformControlPanel;
     private ExponentialControlPanel exponentialControlPanel;
     private NormalControlPanel normalControlPanel;
+    private DeterminedControlPanel determinedControlPanel;
     JScrollPane scrollPane;
     private VisualPanel visualPanel;
     private Dimension timeControlsDimension = new Dimension(140, 180);
@@ -38,6 +40,7 @@ public class TunnelView extends JFrame{
     private Dimension uniformControlPanelDimension = new Dimension(140, 180);
     private Dimension exponentialControlPanelDimension = new Dimension(140, 180);
     private Dimension normalControlPanelDimension = new Dimension(140, 180);
+    private Dimension determinedControlPanelDimension = new Dimension(140, 180);
     private Dimension visualPanelDimension = new Dimension(800, 200);
     private Container controlPanel;
     private Container parentPanel;
@@ -67,7 +70,6 @@ public class TunnelView extends JFrame{
             }
         });
 
-
         controlPanel =new JPanel();
         controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
         parentPanel.add(controlPanel);
@@ -92,6 +94,9 @@ public class TunnelView extends JFrame{
 
         normalControlPanel = new NormalControlPanel(normalControlPanelDimension, controller);
         controlPanel.add(normalControlPanel);
+
+        determinedControlPanel = new DeterminedControlPanel(determinedControlPanelDimension, controller);
+        controlPanel.add(determinedControlPanel);
 
         TunnelMenu menu = new TunnelMenu(this, controller);
         this.setJMenuBar(menu);

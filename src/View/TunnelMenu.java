@@ -28,6 +28,19 @@ public class TunnelMenu extends JMenuBar {
         JMenuItem showCarsItem = new JMenuItem("Show cars");
         carMenu.add(showCarsItem);
 
+        //Car  flow:
+        JMenu flowMenu = new JMenu("Car flow");
+        this.add(flowMenu);
+        //Flow menu items:
+        JMenuItem normalFlowItem = new JMenuItem("Normal flow");
+        flowMenu.add(normalFlowItem);
+        JMenuItem exponentialFlowItem = new JMenuItem("Exponential flow");
+        flowMenu.add(exponentialFlowItem);
+        JMenuItem uniformFlowItem = new JMenuItem("Uniform flow");
+        flowMenu.add(uniformFlowItem);
+        JMenuItem configureFlowItem = new JMenuItem("Configure...");
+        flowMenu.add(configureFlowItem);
+
         this.add(getLookAndFeelMenu(frame));
     }
 

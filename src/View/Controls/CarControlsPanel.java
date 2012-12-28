@@ -7,8 +7,7 @@ import Model.car.Car;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +28,7 @@ public class CarControlsPanel extends JPanel implements ModelListener{
 
     private TunnelController controller;
     private Engine engine;
+    private Car previouslySelectedCar;
 
     public CarControlsPanel(Dimension preferredSize, final TunnelController controller){
         this.controller=controller;
@@ -68,23 +68,54 @@ public class CarControlsPanel extends JPanel implements ModelListener{
         speedApplyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+//                String sad = ((JTextField).getFocusOwner()).getText();
                 controller.changeSelectedCarSpeed(speedTextField.getText());
             }
         });
+
+//        speedTextField.addFocusListener(new FocusListener() {
+//
+//            @Override
+//            public void focusGained(FocusEvent e) {
+//                speedIsFocused=true;
+//            }
+//
+//            @Override
+//            public void focusLost(FocusEvent e) {
+//                speedIsFocused=false;
+//                Object s = e.getComponent();
+//                int i=0;
+//            }
+//        });
+
+//        speedTextField.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyTyped(KeyEvent e) {
+//                int i=0;
+//                //if speedI
+//            }
+//        });
     }
 
     private void showSelectedCarSpeed(){
-        Car selected_car=engine.getSelectedCar();
-        int speed;
-        if (selected_car!=null){
-            speed = selected_car.getSpeed();
-        }
-        else{
-            speed=0;
-        }
-        if (!speedTextField.isFocusOwner()){
+
+        Car selectedCar=engine.getSelectedCar();
+        if (selectedCar!=previouslySelectedCar){
+            int speed;
+            if (selectedCar!=null){
+                speed = selectedCar.getSpeed();
+            }
+            else{
+                speed=0;
+            }
             speedTextField.setText(speed+"");
+            previouslySelectedCar=selectedCar;
         }
+
+//        if (!speedTextField.isFocusOwner()){
+//            speedTextField.setText(speed+"");
+//        }
+//        if (!speedIsFocused) speedTextField.setText(speed+"");
 
     }
 

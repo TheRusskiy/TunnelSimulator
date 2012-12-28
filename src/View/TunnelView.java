@@ -72,7 +72,7 @@ public class TunnelView{
         visualPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                updateScrollPane();
+                //updateScrollPane(0);
             }
         });
 
@@ -133,9 +133,11 @@ public class TunnelView{
     }
 
     public void updateSize(){
+        if (visualPanel!=null)updateScrollPane();
         frame.pack();
         Dimension frameMaxDimension = new Dimension(2000, frame.getPreferredSize().height);
         Dimension frameMinDimension = new Dimension(1024, frame.getPreferredSize().height);
+        frame.setTitle(frame.getPreferredSize().width+"");
         frame.setMinimumSize(frameMinDimension);
         frame.setMaximumSize(frameMaxDimension);
     }

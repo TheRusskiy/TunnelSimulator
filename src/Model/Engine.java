@@ -228,7 +228,10 @@ public class Engine {
     }
 
     public void setRoadLength(int newRoadLength) {
-        //todo implement
-         assert false: "implement";
+        timePast=0;
+        road = new Road(road.getSpeedLimitation(), newRoadLength);
+        selectedCar = null;
+        cars = new LinkedList<>();
+        notifyAllListeners();
     }
 }

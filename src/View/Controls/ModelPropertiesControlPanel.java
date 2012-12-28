@@ -3,6 +3,8 @@ package View.Controls;
 import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
+import Model.Road;
+import View.NumberKeyListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,6 +62,15 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
                 controller.changeStepTimeAndVMax(stepTimeField.getText(), vMaxTextField.getText());
             }
         });
+
+        vMaxTextField.addKeyListener(new NumberKeyListener(
+                Road.MINIMUM_SPEED_LIMIT,
+                Road.MAXIMUM_SPEED_LIMIT
+        ));
+        stepTimeField.addKeyListener(new NumberKeyListener(
+                Engine.MINIMUM_STEP_TIME,
+                Engine.MAXIMUM_STEP_TIME
+        ));
     }
 
     @Override

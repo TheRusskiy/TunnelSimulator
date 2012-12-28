@@ -3,11 +3,14 @@ package View.Controls;
 import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
+import Model.Road;
 import Model.car.Car;
+import View.NumberKeyListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -95,6 +98,11 @@ public class CarControlsPanel extends JPanel implements ModelListener{
 //                //if speedI
 //            }
 //        });
+
+        speedTextField.addKeyListener(new NumberKeyListener(
+                Car.MINIMUM_SPEED,
+                Road.MAXIMUM_SPEED_LIMIT
+        ));
     }
 
     private void showSelectedCarSpeed(){
@@ -111,11 +119,6 @@ public class CarControlsPanel extends JPanel implements ModelListener{
             speedTextField.setText(speed+"");
             previouslySelectedCar=selectedCar;
         }
-
-//        if (!speedTextField.isFocusOwner()){
-//            speedTextField.setText(speed+"");
-//        }
-//        if (!speedIsFocused) speedTextField.setText(speed+"");
 
     }
 

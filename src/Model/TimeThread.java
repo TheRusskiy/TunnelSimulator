@@ -8,8 +8,8 @@ package Model;
  * To change this template use File | Settings | File Templates.
  */
 public class TimeThread extends Thread {
-    private static final int MINIMUM_TICK_TIME=50;
-    private static final int MAXIMUM_TICK_TIME=10000;
+    public static final int MINIMUM_TICK_TIME=50;
+    public static final int MAXIMUM_TICK_TIME=10000;
 
     private int tickTimeInMilis=100;
     private Engine engine;

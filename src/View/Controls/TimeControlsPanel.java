@@ -3,6 +3,8 @@ package View.Controls;
 import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
+import Model.TimeThread;
+import View.NumberKeyListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -81,6 +83,11 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
                 controller.changeAutoDelay(autoDelayTextField.getText());
             }
         });
+
+        autoDelayTextField.addKeyListener(new NumberKeyListener(
+                TimeThread.MINIMUM_TICK_TIME,
+                TimeThread.MAXIMUM_TICK_TIME
+        ));
     }
 
     @Override

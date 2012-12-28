@@ -19,8 +19,8 @@ import java.awt.*;
  */
 public class VisualPanel extends JPanel implements ModelListener {
     private Dimension preferredSize = new Dimension(100, 100);
-    private static final int MAXIMUM_SCALE = 8;
-    private static final int MINIMUM_SCALE = 1;
+    public static final int MAXIMUM_SCALE = 8;
+    public static final int MINIMUM_SCALE = 1;
     private TunnelController controller;
     private Coordinate[] coordinates;
     private Graphics2D g;

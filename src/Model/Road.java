@@ -14,10 +14,10 @@ import java.io.PrintWriter;
  * To change this template use File | Settings | File Templates.
  */
 public class Road {
-    private static final int MINIMUM_SPEED_LIMIT=5;
-    private static final int MAXIMUM_SPEED_LIMIT=300;
-    private static final int MINIMUM_LENGTH=200;
-    private static final int MAXIMUM_LENGTH=2000;
+    public static final int MINIMUM_SPEED_LIMIT=5;
+    public static final int MAXIMUM_SPEED_LIMIT=300;
+    public static final int MINIMUM_LENGTH=200;
+    public static final int MAXIMUM_LENGTH=2000;
     private Coordinate[] coordinates;
     private volatile int speedLimitation;
 

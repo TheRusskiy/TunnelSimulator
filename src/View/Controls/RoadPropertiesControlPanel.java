@@ -3,6 +3,8 @@ package View.Controls;
 import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
+import Model.Road;
+import View.NumberKeyListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,6 +62,15 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
                controller.changeRoadLengthAndScale(roadLengthTextField.getText(), zoomTextField.getText());
             }
         });
+
+        roadLengthTextField.addKeyListener(new NumberKeyListener(
+                Road.MINIMUM_LENGTH,
+                Road.MAXIMUM_LENGTH
+        ));
+        zoomTextField.addKeyListener(new NumberKeyListener(
+                VisualPanel.MINIMUM_SCALE,
+                VisualPanel.MAXIMUM_SCALE
+        ));
     }
 
     @Override

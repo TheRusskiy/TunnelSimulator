@@ -17,8 +17,8 @@ import java.util.Set;
  */
 public class Engine {
     private LinkedList<Movable> cars = new LinkedList<>();
-    private static final int MINIMUM_STEP_TIME=1;
-    private static final int MAXIMUM_STEP_TIME=10;
+    public static final int MINIMUM_STEP_TIME=1;
+    public static final int MAXIMUM_STEP_TIME=10;
     private static final int DEFAULT_SPEED_LIMIT=16; //16~60Km/h
     private static final int DEFAULT_ROAD_LENGTH=200;
 

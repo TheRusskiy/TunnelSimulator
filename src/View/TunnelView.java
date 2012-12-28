@@ -140,7 +140,7 @@ public class TunnelView extends JFrame{
         this.pack();
         Dimension frameMaxDimension = new Dimension(2000, this.getPreferredSize().height);
         Dimension frameMinDimension = new Dimension(1024, this.getPreferredSize().height);
-        this.setTitle(this.getPreferredSize().width+"");
+        //this.setTitle(this.getPreferredSize().width+"");
         this.setMinimumSize(frameMinDimension);
         this.setMaximumSize(frameMaxDimension);
 

@@ -1,9 +1,9 @@
-package View.Controls;
+package View.FlowControls;
 
 import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
-import Model.Road;
+import Model.carflow.UniformCarFlow;
 import View.Utility.EmptyLabel;
 import View.Utility.NumberKeyListener;
 
@@ -19,31 +19,23 @@ import java.awt.event.ActionListener;
  * Time: 3:26
  * To change this template use File | Settings | File Templates.
  */
-public class RoadPropertiesControlPanel extends JPanel implements ModelListener {
-    private JLabel title = new JLabel("Road Properties");
-
-    private JLabel roadLengthLabel = new JLabel("Road length:");
-    private JTextField roadLengthTextField = new JTextField();
-
-    private JLabel zoomLabel = new JLabel("zoom:");
-    private JTextField zoomTextField = new JTextField();
-
-    private JButton applyButton = new JButton("Apply ");
-    private JLabel emptyLabel = new JLabel();
+public class UniformControlPanel extends JPanel implements ModelListener {
+    private JLabel title = new JLabel("Uniform flow controls");
+    private JLabel param_T_label = new JLabel("T:");
+    private JTextField param_T_TextField = new JTextField();
+    private JButton applyButton = new JButton("Apply");
     private TunnelController controller;
     private Engine engine;
 
-    public RoadPropertiesControlPanel(Dimension preferredSize, final TunnelController controller){
+    public UniformControlPanel(Dimension preferredSize, final TunnelController controller){
         this.controller=controller;
         this.engine=controller.getEngine();
         controller.registerListener(this);
 
         this.add(title);
         this.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.LINE_START);
-        this.add(roadLengthLabel);
-        this.add(roadLengthTextField);
-        this.add(zoomLabel);
-        this.add(zoomTextField);
+        this.add(param_T_label);
+        this.add(param_T_TextField);
         this.add(applyButton);
 
 
@@ -60,17 +52,13 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               controller.changeRoadLengthAndScale(roadLengthTextField.getText(), zoomTextField.getText());
+                controller.changeUniformT(param_T_TextField.getText());
             }
         });
 
-        roadLengthTextField.addKeyListener(new NumberKeyListener(
-                Road.MINIMUM_LENGTH,
-                Road.MAXIMUM_LENGTH
-        ));
-        zoomTextField.addKeyListener(new NumberKeyListener(
-                VisualPanel.MINIMUM_SCALE,
-                VisualPanel.MAXIMUM_SCALE
+        param_T_TextField.addKeyListener(new NumberKeyListener(
+                UniformCarFlow.MINIMUM_PARAMETER_T,
+                UniformCarFlow.MAXIMUM_PARAMETER_T
         ));
     }
 
@@ -86,11 +74,18 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
 
     @Override
     public void notifyOfStructureChange() {
-          roadLengthTextField.setText(engine.getRoad().getRoadLength()+"");
-          zoomTextField.setText(controller.getScale() + "");
+
     }
 
     @Override
     public void notifyOfFlowChange() {
+        param_T_TextField.setText(engine.getUniformCarFlow().getParam_T()+"");
+        if (engine.getCarFlow() instanceof UniformCarFlow){
+            this.setVisible(true);
+        }
+        else{
+            this.setVisible(false);
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-package View.Controls;
+package View.Utility;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class EmptyLabel extends JLabel {
-    enum Direction{
+    public enum Direction{
         X_AXIS, Y_AXIS;
     }
     public EmptyLabel(Container container, Direction direction){

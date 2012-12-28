@@ -84,4 +84,19 @@ public class TunnelController {
         digital=new Integer(roadScale);
         visualPanel.setScale(digital);
     }
+
+    public void changeUniformT(String newT) {
+        int digital=new Integer(newT);
+        engine.getUniformCarFlow().setParam_T(digital);
+    }
+
+    public void changeExponentialT(String newT) {
+        int digital=new Integer(newT);
+        engine.getExponentialCarFlow().setParam_T(digital);
+    }
+
+    public void changeCarFlow(Engine.CarFlows flow_enum){
+        engine.setCarFlow(flow_enum);
+    }
+
 }

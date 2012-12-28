@@ -1,6 +1,6 @@
 package Model.carflow;
 
-import Model.car.CarGenerator;
+import Model.Engine;
 
 import java.util.Random;
 
@@ -14,11 +14,11 @@ import java.util.Random;
 public class NormalCarFlow extends CarFlow{
     private int secondsEachCarAppears = 5;
     private Random randomGenerator = new Random();
-    public NormalCarFlow(CarGenerator carGenerator){
-        super(carGenerator);
-        //todo implement
-         assert false: "implement";
+
+    public NormalCarFlow(Engine engine) {
+        super(engine);
     }
+
 
     @Override
     public boolean hasNextCar(int time) {

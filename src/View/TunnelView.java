@@ -2,6 +2,8 @@ package View;
 
 import Controller.TunnelController;
 import View.Controls.*;
+import View.FlowControls.ExponentialControlPanel;
+import View.FlowControls.UniformControlPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,12 +25,16 @@ public class TunnelView extends JFrame{
     private CarControlsPanel carControlsPanel;
     private ModelPropertiesControlPanel modelPropertiesControlPanel;
     private RoadPropertiesControlPanel roadPropertiesControlPanel;
+    private UniformControlPanel uniformControlPanel;
+    private ExponentialControlPanel exponentialControlPanel;
     JScrollPane scrollPane;
     private VisualPanel visualPanel;
     private Dimension timeControlsDimension = new Dimension(140, 180);
     private Dimension modelPropertiesDimension = new Dimension(140, 180);
     private Dimension roadPropertiesDimension = new Dimension(140, 180);
     private Dimension carControlsDimension = new Dimension(140, 180);
+    private Dimension uniformControlPanelDimension = new Dimension(140, 180);
+    private Dimension existentialControlPanelDimension = new Dimension(140, 180);
     private Dimension visualPanelDimension = new Dimension(800, 200);
     private Container controlPanel;
     private Container parentPanel;
@@ -38,27 +44,7 @@ public class TunnelView extends JFrame{
     public TunnelView(TunnelController controller){
         super("Tunnel simulator");
         this.controller = controller;
-//        frame = new JFrame("Tunnel simulator")
-//        {
-//
-//            @Override
-//            public void paint(Graphics g) {
-//                Dimension d = getSize();
-//                Dimension m = getMaximumSize();
-//                boolean resize = d.width > m.width || d.height > m.height;
-//                d.width = Math.min(m.width, d.width);
-//                d.height = Math.min(m.height, d.height);
-//                if (resize) {
-//                    Point p = getLocation();
-//                    setVisible(false);
-//                    setSize(d);
-//                    setLocation(p);
-//                    setVisible(true);
-//                }
-//                super.paint(g);
-//            }
-//        }
-//        ;
+
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         parentPanel=new JPanel();
@@ -95,7 +81,13 @@ public class TunnelView extends JFrame{
         roadPropertiesControlPanel = new RoadPropertiesControlPanel(roadPropertiesDimension, controller);
         controlPanel.add(roadPropertiesControlPanel);
 
-        TunnelMenu menu = new TunnelMenu(this);
+        uniformControlPanel = new UniformControlPanel(uniformControlPanelDimension, controller);
+        controlPanel.add(uniformControlPanel);
+
+        exponentialControlPanel = new ExponentialControlPanel(existentialControlPanelDimension, controller);
+        controlPanel.add(exponentialControlPanel);
+
+        TunnelMenu menu = new TunnelMenu(this, controller);
         this.setJMenuBar(menu);
 
         scrollPane.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
@@ -112,10 +104,6 @@ public class TunnelView extends JFrame{
         });
 
 
-        //frame.setIconImage(new CarIcon().getImage());
-        //frame.setLocationRelativeTo(null);
-
-        //frame.setResizable(false);
         updateSize();
         this.setVisible(true);
         controller.askForNotify();

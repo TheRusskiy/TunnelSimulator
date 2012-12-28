@@ -211,4 +211,8 @@ public class VisualPanel extends JPanel implements ModelListener {
         meter=pixelsInMeter;
         calculateMargins();
     }
+
+    @Override
+    public void notifyOfFlowChange() {
+    }
 }

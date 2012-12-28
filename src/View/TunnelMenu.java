@@ -1,5 +1,8 @@
 package View;
 
+import Controller.TunnelController;
+import Model.Engine;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,8 +15,10 @@ import java.awt.event.ActionListener;
  * To change this template use File | Settings | File Templates.
  */
 public class TunnelMenu extends JMenuBar {
+        TunnelController controller;
 
-    public TunnelMenu(JFrame frame){
+    public TunnelMenu(JFrame frame, final TunnelController controller){
+        this.controller=controller;
         //File  menu:
         JMenu fileMenu = new JMenu("File");
         this.add(fileMenu);
@@ -38,8 +43,38 @@ public class TunnelMenu extends JMenuBar {
         flowMenu.add(exponentialFlowItem);
         JMenuItem uniformFlowItem = new JMenuItem("Uniform flow");
         flowMenu.add(uniformFlowItem);
-        JMenuItem configureFlowItem = new JMenuItem("Configure...");
-        flowMenu.add(configureFlowItem);
+        JMenuItem determinedFlowItem = new JMenuItem("Determined flow");
+        flowMenu.add(determinedFlowItem);
+
+        exponentialFlowItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.changeCarFlow(Engine.CarFlows.EXPONENTIAL);
+            }
+        });
+
+        uniformFlowItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.changeCarFlow(Engine.CarFlows.UNIFORM);
+            }
+        });
+        determinedFlowItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.changeCarFlow(Engine.CarFlows.DETERMINED);
+            }
+        });
+
+        normalFlowItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.changeCarFlow(Engine.CarFlows.NORMAL);
+            }
+        });
+
+
+
 
         this.add(getLookAndFeelMenu(frame));
     }

@@ -1,7 +1,5 @@
 import Controller.TunnelController;
 import Model.Engine;
-import Model.car.CarGenerator;
-import Model.carflow.UniformCarFlow;
 import View.TunnelView;
 
 /**
@@ -13,8 +11,7 @@ import View.TunnelView;
  */
 public class ProgramEntry {
     public static void main(String[] args){
-        CarGenerator carGenerator = new CarGenerator();
-        Engine engine = new Engine(new UniformCarFlow(carGenerator));
+        Engine engine = new Engine();
         engine.enableAuto();
 
         TunnelController controller = new TunnelController(engine);

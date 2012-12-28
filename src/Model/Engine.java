@@ -2,7 +2,8 @@ package Model;
 
 import Controller.ModelListener;
 import Model.car.Car;
-import Model.carflow.CarFlow;
+import Model.car.CarGenerator;
+import Model.carflow.*;
 
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -21,23 +22,36 @@ public class Engine {
     public static final int MAXIMUM_STEP_TIME=10;
     private static final int DEFAULT_SPEED_LIMIT=16; //16~60Km/h
     private static final int DEFAULT_ROAD_LENGTH=200;
-
+    public static final boolean DEBUG_MODE = false;
 
     private int timePast;
     private boolean no_selected_car =true;
     private volatile int stepTime=MINIMUM_STEP_TIME;
     private Road road = new Road(DEFAULT_SPEED_LIMIT, DEFAULT_ROAD_LENGTH);
-    private CarFlow carFlow;
     private TimeThread timeThread;
     private int carsOutOfRange=0;
     private int carsOutOfRangeToGC=100;
     private Car selectedCar = null;
     private Set<ModelListener> listeners= new LinkedHashSet<>();
-
-    public static final boolean DEBUG_MODE = false;
+    private CarGenerator carGenerator;
+    private CarFlow carFlow;
+    private UniformCarFlow uniformCarFlow;
+    private ExponentialCarFlow exponentialCarFlow;
+    private DeterminedCarFlow determinedCarFlow;
+    private NormalCarFlow normalCarFlow;
+    public enum CarFlows{
+        UNIFORM,
+        EXPONENTIAL,
+        DETERMINED,
+        NORMAL
+    }
 
     public Road getRoad() {
         return road;
+    }
+
+    public CarGenerator getCarGenerator(){
+        return carGenerator;
     }
 
     public int getTimePast() {
@@ -60,9 +74,66 @@ public class Engine {
         notifyListenersOfPropertiesChange();
     }
 
-    public Engine(CarFlow carFlow){
-        assert carFlow!=null:"Engine received null carFlow";
-        this.carFlow=carFlow;
+    public DeterminedCarFlow getDeterminedCarFlow() {
+        return determinedCarFlow;
+    }
+
+    public UniformCarFlow getUniformCarFlow() {
+        return uniformCarFlow;
+    }
+
+    public NormalCarFlow getNormalCarFlow() {
+        return normalCarFlow;
+    }
+
+    public ExponentialCarFlow getExponentialCarFlow() {
+        return exponentialCarFlow;
+    }
+
+    public CarFlow getCarFlow() {
+        return carFlow;
+    }
+
+    public void setCarFlow(CarFlows flow_enum) {
+        switch (flow_enum){
+            case DETERMINED:{
+                setCarFlow(determinedCarFlow);
+                break;
+            }
+            case UNIFORM:{
+                setCarFlow(uniformCarFlow);
+                break;
+            }
+            case NORMAL:{
+                setCarFlow(normalCarFlow);
+                break;
+            }
+            case EXPONENTIAL:{
+                setCarFlow(exponentialCarFlow);
+                break;
+            }
+            default: {
+                assert false:"wrong flow type!";
+                break;
+            }
+        }
+    }
+
+    private void setCarFlow(CarFlow flow){
+        this.carFlow=flow;
+        notifyListenersOfFlowChange();
+    }
+
+    public Engine(){
+
+        carGenerator = new CarGenerator();
+        normalCarFlow = new NormalCarFlow(this);
+        exponentialCarFlow = new ExponentialCarFlow(this);
+        determinedCarFlow = new DeterminedCarFlow(this);
+        uniformCarFlow = new UniformCarFlow(this);
+
+        carFlow = uniformCarFlow;
+
         timePast=0;
 
         timeThread = new TimeThread(this);
@@ -212,10 +283,17 @@ public class Engine {
         }
     }
 
+    public void notifyListenersOfFlowChange(){
+        for(ModelListener listener: listeners){
+            listener.notifyOfFlowChange();
+        }
+    }
+
     public void notifyAllListeners(){
         notifyListenersOfDataChange();
         notifyListenersOfPropertiesChange();
         notifyListenersOfStructureChange();
+        notifyListenersOfFlowChange();
     }
 
     public void setSelectedCarSpeed(int selectedCarSpeed) {

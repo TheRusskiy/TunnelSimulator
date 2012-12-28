@@ -1,7 +1,8 @@
 package Model.carflow;
 
-import Model.car.CarGenerator;
+import Model.Engine;
 import Model.car.Car;
+import Model.car.CarGenerator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,10 +13,16 @@ import Model.car.Car;
  */
 public abstract class CarFlow {
     private CarGenerator carGenerator;
-    public CarFlow(CarGenerator carGenerator){
-        assert carGenerator!=null: "Car flow received null car Generator";
-        this.carGenerator=carGenerator;
+    protected Engine engine;
+    public CarFlow(Engine engine){
+        this.engine=engine;
+        carGenerator=engine.getCarGenerator();
     }
+
+//    public void setCarGenerator(CarGenerator carGenerator) {
+//        assert carGenerator!=null: "Car flow received null car Generator";
+//        this.carGenerator = carGenerator;
+//    }
 
     public Car getCar(int  time){
         if (hasNextCar(time)){

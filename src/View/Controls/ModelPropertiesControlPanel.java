@@ -4,7 +4,8 @@ import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
 import Model.Road;
-import View.NumberKeyListener;
+import View.Utility.EmptyLabel;
+import View.Utility.NumberKeyListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -87,5 +88,9 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
     @Override
     public void notifyOfStructureChange() {
 
+    }
+
+    @Override
+    public void notifyOfFlowChange() {
     }
 }

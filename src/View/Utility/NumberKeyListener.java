@@ -1,4 +1,4 @@
-package View;
+package View.Utility;
 
 import javax.swing.*;
 import java.awt.event.FocusEvent;

@@ -1,6 +1,7 @@
 package View;
 
 import Controller.TunnelController;
+import View.Controls.*;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package View;
+package View.Controls;
 
 import Controller.ModelListener;
 import Controller.TunnelController;
@@ -82,7 +82,10 @@ public class CarControlsPanel extends JPanel implements ModelListener{
         else{
             speed=0;
         }
-        speedTextField.setText(speed+"");
+        if (!speedTextField.isFocusOwner()){
+            speedTextField.setText(speed+"");
+        }
+
     }
 
     @Override

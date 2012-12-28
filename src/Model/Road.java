@@ -14,13 +14,13 @@ import java.io.PrintWriter;
  * To change this template use File | Settings | File Templates.
  */
 public class Road {
+    private static final int MINIMUM_SPEED_LIMIT=5;
+    private static final int MAXIMUM_SPEED_LIMIT=300;
     private Coordinate[] coordinates;
-    private int roadLengthInMetres;
-    private int speedLimitation;
+    private volatile int speedLimitation;
 
     public Road(int speedLimitation, int roadLengthInMetres){
-        this.speedLimitation=speedLimitation;
-        this.roadLengthInMetres=roadLengthInMetres;
+        setSpeedLimitation(speedLimitation);
         coordinates=new Coordinate[roadLengthInMetres];
         for(int i=0; i<coordinates.length; i++){
             coordinates[i]=new Coordinate(i);
@@ -45,6 +45,12 @@ public class Road {
     }
 
     public void setSpeedLimitation(int speedLimitation) {
+        if (speedLimitation>MAXIMUM_SPEED_LIMIT){
+            speedLimitation=MAXIMUM_SPEED_LIMIT;
+        }
+        if (speedLimitation<MINIMUM_SPEED_LIMIT){
+            speedLimitation=MINIMUM_SPEED_LIMIT;
+        }
         this.speedLimitation = speedLimitation;
     }
 
@@ -71,21 +77,6 @@ public class Road {
             setOccupation(fromIndex - objectLength + canMoveCoordinateCount + 1, fromIndex + canMoveCoordinateCount, true); //set occupation
             textVisualize(0);
             return newCoordinate;
-
-//            if (newCoordinate==null){ //PAST TUNNEL
-//                from.setOccupier(null);
-//                textVisualize(0);
-//                return null;
-//            }
-//            else{
-//                newCoordinate.setOccupier(from.getOccupier());
-//                if (newCoordinate.getXAxis()!=from.getXAxis()){
-//                    from.setOccupier(null);
-//                }
-//                setOccupation(fromIndex - objectLength + canMoveCoordinateCount + 1, fromIndex + canMoveCoordinateCount, true); //set occupation
-//                textVisualize(0);
-//                return newCoordinate;
-//            }
         }
         else{ //If can't move
             //check if you are at the end
@@ -152,5 +143,9 @@ public class Road {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getRoadLength() {
+        return coordinates.length;
     }
 }

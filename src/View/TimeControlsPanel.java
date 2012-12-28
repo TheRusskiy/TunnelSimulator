@@ -2,9 +2,12 @@ package View;
 
 import Controller.ModelListener;
 import Controller.TunnelController;
+import Model.Engine;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,8 +18,7 @@ import java.awt.*;
  */
 public class TimeControlsPanel extends JPanel implements ModelListener {
     private JLabel title = new JLabel("Time Controls");
-    private JLabel autoDelayLabel = new JLabel("Auto Delay:");
-    //TODO get load default values from somewhere to both model and view
+    private JLabel autoDelayLabel = new JLabel("Auto Delay(ms):");
     private JTextField autoDelayTextField = new JTextField();
     private JButton autoDelayApplyButton = new JButton("Apply auto delay");
     private JButton nextStepButton = new JButton("Next Step");
@@ -24,9 +26,11 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
     private JButton autoDelayOnButton = new JButton("On");
     private JButton autoDelayOffButton = new JButton("Off");
     private TunnelController controller;
+    private Engine engine;
 
-    public TimeControlsPanel(Dimension preferredSize, TunnelController controller){
+    public TimeControlsPanel(Dimension preferredSize, final TunnelController controller){
         this.controller=controller;
+        this.engine=controller.getEngine();
         controller.registerListener(this);
 
         this.add(title);
@@ -49,6 +53,34 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
         this.setMinimumSize(preferredSize);
 
         EmptyLabel emptyLabel = new EmptyLabel(this, EmptyLabel.Direction.Y_AXIS);
+
+        autoDelayOnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.autoOn();
+            }
+        });
+
+        autoDelayOffButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.autoOff();
+            }
+        });
+
+        nextStepButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.nextStep();
+            }
+        });
+
+        autoDelayApplyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.changeAutoDelay(autoDelayTextField.getText());
+            }
+        });
     }
 
     @Override
@@ -58,7 +90,7 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
 
     @Override
     public void notifyOfPropertiesChange() {
-
+        this.autoDelayTextField.setText("" + engine.getAutoTickTime());
     }
 
     @Override

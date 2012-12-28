@@ -2,9 +2,12 @@ package View;
 
 import Controller.ModelListener;
 import Controller.TunnelController;
+import Model.Engine;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,18 +20,19 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
     private JLabel title = new JLabel("Road Properties");
 
     private JLabel roadLengthLabel = new JLabel("Road length:");
-    //TODO get load default values from somewhere to both model and view
     private JTextField roadLengthTextField = new JTextField();
 
     private JLabel zoomLabel = new JLabel("zoom:");
-    private JTextField zoomTimeField = new JTextField();
+    private JTextField zoomTextField = new JTextField();
 
     private JButton applyButton = new JButton("Apply ");
     private JLabel emptyLabel = new JLabel();
     private TunnelController controller;
+    private Engine engine;
 
-    public RoadPropertiesControlPanel(Dimension preferredSize, TunnelController controller){
+    public RoadPropertiesControlPanel(Dimension preferredSize, final TunnelController controller){
         this.controller=controller;
+        this.engine=controller.getEngine();
         controller.registerListener(this);
 
         this.add(title);
@@ -36,7 +40,7 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
         this.add(roadLengthLabel);
         this.add(roadLengthTextField);
         this.add(zoomLabel);
-        this.add(zoomTimeField);
+        this.add(zoomTextField);
         this.add(applyButton);
 
 
@@ -50,7 +54,12 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
 
         EmptyLabel emptyLabel = new EmptyLabel(this, EmptyLabel.Direction.Y_AXIS);
 
-//        applyButton
+        applyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               controller.changeRoadLengthAndScale(roadLengthTextField.getText(), zoomTextField.getText());
+            }
+        });
     }
 
     @Override
@@ -65,6 +74,7 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
 
     @Override
     public void notifyOfStructureChange() {
-
+          roadLengthTextField.setText(engine.getRoad().getRoadLength()+"");
+          zoomTextField.setText(controller.getScale() + "");
     }
 }

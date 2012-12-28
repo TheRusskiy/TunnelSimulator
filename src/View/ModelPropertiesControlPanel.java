@@ -2,9 +2,12 @@ package View;
 
 import Controller.ModelListener;
 import Controller.TunnelController;
+import Model.Engine;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,19 +19,20 @@ import java.awt.*;
 public class ModelPropertiesControlPanel extends JPanel implements ModelListener {
     private JLabel title = new JLabel("Model Properties");
 
-    private JLabel vMaxLabel = new JLabel("Vmax:");
-    //TODO get load default values from somewhere to both model and view
+    private JLabel vMaxLabel = new JLabel("Vmax in meters:");
     private JTextField vMaxTextField = new JTextField();
 
-    private JLabel stepTimeLabel = new JLabel("Step time:");
+    private JLabel stepTimeLabel = new JLabel("Step time(sec):");
     private JTextField stepTimeField = new JTextField();
 
     private JButton applyButton = new JButton("Apply ");
     private JLabel emptyLabel = new JLabel();
     private TunnelController controller;
+    private Engine engine;
 
-    public ModelPropertiesControlPanel(Dimension preferredSize, TunnelController controller){
+    public ModelPropertiesControlPanel(Dimension preferredSize, final TunnelController controller){
         this.controller=controller;
+        this.engine=controller.getEngine();
         controller.registerListener(this);
 
         this.add(title);
@@ -49,6 +53,13 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
         this.setMinimumSize(preferredSize);
 
         EmptyLabel emptyLabel = new EmptyLabel(this, EmptyLabel.Direction.Y_AXIS);
+
+        applyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.changeStepTimeAndVMax(stepTimeField.getText(), vMaxTextField.getText());
+            }
+        });
     }
 
     @Override
@@ -58,7 +69,8 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
 
     @Override
     public void notifyOfPropertiesChange() {
-
+        this.vMaxTextField.setText(engine.getRoad().getSpeedLimitation()+"");
+        this.stepTimeField.setText(engine.getStepTime()+"");
     }
 
     @Override

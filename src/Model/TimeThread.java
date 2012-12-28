@@ -8,7 +8,10 @@ package Model;
  * To change this template use File | Settings | File Templates.
  */
 public class TimeThread extends Thread {
-    private int tickTimeInMilis=0;
+    private static final int MINIMUM_TICK_TIME=50;
+    private static final int MAXIMUM_TICK_TIME=10000;
+
+    private int tickTimeInMilis=100;
     private Engine engine;
     private boolean enabled = false;
 
@@ -25,9 +28,14 @@ public class TimeThread extends Thread {
         this.engine=engine;
     }
 
-    public void setTickTimeInSeconds(double newTimeInSeconds) {
-        assert newTimeInSeconds>0 : "Tick time has to be positive";
-        tickTimeInMilis = new Double(newTimeInSeconds*1000).intValue();
+    public void setTickTimeInMilis(int newTimeInMilis) {
+        if (newTimeInMilis<MINIMUM_TICK_TIME){
+            newTimeInMilis=MINIMUM_TICK_TIME;
+        }
+        if (newTimeInMilis>MAXIMUM_TICK_TIME){
+            newTimeInMilis=MAXIMUM_TICK_TIME;
+        }
+        tickTimeInMilis=newTimeInMilis;
     }
 
     @Override
@@ -41,5 +49,9 @@ public class TimeThread extends Thread {
                 assert false: "Time thread was interrupted";
             }
         }
+    }
+
+    public int getTickTimeInMilis() {
+        return tickTimeInMilis;
     }
 }

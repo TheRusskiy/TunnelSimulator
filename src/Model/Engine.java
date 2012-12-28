@@ -3,7 +3,6 @@ package Model;
 import Controller.ModelListener;
 import Model.car.Car;
 import Model.carflow.CarFlow;
-import View.VisualPanel;
 
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -18,16 +17,21 @@ import java.util.Set;
  */
 public class Engine {
     private LinkedList<Movable> cars = new LinkedList<>();
-    private int timePast;
-    private int stepTime;
+    private static final int MINIMUM_STEP_TIME=1;
+    private static final int MAXIMUM_STEP_TIME=10;
     private static final int DEFAULT_SPEED_LIMIT=16; //16~60Km/h
     private static final int DEFAULT_ROAD_LENGTH=200;
+
+
+    private int timePast;
+    private boolean no_selected_car =true;
+    private volatile int stepTime=MINIMUM_STEP_TIME;
     private Road road = new Road(DEFAULT_SPEED_LIMIT, DEFAULT_ROAD_LENGTH);
     private CarFlow carFlow;
     private TimeThread timeThread;
-    private VisualPanel visualPanel;
     private int carsOutOfRange=0;
     private int carsOutOfRangeToGC=100;
+    private Car selectedCar = null;
     private Set<ModelListener> listeners= new LinkedHashSet<>();
 
     public static final boolean DEBUG_MODE = false;
@@ -41,7 +45,19 @@ public class Engine {
     }
 
     public void setStepTime(int stepTime) {
+        if (stepTime<MINIMUM_STEP_TIME){
+            stepTime=MINIMUM_STEP_TIME;
+        }
+        if (stepTime>MAXIMUM_STEP_TIME){
+            stepTime=MAXIMUM_STEP_TIME;
+        }
         this.stepTime = stepTime;
+        notifyListenersOfPropertiesChange();
+    }
+
+    public void setSpeedLimit(int speedLimit) {
+        road.setSpeedLimitation(speedLimit);
+        notifyListenersOfPropertiesChange();
     }
 
     public Engine(CarFlow carFlow){
@@ -56,16 +72,22 @@ public class Engine {
 
     public void enableAuto(){
         timeThread.setEnabled(true);
+        notifyListenersOfPropertiesChange();
     }
     public void disableAuto(){
         timeThread.setEnabled(false);
+        notifyListenersOfPropertiesChange();
     }
-    public void setAutoTickTime(double tickTimeInSeconds){
-        timeThread.setTickTimeInSeconds(tickTimeInSeconds);
+    public void setAutoTickTime(int tickTimeInSeconds){
+        timeThread.setTickTimeInMilis(tickTimeInSeconds);
+        notifyListenersOfPropertiesChange();
+    }
+    public int getAutoTickTime(){
+        return timeThread.getTickTimeInMilis();
     }
 
-    public void setVisualPanel(VisualPanel visualPanel) {
-        this.visualPanel = visualPanel;
+    public int getStepTime() {
+        return stepTime;
     }
 
     public void step(){
@@ -85,14 +107,63 @@ public class Engine {
         notifyListenersOfDataChange();
     }
 
+    private void selectCar(Car carToSelect) {
+        if (selectedCar!=null){
+            selectedCar.setSelected(false);
+        }
+        selectedCar = carToSelect;
+        selectedCar.setSelected(true);
+    }
+
+    public void selectNextCar(){
+        if ( ! no_selected_car ){
+            int selected_index = cars.indexOf(selectedCar);
+            if (selected_index<cars.size()-1){
+                Car newCar = (Car)cars.get(selected_index+1);
+                selectCar(newCar);
+            }
+        }
+        notifyListenersOfPropertiesChange();
+        notifyListenersOfDataChange();
+    }
+
+    public void selectPreviousCar(){
+        if ( ! no_selected_car ){
+            int selected_index = cars.indexOf(selectedCar);
+            if (selected_index>0){
+                Car newCar = (Car)cars.get(selected_index-1);
+                selectCar(newCar);
+            }
+        }
+        notifyListenersOfPropertiesChange();
+        notifyListenersOfDataChange();
+    }
+
+    public Car getSelectedCar() {
+        return selectedCar;
+    }
+
     private void moveAllFromLastToFirst(LinkedList<Movable> movables, int time) {
         LinkedList<Movable> toExcludeFromRoad = new LinkedList<>();
         Movable current;
+        if (movables.size()==0) {
+            no_selected_car =true;
+        }
+
         for(int i=movables.size()-1; i>=0; i--){
             road.textVisualize(timePast);
             current=movables.get(i);
             if (current.move(time)==false){
                 toExcludeFromRoad.add(current);
+                if (current instanceof Car && ((Car) current).isSelected()){
+                    no_selected_car=true;
+                }
+            }
+            else{
+                if (no_selected_car && current instanceof Car){
+                    selectCar((Car)current);
+                    no_selected_car=false;
+                }
             }
         }
         road.textVisualize(timePast);
@@ -123,19 +194,19 @@ public class Engine {
         listeners.add(listener);
     }
 
-    private void notifyListenersOfDataChange(){
+    public void notifyListenersOfDataChange(){
         for(ModelListener listener: listeners){
             listener.notifyOfDataChange();
         }
     }
 
-    private void notifyListenersOfStructureChange(){
+    public void notifyListenersOfStructureChange(){
         for(ModelListener listener: listeners){
             listener.notifyOfStructureChange();
         }
     }
 
-    private void notifyListenersOfPropertiesChange(){
+    public void notifyListenersOfPropertiesChange(){
         for(ModelListener listener: listeners){
             listener.notifyOfPropertiesChange();
         }
@@ -147,5 +218,17 @@ public class Engine {
         notifyListenersOfStructureChange();
     }
 
+    public void setSelectedCarSpeed(int selectedCarSpeed) {
+        Car selected = getSelectedCar();
+        if (selected!=null){
+            selected.setSpeed(selectedCarSpeed);
+        }
+        notifyListenersOfDataChange();
+        notifyListenersOfPropertiesChange();
+    }
 
+    public void setRoadLength(int newRoadLength) {
+        //todo implement
+         assert false: "implement";
+    }
 }

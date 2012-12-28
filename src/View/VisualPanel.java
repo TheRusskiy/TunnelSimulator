@@ -3,6 +3,7 @@ package View;
 import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Coordinate;
+import Model.Engine;
 import Model.car.Car;
 
 import javax.swing.*;
@@ -17,14 +18,21 @@ import java.awt.*;
  */
 public class VisualPanel extends JPanel implements ModelListener {
     private Dimension preferredSize = new Dimension(100, 100);
+    private static final int MAXIMUM_SCALE = 8;
+    private static final int MINIMUM_SCALE = 1;
     private TunnelController controller;
     private Coordinate[] coordinates;
     private Graphics2D g;
     private int meter = 4; //px
-    private Color roadColor = new Color(160, 160, 160);//Color.GRAY;
-    private Color rulerColor = new Color(0, 0, 0);//Color.GRAY;
+    private Color roadColor = new Color(160, 160, 160);
+    private Color rulerColor = new Color(0, 0, 0);
+    private Color selectedCarColor = new Color(255, 23, 0);
+    private Color normalCarColor = new Color(0, 0, 0);
+    private Color timeColor = new Color(0, 0, 0);
     private Font font;
     private TunnelView tunnelView;
+    private Engine engine;
+
 
 
     enum Spaces {
@@ -46,8 +54,10 @@ public class VisualPanel extends JPanel implements ModelListener {
     public VisualPanel(TunnelController controller, TunnelView tunnelView){
         this.tunnelView=tunnelView;
         this.controller=controller;
+        this.controller.setVisualPanel(this);
+        this.engine=controller.getEngine();
         controller.registerListener(this);
-        coordinates=controller.getRoadCoordinates();
+        coordinates=engine.getRoad().getCoordinates();
         calculateMargins();
     }
 
@@ -112,6 +122,7 @@ public class VisualPanel extends JPanel implements ModelListener {
         drawRoad();
         drawRuler();
         drawCars();
+        drawTime();
         //g.drawLine(10, 10, 150, 150);
     }
 
@@ -139,15 +150,26 @@ public class VisualPanel extends JPanel implements ModelListener {
     private void drawCars() {
         Car car;
         int fromStart;
+        g.setColor(normalCarColor);
         for(Coordinate coordinate:coordinates){
             if (coordinate.getOccupier()!=null){
                 car = (Car)coordinate.getOccupier();
                 fromStart=coordinate.getXAxis()*meter;
                 g.drawImage(car.getIcon().getImage(), carXShift+fromStart, carY0, null);
+                if (car.isSelected()) {
+                    g.setColor(selectedCarColor);
+                }else{
+                    g.setColor(normalCarColor);
+                }
                 g.drawLine(speedXShift+fromStart, speedLineY0,speedXShift+fromStart, speedLineY1);
                 g.drawString(car.getSpeed()+"", speedXShift+fromStart-meter*2, speedLineY0);
             }
         }
+    }
+
+    private void drawTime(){
+        g.setColor(timeColor);
+        g.drawString("Time past: " + engine.getTimePast() + "s", 0, 0 + meter * 3);
     }
 
 
@@ -172,5 +194,20 @@ public class VisualPanel extends JPanel implements ModelListener {
 
     public void refreshTunnel() {
         this.repaint();
+    }
+
+    public int getScale(){
+        return meter;
+    }
+
+    public void setScale(int pixelsInMeter){
+        if (pixelsInMeter>MAXIMUM_SCALE){
+            pixelsInMeter=MAXIMUM_SCALE;
+        }
+        if (pixelsInMeter<MINIMUM_SCALE){
+            pixelsInMeter=MINIMUM_SCALE;
+        }
+        meter=pixelsInMeter;
+        calculateMargins();
     }
 }

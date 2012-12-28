@@ -2,9 +2,13 @@ package View;
 
 import Controller.ModelListener;
 import Controller.TunnelController;
+import Model.Engine;
+import Model.car.Car;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,14 +24,15 @@ public class CarControlsPanel extends JPanel implements ModelListener{
     private JButton previousButton = new JButton("Previous Car");
 
     private JLabel speedLabel = new JLabel("Speed:");
-    //TODO get load default values from somewhere to both model and view
     private JTextField speedTextField = new JTextField();
     private JButton speedApplyButton = new JButton("Apply speed");
 
     private TunnelController controller;
+    private Engine engine;
 
-    public CarControlsPanel(Dimension preferredSize, TunnelController controller){
+    public CarControlsPanel(Dimension preferredSize, final TunnelController controller){
         this.controller=controller;
+        this.engine=controller.getEngine();
         controller.registerListener(this);
 
         this.add(title);
@@ -46,26 +51,48 @@ public class CarControlsPanel extends JPanel implements ModelListener{
         this.setMaximumSize(preferredSize);
         this.setMinimumSize(preferredSize);
 
-//        Component[] components = this.getComponents();
-//        for(Component component:components){
-//            component.setSize(
-//                    new Dimension(
-//                            preferredSize.width,component.getPreferredSize().height
-//                    )
-//            );
-//        }
-
         EmptyLabel emptyLabel = new EmptyLabel(this, EmptyLabel.Direction.Y_AXIS);
+
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.nextCar();
+            }
+        });
+        previousButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.previousCar();
+            }
+        });
+        speedApplyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.changeSelectedCarSpeed(speedTextField.getText());
+            }
+        });
+    }
+
+    private void showSelectedCarSpeed(){
+        Car selected_car=engine.getSelectedCar();
+        int speed;
+        if (selected_car!=null){
+            speed = selected_car.getSpeed();
+        }
+        else{
+            speed=0;
+        }
+        speedTextField.setText(speed+"");
     }
 
     @Override
     public void notifyOfDataChange() {
-
+        showSelectedCarSpeed();
     }
 
     @Override
     public void notifyOfPropertiesChange() {
-
+        showSelectedCarSpeed();
     }
 
     @Override

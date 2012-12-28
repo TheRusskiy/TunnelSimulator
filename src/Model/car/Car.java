@@ -17,7 +17,8 @@ public class Car implements Movable {
     private int speed;
     private CarModel model;
     private Road road;
-    public final static int MINIMUM_SPEED = 1; //METERS!!
+    public final static int MINIMUM_GENERATOR_SPEED = 1; //METERS!!  FOR GENERATOR!
+    public final static int MINIMUM_SPEED = 0; //METERS!!
     public static final int CAR_LENGTH = 5;
 
     public Car(CarModel model, int speed){
@@ -38,6 +39,12 @@ public class Car implements Movable {
     }
 
     public void setSpeed(int speed) {
+        if (speed<MINIMUM_SPEED){
+            speed=MINIMUM_SPEED;
+        }
+        if (speed>model.getMaxSpeed()){
+            speed=model.getMaxSpeed();
+        }
         this.speed = speed;
     }
 
@@ -59,8 +66,11 @@ public class Car implements Movable {
     }
 
 
+    public void setSelected(boolean isSelected) {
+        this.isSelected=isSelected;
+    }
 
-
-
-
+    public boolean isSelected(){
+        return isSelected;
+    }
 }

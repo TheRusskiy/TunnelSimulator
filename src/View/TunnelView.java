@@ -143,6 +143,7 @@ public class TunnelView extends JFrame{
         this.setTitle(this.getPreferredSize().width+"");
         this.setMinimumSize(frameMinDimension);
         this.setMaximumSize(frameMaxDimension);
+
     }
 
     @Override

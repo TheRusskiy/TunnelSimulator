@@ -3,7 +3,7 @@ package View.FlowControls;
 import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
-import Model.carflow.ExponentialCarFlow;
+import Model.carflow.NormalCarFlow;
 import View.Utility.EmptyLabel;
 import View.Utility.NumberKeyListener;
 
@@ -19,25 +19,27 @@ import java.awt.event.ActionListener;
  * Time: 3:26
  * To change this template use File | Settings | File Templates.
  */
-public class ExponentialControlPanel extends JPanel implements ModelListener {
-    private JLabel title = new JLabel("Exponential flow controls");
-    private JLabel param_T_label = new JLabel("T:");
-    private JLabel param_lambda_label = new JLabel("Lambda:");
-    private JTextField param_T_TextField = new JTextField();
+public class NormalControlPanel extends JPanel implements ModelListener {
+    private JLabel title = new JLabel("Normal flow controls");
+    private JLabel param_M_label = new JLabel("Mean:");
+    private JTextField param_M_TextField = new JTextField();
+    private JLabel param_D_label = new JLabel("Deviation:");
+    private JTextField param_D_TextField = new JTextField();
     private JButton applyButton = new JButton("Apply");
     private TunnelController controller;
     private Engine engine;
 
-    public ExponentialControlPanel(Dimension preferredSize, final TunnelController controller){
+    public NormalControlPanel(Dimension preferredSize, final TunnelController controller){
         this.controller=controller;
         this.engine=controller.getEngine();
         controller.registerListener(this);
 
         this.add(title);
         this.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.LINE_START);
-        this.add(param_lambda_label);
-        this.add(param_T_label);
-        this.add(param_T_TextField);
+        this.add(param_M_label);
+        this.add(param_M_TextField);
+        this.add(param_D_label);
+        this.add(param_D_TextField);
         this.add(applyButton);
 
 
@@ -54,13 +56,17 @@ public class ExponentialControlPanel extends JPanel implements ModelListener {
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.changeExponentialT(param_T_TextField.getText());
+                controller.changeNormalMandD(param_M_TextField.getText(), param_D_TextField.getText());
             }
         });
 
-        param_T_TextField.addKeyListener(new NumberKeyListener(
-                ExponentialCarFlow.MINIMUM_PARAMETER_T,
-                ExponentialCarFlow.MAXIMUM_PARAMETER_T
+        param_M_TextField.addKeyListener(new NumberKeyListener(
+                NormalCarFlow.MINIMUM_PARAMETER_M,
+                NormalCarFlow.MAXIMUM_PARAMETER_M
+        ));
+        param_D_TextField.addKeyListener(new NumberKeyListener(
+                NormalCarFlow.MINIMUM_PARAMETER_D,
+                NormalCarFlow.MAXIMUM_PARAMETER_D
         ));
     }
 
@@ -81,13 +87,14 @@ public class ExponentialControlPanel extends JPanel implements ModelListener {
 
     @Override
     public void notifyOfFlowChange() {
-        param_T_TextField.setText(engine.getExponentialCarFlow().getParam_T()+"");
-        param_lambda_label.setText("Lambda = "+engine.getExponentialCarFlow().getParam_lambda());
-        if (engine.getCarFlow() instanceof ExponentialCarFlow){
+        param_M_TextField.setText(engine.getNormalCarFlow().getParam_M() + "");
+        param_D_TextField.setText(engine.getNormalCarFlow().getParam_D() + "");
+        if (engine.getCarFlow() instanceof NormalCarFlow){
             this.setVisible(true);
         }
         else{
             this.setVisible(false);
         }
+
     }
 }

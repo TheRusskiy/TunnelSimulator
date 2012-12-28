@@ -3,6 +3,7 @@ package View;
 import Controller.TunnelController;
 import View.Controls.*;
 import View.FlowControls.ExponentialControlPanel;
+import View.FlowControls.NormalControlPanel;
 import View.FlowControls.UniformControlPanel;
 
 import javax.swing.*;
@@ -27,6 +28,7 @@ public class TunnelView extends JFrame{
     private RoadPropertiesControlPanel roadPropertiesControlPanel;
     private UniformControlPanel uniformControlPanel;
     private ExponentialControlPanel exponentialControlPanel;
+    private NormalControlPanel normalControlPanel;
     JScrollPane scrollPane;
     private VisualPanel visualPanel;
     private Dimension timeControlsDimension = new Dimension(140, 180);
@@ -34,7 +36,8 @@ public class TunnelView extends JFrame{
     private Dimension roadPropertiesDimension = new Dimension(140, 180);
     private Dimension carControlsDimension = new Dimension(140, 180);
     private Dimension uniformControlPanelDimension = new Dimension(140, 180);
-    private Dimension existentialControlPanelDimension = new Dimension(140, 180);
+    private Dimension exponentialControlPanelDimension = new Dimension(140, 180);
+    private Dimension normalControlPanelDimension = new Dimension(140, 180);
     private Dimension visualPanelDimension = new Dimension(800, 200);
     private Container controlPanel;
     private Container parentPanel;
@@ -84,8 +87,11 @@ public class TunnelView extends JFrame{
         uniformControlPanel = new UniformControlPanel(uniformControlPanelDimension, controller);
         controlPanel.add(uniformControlPanel);
 
-        exponentialControlPanel = new ExponentialControlPanel(existentialControlPanelDimension, controller);
+        exponentialControlPanel = new ExponentialControlPanel(exponentialControlPanelDimension, controller);
         controlPanel.add(exponentialControlPanel);
+
+        normalControlPanel = new NormalControlPanel(normalControlPanelDimension, controller);
+        controlPanel.add(normalControlPanel);
 
         TunnelMenu menu = new TunnelMenu(this, controller);
         this.setJMenuBar(menu);

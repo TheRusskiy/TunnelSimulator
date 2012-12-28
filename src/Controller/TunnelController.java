@@ -99,4 +99,10 @@ public class TunnelController {
         engine.setCarFlow(flow_enum);
     }
 
+    public void changeNormalMandD(String param_M, String param_D) {
+        int digital=new Integer(param_M);
+        engine.getNormalCarFlow().setParam_M(digital);
+        digital=new Integer(param_D);
+        engine.getNormalCarFlow().setParam_D(digital);
+    }
 }

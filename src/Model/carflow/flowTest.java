@@ -1,10 +1,9 @@
 package Model.carflow;
 
+import cern.jet.random.Normal;
 import cern.jet.random.Poisson;
 import cern.jet.random.engine.DRand;
 import cern.jet.random.engine.RandomEngine;
-
-import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,28 +16,19 @@ public class flowTest {
     private static double lambda=1.0/100;
 
     public static void main(String[] args){
-        Random r = new Random();
 
-        RandomEngine engine = new DRand();
-        Poisson poisson = new Poisson(lambda, engine);
-//        System.out.println(poisson.pdf(2));
+        RandomEngine randomEngine= new DRand();
+        Poisson poisson = new Poisson(lambda, randomEngine);
+        int poissonObs = poisson.nextInt();
 
-//        int poissonObs;
-//        for(int i=0, j=0; i<1000; i++, j++) {
-//
-//            if (j==40)  {
-//                System.out.println();
-//                j=0;
-//            }
-//            System.out.print(poisson.nextInt()+ " ");
-//        }
-
-//        def nextTime(rateParameter):
-//        return -math.log(1.0 - random.random()) / rateParameter
+        double mean = 0.5;
+        double variance = 0.0;
+        Normal normal = new Normal(mean, variance, randomEngine);
+        //double normalObs = normal.nextDouble();
 
 
         for(int i=0, j=0; i<1000; i++, j++) {
-            double d = -1 * Math.log(1 - r.nextDouble()) / lambda;
+            double d = normal.nextDouble();
             if (j==40)  {
                 System.out.println();
                 j=0;

@@ -1,10 +1,11 @@
-package View;
+package View.Controls;
 
 import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Coordinate;
 import Model.Engine;
 import Model.car.Car;
+import View.TunnelView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -189,7 +190,7 @@ public class VisualPanel extends JPanel implements ModelListener {
 
     @Override
     public void notifyOfStructureChange() {
-
+        coordinates=engine.getRoad().getCoordinates();
     }
 
     public void refreshTunnel() {

@@ -1,6 +1,7 @@
 package View;
 
 import Controller.TunnelController;
+import View.Controls.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +17,8 @@ import java.awt.event.ComponentEvent;
  * Time: 3:20
  * To change this template use File | Settings | File Templates.
  */
-public class TunnelView{
-    private JFrame frame;
+public class TunnelView extends JFrame{
+    //private JFrame frame;
     private TimeControlsPanel timeControlsPanel;
     private CarControlsPanel carControlsPanel;
     private ModelPropertiesControlPanel modelPropertiesControlPanel;
@@ -35,33 +36,34 @@ public class TunnelView{
 
 
     public TunnelView(TunnelController controller){
+        super("Tunnel simulator");
         this.controller = controller;
-        frame = new JFrame("Tunnel simulator")
-        {
-
-            @Override
-            public void paint(Graphics g) {
-                Dimension d = getSize();
-                Dimension m = getMaximumSize();
-                boolean resize = d.width > m.width || d.height > m.height;
-                d.width = Math.min(m.width, d.width);
-                d.height = Math.min(m.height, d.height);
-                if (resize) {
-                    Point p = getLocation();
-                    setVisible(false);
-                    setSize(d);
-                    setLocation(p);
-                    setVisible(true);
-                }
-                super.paint(g);
-            }
-        }
-        ;
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        frame = new JFrame("Tunnel simulator")
+//        {
+//
+//            @Override
+//            public void paint(Graphics g) {
+//                Dimension d = getSize();
+//                Dimension m = getMaximumSize();
+//                boolean resize = d.width > m.width || d.height > m.height;
+//                d.width = Math.min(m.width, d.width);
+//                d.height = Math.min(m.height, d.height);
+//                if (resize) {
+//                    Point p = getLocation();
+//                    setVisible(false);
+//                    setSize(d);
+//                    setLocation(p);
+//                    setVisible(true);
+//                }
+//                super.paint(g);
+//            }
+//        }
+//        ;
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         parentPanel=new JPanel();
         parentPanel.setLayout(new BoxLayout(parentPanel, BoxLayout.Y_AXIS));
-        frame.setContentPane(parentPanel);
+        this.setContentPane(parentPanel);
 
 
         visualPanel = new VisualPanel(controller, this);//visualPanelInsideDimension);
@@ -93,18 +95,19 @@ public class TunnelView{
         roadPropertiesControlPanel = new RoadPropertiesControlPanel(roadPropertiesDimension, controller);
         controlPanel.add(roadPropertiesControlPanel);
 
-        //EmptyLabel emptyLabel = new EmptyLabel(controlPanel, EmptyLabel.Direction.X_AXIS);
+        TunnelMenu menu = new TunnelMenu(this);
+        this.setJMenuBar(menu);
 
         scrollPane.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
-                frame.repaint();
+                TunnelView.this.repaint();
             }
         });
         scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
-                frame.repaint();
+                TunnelView.this.repaint();
             }
         });
 
@@ -114,7 +117,7 @@ public class TunnelView{
 
         //frame.setResizable(false);
         updateSize();
-        frame.setVisible(true);
+        this.setVisible(true);
         controller.askForNotify();
     }
 
@@ -134,13 +137,29 @@ public class TunnelView{
 
     public void updateSize(){
         if (visualPanel!=null)updateScrollPane();
-        frame.pack();
-        Dimension frameMaxDimension = new Dimension(2000, frame.getPreferredSize().height);
-        Dimension frameMinDimension = new Dimension(1024, frame.getPreferredSize().height);
-        frame.setTitle(frame.getPreferredSize().width+"");
-        frame.setMinimumSize(frameMinDimension);
-        frame.setMaximumSize(frameMaxDimension);
+        this.pack();
+        Dimension frameMaxDimension = new Dimension(2000, this.getPreferredSize().height);
+        Dimension frameMinDimension = new Dimension(1024, this.getPreferredSize().height);
+        this.setTitle(this.getPreferredSize().width+"");
+        this.setMinimumSize(frameMinDimension);
+        this.setMaximumSize(frameMaxDimension);
     }
 
+    @Override
+    public void paint(Graphics g) {
+        Dimension d = getSize();
+        Dimension m = getMaximumSize();
+        boolean resize = d.width > m.width || d.height > m.height;
+        d.width = Math.min(m.width, d.width);
+        d.height = Math.min(m.height, d.height);
+        if (resize) {
+            Point p = getLocation();
+            setVisible(false);
+            setSize(d);
+            setLocation(p);
+            setVisible(true);
+        }
+        super.paint(g);
+    }
 
 }

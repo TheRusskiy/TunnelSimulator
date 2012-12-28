@@ -1,4 +1,4 @@
-package View;
+package View.Controls;
 
 import Controller.ModelListener;
 import Controller.TunnelController;

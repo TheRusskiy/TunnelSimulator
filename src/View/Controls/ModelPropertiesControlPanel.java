@@ -1,4 +1,4 @@
-package View;
+package View.Controls;
 
 import Controller.ModelListener;
 import Controller.TunnelController;
@@ -16,31 +16,31 @@ import java.awt.event.ActionListener;
  * Time: 3:26
  * To change this template use File | Settings | File Templates.
  */
-public class RoadPropertiesControlPanel extends JPanel implements ModelListener {
-    private JLabel title = new JLabel("Road Properties");
+public class ModelPropertiesControlPanel extends JPanel implements ModelListener {
+    private JLabel title = new JLabel("Model Properties");
 
-    private JLabel roadLengthLabel = new JLabel("Road length:");
-    private JTextField roadLengthTextField = new JTextField();
+    private JLabel vMaxLabel = new JLabel("Vmax in meters:");
+    private JTextField vMaxTextField = new JTextField();
 
-    private JLabel zoomLabel = new JLabel("zoom:");
-    private JTextField zoomTextField = new JTextField();
+    private JLabel stepTimeLabel = new JLabel("Step time(sec):");
+    private JTextField stepTimeField = new JTextField();
 
     private JButton applyButton = new JButton("Apply ");
     private JLabel emptyLabel = new JLabel();
     private TunnelController controller;
     private Engine engine;
 
-    public RoadPropertiesControlPanel(Dimension preferredSize, final TunnelController controller){
+    public ModelPropertiesControlPanel(Dimension preferredSize, final TunnelController controller){
         this.controller=controller;
         this.engine=controller.getEngine();
         controller.registerListener(this);
 
         this.add(title);
         this.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.LINE_START);
-        this.add(roadLengthLabel);
-        this.add(roadLengthTextField);
-        this.add(zoomLabel);
-        this.add(zoomTextField);
+        this.add(vMaxLabel);
+        this.add(vMaxTextField);
+        this.add(stepTimeLabel);
+        this.add(stepTimeField);
         this.add(applyButton);
 
 
@@ -57,7 +57,7 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               controller.changeRoadLengthAndScale(roadLengthTextField.getText(), zoomTextField.getText());
+                controller.changeStepTimeAndVMax(stepTimeField.getText(), vMaxTextField.getText());
             }
         });
     }
@@ -69,12 +69,12 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
 
     @Override
     public void notifyOfPropertiesChange() {
-
+        this.vMaxTextField.setText(engine.getRoad().getSpeedLimitation()+"");
+        this.stepTimeField.setText(engine.getStepTime()+"");
     }
 
     @Override
     public void notifyOfStructureChange() {
-          roadLengthTextField.setText(engine.getRoad().getRoadLength()+"");
-          zoomTextField.setText(controller.getScale() + "");
+
     }
 }

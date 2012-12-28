@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.Engine;
-import View.VisualPanel;
+import View.Controls.VisualPanel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -79,7 +79,7 @@ public class TunnelController {
 
     public void changeRoadLengthAndScale(String roadLength, String roadScale) {
         int digital=new Integer(roadLength);
-       // engine.setRoadLength(digital);
+        engine.setRoadLength(digital);
 
         digital=new Integer(roadScale);
         visualPanel.setScale(digital);

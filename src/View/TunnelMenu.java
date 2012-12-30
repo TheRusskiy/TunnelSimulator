@@ -21,7 +21,7 @@ public class TunnelMenu extends JMenuBar {
 
     public TunnelMenu(final JFrame frame, final TunnelController controller, final Localizator localizator){
         this.controller=controller;
-        carModelsDialog = new CarModelsDialog(frame, controller);
+        carModelsDialog = new CarModelsDialog(frame, controller, localizator);
 
         //File  menu:
         JMenu fileMenu = new JMenu("File");

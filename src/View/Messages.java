@@ -66,6 +66,23 @@ public enum Messages {
     UniformTitle("Uniform flow controls", "Равномерный поток"),
     UniformT("T", "Т"),
     UniformApply("Apply", "Применить"),
+
+    CarModelName("Name", "Название"),
+    //CarModelNameFiller("", ""),
+    CarModelSpeed("Max Speed(m/s)", "Макс. скорость(м/с)"),
+    //CarModelSPeedFiller("", ""),
+    CarModelAdd("Add model", "Добавить модель"),
+    CarModelDelete("Delete selected", "Удалить выбранную"),
+    CarModelLoad("Load models", "Загрузить модели"),
+    CarModelSave("Save models", "Сохранить модели"),
+
+    SaveCarsDialog("Save car models", "Сохранить модели в файл"),
+    SaveCarsDialogAccept("Save", "Сохранить"),
+    LoadCarsDialog("Load car models", "Загрузить модели из файла"),
+    LoadCarsDialogAccept("Load", "Загрузить"),
+    CarsFileDescription("Car models file(.cars)", "Файл с моделями машин(.cars)"),
+    CarsLoadExceptionTitle("Loading error", "Ошибка загрузки"),
+    CarsLoadExceptionMessage("Can't load models from selected file!", "Невозможно прочесть выбранный файл"),
     ;
 
 

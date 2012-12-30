@@ -3,9 +3,11 @@ package View;
 import Controller.TunnelController;
 import Model.car.CarIcon;
 import Model.car.CarModel;
+import View.Utility.Localizator;
 import View.Utility.NumberKeyListener;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,7 +24,8 @@ import java.util.LinkedList;
  */
 public class CarModelsDialog extends JFrame{
 
-    private JButton hideButton = new JButton("Hide");
+    private final String CAR_FILE_TYPE = "cars";
+    private JButton hideButton = new JButton("OK");
     private JFrame parentFrame;
     private JPanel parentPanel;
 
@@ -38,13 +41,13 @@ public class CarModelsDialog extends JFrame{
     private JLabel speedLabel = new JLabel("Max Speed(m/s):");
     private JTextField speedField = new JTextField("10");
 
-    private JLabel rLabel = new JLabel("R:");
+    private JLabel rLabel = new JLabel(" R:");
     private JTextField rField = new JTextField("200");
 
-    private JLabel gLabel = new JLabel("G:");
+    private JLabel gLabel = new JLabel(" G:");
     private JTextField gField = new JTextField("50");
 
-    private JLabel bLabel = new JLabel("B:");
+    private JLabel bLabel = new JLabel(" B:");
     private JTextField bField = new JTextField("50");
 
     private JButton addButton = new JButton("Add car");
@@ -53,20 +56,32 @@ public class CarModelsDialog extends JFrame{
 
     private JButton saveButton = new JButton("Save cars");
 
+    private JButton deleteButton = new JButton("Delete cars");
+
+    private Localizator localizator;
+
 
     private TunnelController controller;
 
-    public CarModelsDialog(JFrame parentFrame, final TunnelController controller) {
+    public CarModelsDialog(JFrame parentFrame, final TunnelController controller, final Localizator localizator) {
        // super("Car Models");
         this.setTitle("Car Models");
         this.parentFrame=parentFrame;
         this.controller=controller;
+        this.localizator=localizator;
+        localizator.addLocalizable(nameLabel, Messages.CarModelName);
+//        localizator.addLocalizable(nameField, Messages.CarModelNameFiller);
+        localizator.addLocalizable(speedLabel, Messages.CarModelSpeed);
+        localizator.addLocalizable(addButton, Messages.CarModelAdd);
+        localizator.addLocalizable(loadButton, Messages.CarModelLoad);
+        localizator.addLocalizable(saveButton, Messages.CarModelSave);
+        localizator.addLocalizable(deleteButton, Messages.CarModelDelete);
 
 
         parentPanel = new JPanel();
         parentPanel.setLayout(new BoxLayout(parentPanel, BoxLayout.Y_AXIS));
         this.setContentPane(parentPanel);
-        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         tablePanel = new JPanel();
         tablePanel.setLayout(new GridLayout(1, 1));
@@ -111,7 +126,7 @@ public class CarModelsDialog extends JFrame{
         bField.addKeyListener(
                 new NumberKeyListener(0, 255));
 
-        controlsPanel.add(new JLabel());
+        controlsPanel.add(deleteButton);
         controlsPanel.add(new JLabel());
         controlsPanel.add(loadButton);
         controlsPanel.add(saveButton);
@@ -121,12 +136,21 @@ public class CarModelsDialog extends JFrame{
 
 
         bottomPanel = new JPanel();
-        bottomPanel.setLayout(new GridLayout(1,1));
+        bottomPanel.setLayout(new GridLayout(2,5));
+        bottomPanel.add(new JLabel(""));
+        bottomPanel.add(new JLabel(""));
+        bottomPanel.add(new JLabel(""));
+        bottomPanel.add(new JLabel(""));
+        bottomPanel.add(new JLabel(""));
+
+        bottomPanel.add(new JLabel(""));
+        bottomPanel.add(new JLabel(""));
         bottomPanel.add(hideButton);
+        bottomPanel.add(new JLabel(""));
+        bottomPanel.add(new JLabel(""));
         parentPanel.add(bottomPanel);
 
 
-//        this.setPreferredSize(new Dimension(300, 150));
 
         this.setResizable(false);
         this.setAlwaysOnTop(true);
@@ -152,10 +176,16 @@ public class CarModelsDialog extends JFrame{
                 saveTo();
             }
         });
-       loadButton.addActionListener(new ActionListener() {
+        loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadFrom();
+            }
+        });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteSelected();
             }
         });
 
@@ -163,18 +193,18 @@ public class CarModelsDialog extends JFrame{
     }
 
     public void showDialog(){
-        parentFrame.disable();
+        //parentFrame.disable();
         drawTable(controller.getEngine().getCarGenerator().getModels());
         this.pack();
         this.setVisible(true);
     }
 
     private void cancel() {
-        parentFrame.enable();
+        //parentFrame.enable();
         this.setVisible(false);
     }
 
-    public void drawTable(java.util.List<CarModel> models){
+    private void drawTable(java.util.List<CarModel> models){
         tableModel.setNumRows(0);
         tableModel.setColumnIdentifiers(new String[]{"Name", "Speed", "R", "G", "B"});
         for(CarModel mer: models){
@@ -187,7 +217,7 @@ public class CarModelsDialog extends JFrame{
             });
         }
     }
-    public void addCar(){
+    private void addCar(){
         int speed = new Integer(speedField.getText());
         int r = new Integer(rField.getText());
         int g = new Integer(gField.getText());
@@ -200,17 +230,16 @@ public class CarModelsDialog extends JFrame{
         this.pack();
     }
 
-    public static <ObjectType> void saveToFile(File fileName, ObjectType objectToSave) throws IOException {
+    private static <ObjectType> void saveToFile(File fileName, ObjectType objectToSave) throws IOException {
         File file=new File(fileName.getPath());
         file.getParentFile().mkdirs();
         file.createNewFile();
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));){
-
             oos.writeObject(objectToSave);
         }
     }
 
-    public static <ObjectType> ObjectType loadObjectFromFile(File file) throws IOException, ClassNotFoundException {
+    private static <ObjectType> ObjectType loadObjectFromFile(File file) throws IOException, ClassNotFoundException {
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))){
             return (ObjectType)ois.readObject();
         }
@@ -225,8 +254,8 @@ public class CarModelsDialog extends JFrame{
         fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
         if (typeDescription!=null)
         {
-            //FileNameExtensionFilter filter = new FileNameExtensionFilter( typeDescription, fileTypes);
-            //fc.setFileFilter(filter);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter( typeDescription, fileTypes);
+            fc.setFileFilter(filter);
         }
         fc.setApproveButtonText(approveButton);
         fc.setDialogTitle(dialogTitle);
@@ -235,14 +264,15 @@ public class CarModelsDialog extends JFrame{
         {
             fileName = fc.getSelectedFile().getAbsolutePath();
         }
-        if (fileName.equals("")) throw new Exception("Open File Dialog exception, try again!");
+        if (fileName.equals("")) throw new DialogAbortedException("Open File Dialog exception, try again!");
         return fileName;
     }
 
 
-    public void saveTo(){
+    private void saveTo(){
         try {
-            String file = getFileName("", new String[]{}, "Save car models", "Save", this);
+            String file = getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE}, Messages.SaveCarsDialog.getMessage(), Messages.SaveCarsDialogAccept.getMessage(), this);
+            file=file+"."+CAR_FILE_TYPE;
             saveToFile(new File(file), controller.getEngine().getCarGenerator().getModels());
             drawTable(controller.getEngine().getCarGenerator().getModels());
             this.pack();
@@ -251,9 +281,9 @@ public class CarModelsDialog extends JFrame{
         }
     }
 
-    public void loadFrom(){
+    private void loadFrom(){
         try {
-            String file = getFileName("", new String[]{}, "Load car models", "Load", this);
+            String file = getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE},  Messages.LoadCarsDialog.getMessage(),  Messages.LoadCarsDialogAccept.getMessage(), this);
             LinkedList<CarModel> newModels = loadObjectFromFile(new File(file));
             LinkedList<CarModel> oldModels= controller.getEngine().getCarGenerator().getModels();
             oldModels.clear();
@@ -261,8 +291,29 @@ public class CarModelsDialog extends JFrame{
             drawTable(controller.getEngine().getCarGenerator().getModels());
             this.pack();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch (DialogAbortedException e){
+            //NOTHING TO DO HERE :-)
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    Messages.CarsLoadExceptionMessage.getMessage(),
+                    Messages.CarsLoadExceptionTitle.getMessage(),
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void deleteSelected(){
+        //todo implement
+         assert false: "implement";
+    }
+
+    private static class DialogAbortedException extends Exception{
+        public DialogAbortedException() {
+            super();
+        }
+
+        public DialogAbortedException(String message) {
+            super(message);
         }
     }
 

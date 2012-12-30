@@ -7,7 +7,7 @@ import Model.Road;
 import View.Messages;
 import View.Utility.EmptyLabel;
 import View.Utility.Localizator;
-import View.Utility.NumberKeyListener;
+import View.Utility.NumberKeyFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,14 +70,10 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
             }
         });
 
-        vMaxTextField.addKeyListener(new NumberKeyListener(
-                Road.MINIMUM_SPEED_LIMIT,
-                Road.MAXIMUM_SPEED_LIMIT
-        ));
-        stepTimeField.addKeyListener(new NumberKeyListener(
-                Engine.MINIMUM_STEP_TIME,
-                Engine.MAXIMUM_STEP_TIME
-        ));
+        NumberKeyFilter.addFilterTo(vMaxTextField, Road.MINIMUM_SPEED_LIMIT,
+                Road.MAXIMUM_SPEED_LIMIT);
+        NumberKeyFilter.addFilterTo(stepTimeField, Engine.MINIMUM_STEP_TIME,
+                Engine.MAXIMUM_STEP_TIME);
     }
 
     @Override

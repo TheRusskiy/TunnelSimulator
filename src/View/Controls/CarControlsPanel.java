@@ -8,7 +8,7 @@ import Model.car.Car;
 import View.Messages;
 import View.Utility.EmptyLabel;
 import View.Utility.Localizator;
-import View.Utility.NumberKeyListener;
+import View.Utility.NumberKeyFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -107,10 +107,8 @@ public class CarControlsPanel extends JPanel implements ModelListener{
 //            }
 //        });
 
-        speedTextField.addKeyListener(new NumberKeyListener(
-                Car.MINIMUM_SPEED,
-                Road.MAXIMUM_SPEED_LIMIT
-        ));
+        NumberKeyFilter.addFilterTo(speedTextField, Car.MINIMUM_SPEED,
+                Road.MAXIMUM_SPEED_LIMIT);
     }
 
     private void showSelectedCarSpeed(){

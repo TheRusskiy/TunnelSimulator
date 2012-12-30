@@ -7,7 +7,7 @@ import Model.carflow.NormalCarFlow;
 import View.Messages;
 import View.Utility.EmptyLabel;
 import View.Utility.Localizator;
-import View.Utility.NumberKeyListener;
+import View.Utility.NumberKeyFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,14 +67,11 @@ public class NormalControlPanel extends JPanel implements ModelListener {
             }
         });
 
-        param_M_TextField.addKeyListener(new NumberKeyListener(
-                NormalCarFlow.MINIMUM_PARAMETER_M,
-                NormalCarFlow.MAXIMUM_PARAMETER_M
-        ));
-        param_D_TextField.addKeyListener(new NumberKeyListener(
-                NormalCarFlow.MINIMUM_PARAMETER_D,
-                NormalCarFlow.MAXIMUM_PARAMETER_D
-        ));
+        NumberKeyFilter.addFilterTo(param_M_TextField, NormalCarFlow.MINIMUM_PARAMETER_M,
+                NormalCarFlow.MAXIMUM_PARAMETER_M);
+        NumberKeyFilter.addFilterTo(param_D_TextField, NormalCarFlow.MINIMUM_PARAMETER_D,
+                NormalCarFlow.MAXIMUM_PARAMETER_D);
+
     }
 
     @Override

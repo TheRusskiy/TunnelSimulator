@@ -7,7 +7,7 @@ import Model.carflow.DeterminedCarFlow;
 import View.Messages;
 import View.Utility.EmptyLabel;
 import View.Utility.Localizator;
-import View.Utility.NumberKeyListener;
+import View.Utility.NumberKeyFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,10 +61,8 @@ public class DeterminedControlPanel extends JPanel implements ModelListener {
             }
         });
 
-        param_T_TextField.addKeyListener(new NumberKeyListener(
-                DeterminedCarFlow.MINIMUM_PARAMETER_T,
-                DeterminedCarFlow.MAXIMUM_PARAMETER_T
-        ));
+        NumberKeyFilter.addFilterTo(param_T_TextField, DeterminedCarFlow.MINIMUM_PARAMETER_T,
+                DeterminedCarFlow.MAXIMUM_PARAMETER_T);
     }
 
     @Override

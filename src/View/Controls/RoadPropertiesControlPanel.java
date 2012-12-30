@@ -7,7 +7,7 @@ import Model.Road;
 import View.Messages;
 import View.Utility.EmptyLabel;
 import View.Utility.Localizator;
-import View.Utility.NumberKeyListener;
+import View.Utility.NumberKeyFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,14 +70,10 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
             }
         });
 
-        roadLengthTextField.addKeyListener(new NumberKeyListener(
-                Road.MINIMUM_LENGTH,
-                Road.MAXIMUM_LENGTH
-        ));
-        zoomTextField.addKeyListener(new NumberKeyListener(
-                VisualPanel.MINIMUM_SCALE,
-                VisualPanel.MAXIMUM_SCALE
-        ));
+        NumberKeyFilter.addFilterTo(roadLengthTextField, Road.MINIMUM_LENGTH,
+                Road.MAXIMUM_LENGTH);
+        NumberKeyFilter.addFilterTo(zoomTextField, VisualPanel.MINIMUM_SCALE,
+                VisualPanel.MAXIMUM_SCALE );
     }
 
     @Override

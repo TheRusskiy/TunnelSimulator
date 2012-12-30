@@ -7,7 +7,7 @@ import Model.carflow.ExponentialCarFlow;
 import View.Messages;
 import View.Utility.EmptyLabel;
 import View.Utility.Localizator;
-import View.Utility.NumberKeyListener;
+import View.Utility.NumberKeyFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,10 +65,8 @@ public class ExponentialControlPanel extends JPanel implements ModelListener {
             }
         });
 
-        param_T_TextField.addKeyListener(new NumberKeyListener(
-                ExponentialCarFlow.MINIMUM_PARAMETER_T,
-                ExponentialCarFlow.MAXIMUM_PARAMETER_T
-        ));
+        NumberKeyFilter.addFilterTo(param_T_TextField, ExponentialCarFlow.MINIMUM_PARAMETER_T,
+                ExponentialCarFlow.MAXIMUM_PARAMETER_T);
     }
 
     @Override

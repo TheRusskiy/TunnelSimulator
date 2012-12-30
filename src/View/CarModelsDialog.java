@@ -4,7 +4,7 @@ import Controller.TunnelController;
 import Model.car.CarIcon;
 import Model.car.CarModel;
 import View.Utility.Localizator;
-import View.Utility.NumberKeyListener;
+import View.Utility.NumberKeyFilter;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -117,14 +117,10 @@ public class CarModelsDialog extends JFrame{
         controlsPanel.add(bField);
         controlsPanel.add(addButton);
 
-        speedField.addKeyListener(
-        new NumberKeyListener(CarModel.MINIMUM_MODEL_SPEED, CarModel.MAXIMUM_MODEL_SPEED));
-        rField.addKeyListener(
-                new NumberKeyListener(0, 255));
-        gField.addKeyListener(
-                new NumberKeyListener(0, 255));
-        bField.addKeyListener(
-                new NumberKeyListener(0, 255));
+        NumberKeyFilter.addFilterTo(speedField, CarModel.MINIMUM_MODEL_SPEED, CarModel.MAXIMUM_MODEL_SPEED);
+        NumberKeyFilter.addFilterTo(rField, 0, 255);
+        NumberKeyFilter.addFilterTo(gField, 0, 255);
+        NumberKeyFilter.addFilterTo(bField, 0, 255);
 
         controlsPanel.add(deleteButton);
         controlsPanel.add(new JLabel());

@@ -7,7 +7,7 @@ import Model.carflow.UniformCarFlow;
 import View.Messages;
 import View.Utility.EmptyLabel;
 import View.Utility.Localizator;
-import View.Utility.NumberKeyListener;
+import View.Utility.NumberKeyFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,10 +61,8 @@ public class UniformControlPanel extends JPanel implements ModelListener {
             }
         });
 
-        param_T_TextField.addKeyListener(new NumberKeyListener(
-                UniformCarFlow.MINIMUM_PARAMETER_T,
-                UniformCarFlow.MAXIMUM_PARAMETER_T
-        ));
+        NumberKeyFilter.addFilterTo(param_T_TextField, UniformCarFlow.MINIMUM_PARAMETER_T,
+                UniformCarFlow.MAXIMUM_PARAMETER_T);
     }
 
     @Override

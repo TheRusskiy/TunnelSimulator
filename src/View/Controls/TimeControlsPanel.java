@@ -7,7 +7,7 @@ import Model.TimeThread;
 import View.Messages;
 import View.Utility.EmptyLabel;
 import View.Utility.Localizator;
-import View.Utility.NumberKeyListener;
+import View.Utility.NumberKeyFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -94,10 +94,8 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
             }
         });
 
-        autoDelayTextField.addKeyListener(new NumberKeyListener(
-                TimeThread.MINIMUM_TICK_TIME,
-                TimeThread.MAXIMUM_TICK_TIME
-        ));
+        NumberKeyFilter.addFilterTo(autoDelayTextField, TimeThread.MINIMUM_TICK_TIME,
+                TimeThread.MAXIMUM_TICK_TIME);
     }
 
     @Override

@@ -5,7 +5,9 @@ import Controller.TunnelController;
 import Model.Coordinate;
 import Model.Engine;
 import Model.car.Car;
+import View.Messages;
 import View.TunnelView;
+import View.Utility.Localizator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +35,8 @@ public class VisualPanel extends JPanel implements ModelListener {
     private Font font;
     private TunnelView tunnelView;
     private Engine engine;
+    private Localizator localizator;
+    private JLabel timePastLabel = new JLabel("Time past:");
 
 
 
@@ -52,13 +56,16 @@ public class VisualPanel extends JPanel implements ModelListener {
     }
 
 
-    public VisualPanel(TunnelController controller, TunnelView tunnelView){
+    public VisualPanel(TunnelController controller, TunnelView tunnelView, final Localizator localizator){
         this.tunnelView=tunnelView;
         this.controller=controller;
         this.controller.setVisualPanel(this);
         this.engine=controller.getEngine();
+        this.localizator=localizator;
         controller.registerListener(this);
         coordinates=engine.getRoad().getCoordinates();
+
+        localizator.addLocalizable(timePastLabel, Messages.TimePast);
         calculateMargins();
     }
 
@@ -177,7 +184,7 @@ public class VisualPanel extends JPanel implements ModelListener {
 
     private void drawTime(){
         g.setColor(timeColor);
-        g.drawString("Time past: " + engine.getTimePast() + "s", 0, 0 + meter * 3);
+        g.drawString(timePastLabel.getText() + engine.getTimePast(), 0, 0 + meter * 3);
     }
 
 

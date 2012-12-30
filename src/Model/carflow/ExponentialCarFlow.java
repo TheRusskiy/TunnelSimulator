@@ -12,7 +12,7 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public class ExponentialCarFlow extends CarFlow{
-    private final static int DEFAULT_PARAMETER_T = 40;
+    private final static int DEFAULT_PARAMETER_T = 20;
     public final static int MAXIMUM_PARAMETER_T = 100;
     public final static int MINIMUM_PARAMETER_T = 1;
     private int param_T = DEFAULT_PARAMETER_T; //secondsEachCarAppears

@@ -4,7 +4,9 @@ import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
 import Model.carflow.ExponentialCarFlow;
+import View.Messages;
 import View.Utility.EmptyLabel;
+import View.Utility.Localizator;
 import View.Utility.NumberKeyListener;
 
 import javax.swing.*;
@@ -28,7 +30,7 @@ public class ExponentialControlPanel extends JPanel implements ModelListener {
     private TunnelController controller;
     private Engine engine;
 
-    public ExponentialControlPanel(Dimension preferredSize, final TunnelController controller){
+    public ExponentialControlPanel(Dimension preferredSize, final TunnelController controller, final Localizator localizator){
         this.controller=controller;
         this.engine=controller.getEngine();
         controller.registerListener(this);
@@ -39,6 +41,11 @@ public class ExponentialControlPanel extends JPanel implements ModelListener {
         this.add(param_T_label);
         this.add(param_T_TextField);
         this.add(applyButton);
+
+        localizator.addLocalizable(title, Messages.ExponentialTitle);
+        localizator.addLocalizable(param_T_label, Messages.ExponentialT);
+        localizator.addLocalizable(param_lambda_label, Messages.ExponentialLambda);
+        localizator.addLocalizable(applyButton, Messages.ExponentialApply);
 
 
         BoxLayout layoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);

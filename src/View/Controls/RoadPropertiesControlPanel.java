@@ -4,7 +4,9 @@ import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
 import Model.Road;
+import View.Messages;
 import View.Utility.EmptyLabel;
+import View.Utility.Localizator;
 import View.Utility.NumberKeyListener;
 
 import javax.swing.*;
@@ -33,7 +35,7 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
     private TunnelController controller;
     private Engine engine;
 
-    public RoadPropertiesControlPanel(Dimension preferredSize, final TunnelController controller){
+    public RoadPropertiesControlPanel(Dimension preferredSize, final TunnelController controller, final Localizator localizator){
         this.controller=controller;
         this.engine=controller.getEngine();
         controller.registerListener(this);
@@ -45,6 +47,10 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
         this.add(zoomLabel);
         this.add(zoomTextField);
         this.add(applyButton);
+        localizator.addLocalizable(title, Messages.RoadPropertiesTitle);
+        localizator.addLocalizable(roadLengthLabel, Messages.RoadLengthLabel);
+        localizator.addLocalizable(zoomLabel, Messages.ZoomLabel);
+        localizator.addLocalizable(applyButton, Messages.RoadPropertiesApply);
 
 
         BoxLayout layoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);

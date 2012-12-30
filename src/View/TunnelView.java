@@ -6,6 +6,7 @@ import View.FlowControls.DeterminedControlPanel;
 import View.FlowControls.ExponentialControlPanel;
 import View.FlowControls.NormalControlPanel;
 import View.FlowControls.UniformControlPanel;
+import View.Utility.Localizator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,18 +34,19 @@ public class TunnelView extends JFrame{
     private DeterminedControlPanel determinedControlPanel;
     JScrollPane scrollPane;
     private VisualPanel visualPanel;
-    private Dimension timeControlsDimension = new Dimension(140, 180);
-    private Dimension modelPropertiesDimension = new Dimension(140, 180);
-    private Dimension roadPropertiesDimension = new Dimension(140, 180);
-    private Dimension carControlsDimension = new Dimension(140, 180);
-    private Dimension uniformControlPanelDimension = new Dimension(140, 180);
-    private Dimension exponentialControlPanelDimension = new Dimension(140, 180);
-    private Dimension normalControlPanelDimension = new Dimension(140, 180);
-    private Dimension determinedControlPanelDimension = new Dimension(140, 180);
+    private Dimension timeControlsDimension = new Dimension(180, 180);
+    private Dimension modelPropertiesDimension = new Dimension(180, 180);
+    private Dimension roadPropertiesDimension = new Dimension(180, 180);
+    private Dimension carControlsDimension = new Dimension(180, 180);
+    private Dimension uniformControlPanelDimension = new Dimension(180, 180);
+    private Dimension exponentialControlPanelDimension = new Dimension(180, 180);
+    private Dimension normalControlPanelDimension = new Dimension(180, 180);
+    private Dimension determinedControlPanelDimension = new Dimension(180, 180);
     private Dimension visualPanelDimension = new Dimension(800, 200);
     private Container controlPanel;
     private Container parentPanel;
     private TunnelController controller;
+    private Localizator localizator = new Localizator();
 
 
     public TunnelView(TunnelController controller){
@@ -58,7 +60,7 @@ public class TunnelView extends JFrame{
         this.setContentPane(parentPanel);
 
 
-        visualPanel = new VisualPanel(controller, this);//visualPanelInsideDimension);
+        visualPanel = new VisualPanel(controller, this, localizator);//visualPanelInsideDimension);
         scrollPane = new JScrollPane(visualPanel);//Pass inside constructor!
         updateScrollPane();
         parentPanel.add(scrollPane);
@@ -74,31 +76,31 @@ public class TunnelView extends JFrame{
         controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
         parentPanel.add(controlPanel);
 
-        timeControlsPanel = new TimeControlsPanel(timeControlsDimension, controller);
+        timeControlsPanel = new TimeControlsPanel(timeControlsDimension, controller, localizator);
         controlPanel.add(timeControlsPanel);
 
-        modelPropertiesControlPanel = new ModelPropertiesControlPanel(carControlsDimension, controller);
+        modelPropertiesControlPanel = new ModelPropertiesControlPanel(carControlsDimension, controller, localizator);
         controlPanel.add(modelPropertiesControlPanel);
 
-        carControlsPanel = new CarControlsPanel(modelPropertiesDimension, controller);
+        carControlsPanel = new CarControlsPanel(modelPropertiesDimension, controller, localizator);
         controlPanel.add(carControlsPanel);
 
-        roadPropertiesControlPanel = new RoadPropertiesControlPanel(roadPropertiesDimension, controller);
+        roadPropertiesControlPanel = new RoadPropertiesControlPanel(roadPropertiesDimension, controller, localizator);
         controlPanel.add(roadPropertiesControlPanel);
 
-        uniformControlPanel = new UniformControlPanel(uniformControlPanelDimension, controller);
+        uniformControlPanel = new UniformControlPanel(uniformControlPanelDimension, controller, localizator);
         controlPanel.add(uniformControlPanel);
 
-        exponentialControlPanel = new ExponentialControlPanel(exponentialControlPanelDimension, controller);
+        exponentialControlPanel = new ExponentialControlPanel(exponentialControlPanelDimension, controller, localizator);
         controlPanel.add(exponentialControlPanel);
 
-        normalControlPanel = new NormalControlPanel(normalControlPanelDimension, controller);
+        normalControlPanel = new NormalControlPanel(normalControlPanelDimension, controller, localizator);
         controlPanel.add(normalControlPanel);
 
-        determinedControlPanel = new DeterminedControlPanel(determinedControlPanelDimension, controller);
+        determinedControlPanel = new DeterminedControlPanel(determinedControlPanelDimension, controller, localizator);
         controlPanel.add(determinedControlPanel);
 
-        TunnelMenu menu = new TunnelMenu(this, controller);
+        TunnelMenu menu = new TunnelMenu(this, controller, localizator);
         this.setJMenuBar(menu);
 
         scrollPane.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
@@ -113,11 +115,13 @@ public class TunnelView extends JFrame{
                 TunnelView.this.repaint();
             }
         });
+        localizator.addLocalizable(this, Messages.MainTitle);
 
-
+        localizator.setLanguage(Messages.Languages.English);
         updateSize();
         this.setVisible(true);
         controller.askForNotify();
+        this.pack();
     }
 
     private void updateScrollPane() {

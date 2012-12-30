@@ -2,6 +2,7 @@ package View;
 
 import Controller.TunnelController;
 import Model.Engine;
+import View.Utility.Localizator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -18,36 +19,63 @@ public class TunnelMenu extends JMenuBar {
     private TunnelController controller;
     private CarModelsDialog carModelsDialog;
 
-    public TunnelMenu(JFrame frame, final TunnelController controller){
+    public TunnelMenu(final JFrame frame, final TunnelController controller, final Localizator localizator){
         this.controller=controller;
         carModelsDialog = new CarModelsDialog(frame, controller);
 
         //File  menu:
         JMenu fileMenu = new JMenu("File");
         this.add(fileMenu);
+        localizator.addLocalizable(fileMenu, Messages.File);
+
         //File menu items:
         JMenuItem exitFileItem = new JMenuItem("Exit");
         fileMenu.add(exitFileItem);
+        localizator.addLocalizable(exitFileItem, Messages.Exit);
 
         //Car  menu:
         JMenu carMenu = new JMenu("Cars");
         this.add(carMenu);
+        localizator.addLocalizable(carMenu, Messages.Cars);
         //Car menu items:
         JMenuItem showCarsItem = new JMenuItem("Show cars");
         carMenu.add(showCarsItem);
+        localizator.addLocalizable(showCarsItem, Messages.ShowCars);
 
         //Car  flow:
         JMenu flowMenu = new JMenu("Car flow");
         this.add(flowMenu);
+        localizator.addLocalizable(flowMenu, Messages.CarFlow);
         //Flow menu items:
         JMenuItem normalFlowItem = new JMenuItem("Normal flow");
         flowMenu.add(normalFlowItem);
+        localizator.addLocalizable(normalFlowItem, Messages.NormalFlow);
+
         JMenuItem exponentialFlowItem = new JMenuItem("Exponential flow");
         flowMenu.add(exponentialFlowItem);
+        localizator.addLocalizable(exponentialFlowItem, Messages.ExponentialFlow);
+
         JMenuItem uniformFlowItem = new JMenuItem("Uniform flow");
         flowMenu.add(uniformFlowItem);
+        localizator.addLocalizable(uniformFlowItem, Messages.UniformFlow);
+
         JMenuItem determinedFlowItem = new JMenuItem("Determined flow");
         flowMenu.add(determinedFlowItem);
+        localizator.addLocalizable(determinedFlowItem, Messages.DeterminedFlow);
+
+        //Language  menu:
+        JMenu languageMenu = new JMenu("Language");
+        this.add(languageMenu);
+        localizator.addLocalizable(languageMenu, Messages.Language);
+
+        //Language menu items:
+        JMenuItem englishLanguageItem = new JMenuItem("English");
+        languageMenu.add(englishLanguageItem);
+        localizator.addLocalizable(englishLanguageItem, Messages.EnglishLanguage);
+
+        JMenuItem russianLanguageItem = new JMenuItem("Russian");
+        languageMenu.add(russianLanguageItem);
+        localizator.addLocalizable(russianLanguageItem, Messages.RussianLanguage);
 
         exponentialFlowItem.addActionListener(new ActionListener() {
             @Override
@@ -82,6 +110,20 @@ public class TunnelMenu extends JMenuBar {
                 carModelsDialog.showDialog();
             }
         });
+        englishLanguageItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                localizator.setLanguage(Messages.Languages.English);
+            }
+        });
+        russianLanguageItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                localizator.setLanguage(Messages.Languages.Russian);
+            }
+        });
+
+
 
         exitFileItem.addActionListener(new ActionListener() {
             @Override

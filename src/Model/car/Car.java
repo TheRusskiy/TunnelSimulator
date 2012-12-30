@@ -17,7 +17,6 @@ public class Car implements Movable {
     private int speed;
     private CarModel model;
     private Road road;
-    public final static int MINIMUM_GENERATOR_SPEED = 5; //METERS!!  FOR GENERATOR!
     public final static int MINIMUM_SPEED = 0; //METERS!!
     public static final int CAR_LENGTH = 5;
 

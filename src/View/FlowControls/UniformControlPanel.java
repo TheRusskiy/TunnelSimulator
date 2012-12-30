@@ -4,7 +4,9 @@ import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
 import Model.carflow.UniformCarFlow;
+import View.Messages;
 import View.Utility.EmptyLabel;
+import View.Utility.Localizator;
 import View.Utility.NumberKeyListener;
 
 import javax.swing.*;
@@ -27,7 +29,7 @@ public class UniformControlPanel extends JPanel implements ModelListener {
     private TunnelController controller;
     private Engine engine;
 
-    public UniformControlPanel(Dimension preferredSize, final TunnelController controller){
+    public UniformControlPanel(Dimension preferredSize, final TunnelController controller, final Localizator localizator){
         this.controller=controller;
         this.engine=controller.getEngine();
         controller.registerListener(this);
@@ -38,6 +40,9 @@ public class UniformControlPanel extends JPanel implements ModelListener {
         this.add(param_T_TextField);
         this.add(applyButton);
 
+        localizator.addLocalizable(title, Messages.UniformTitle);
+        localizator.addLocalizable(param_T_label, Messages.UniformT);
+        localizator.addLocalizable(applyButton, Messages.UniformApply);
 
         BoxLayout layoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layoutManager);

@@ -4,7 +4,9 @@ import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
 import Model.TimeThread;
+import View.Messages;
 import View.Utility.EmptyLabel;
+import View.Utility.Localizator;
 import View.Utility.NumberKeyListener;
 
 import javax.swing.*;
@@ -31,7 +33,7 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
     private TunnelController controller;
     private Engine engine;
 
-    public TimeControlsPanel(Dimension preferredSize, final TunnelController controller){
+    public TimeControlsPanel(Dimension preferredSize, final TunnelController controller, final Localizator localizator){
         this.controller=controller;
         this.engine=controller.getEngine();
         controller.registerListener(this);
@@ -46,6 +48,13 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
         this.add(autoDelayOnButton);
         this.add(autoDelayOffButton);
 
+        localizator.addLocalizable(title, Messages.TimeControlsTitle);
+        localizator.addLocalizable(autoDelayLabel, Messages.AutoDelayLabel);
+        localizator.addLocalizable(autoDelayApplyButton, Messages.AutoDelayApply);
+        localizator.addLocalizable(nextStepButton, Messages.NextStepButton);
+        localizator.addLocalizable(autoLabel, Messages.AutoSimulationLabel);
+        localizator.addLocalizable(autoDelayOnButton, Messages.AutoOn);
+        localizator.addLocalizable(autoDelayOffButton, Messages.AutoOff);
 
         BoxLayout layoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layoutManager);

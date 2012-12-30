@@ -4,7 +4,9 @@ import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
 import Model.Road;
+import View.Messages;
 import View.Utility.EmptyLabel;
+import View.Utility.Localizator;
 import View.Utility.NumberKeyListener;
 
 import javax.swing.*;
@@ -33,10 +35,14 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
     private TunnelController controller;
     private Engine engine;
 
-    public ModelPropertiesControlPanel(Dimension preferredSize, final TunnelController controller){
+    public ModelPropertiesControlPanel(Dimension preferredSize, final TunnelController controller, final Localizator localizator){
         this.controller=controller;
         this.engine=controller.getEngine();
         controller.registerListener(this);
+        localizator.addLocalizable(title, Messages.ModelPropertiesTitle);
+        localizator.addLocalizable(vMaxLabel, Messages.VMaxLabel);
+        localizator.addLocalizable(stepTimeLabel, Messages.StepTimeLabel);
+        localizator.addLocalizable(applyButton, Messages.ModelPropertiesApply);
 
         this.add(title);
         this.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.LINE_START);

@@ -1,7 +1,6 @@
 package View;
 
 import Controller.TunnelController;
-import Model.car.Car;
 import Model.car.CarIcon;
 import Model.car.CarModel;
 import View.Utility.NumberKeyListener;
@@ -104,7 +103,7 @@ public class CarModelsDialog extends JFrame{
         controlsPanel.add(addButton);
 
         speedField.addKeyListener(
-        new NumberKeyListener(Car.MINIMUM_SPEED, 200));
+        new NumberKeyListener(CarModel.MINIMUM_MODEL_SPEED, CarModel.MAXIMUM_MODEL_SPEED));
         rField.addKeyListener(
                 new NumberKeyListener(0, 255));
         gField.addKeyListener(

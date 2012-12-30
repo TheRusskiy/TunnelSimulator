@@ -5,7 +5,9 @@ import Controller.TunnelController;
 import Model.Engine;
 import Model.Road;
 import Model.car.Car;
+import View.Messages;
 import View.Utility.EmptyLabel;
+import View.Utility.Localizator;
 import View.Utility.NumberKeyListener;
 
 import javax.swing.*;
@@ -34,10 +36,15 @@ public class CarControlsPanel extends JPanel implements ModelListener{
     private Engine engine;
     private Car previouslySelectedCar;
 
-    public CarControlsPanel(Dimension preferredSize, final TunnelController controller){
+    public CarControlsPanel(Dimension preferredSize, final TunnelController controller, Localizator localizator){
         this.controller=controller;
         this.engine=controller.getEngine();
         controller.registerListener(this);
+        localizator.addLocalizable(title, Messages.CarControlsTitle);
+        localizator.addLocalizable(nextButton, Messages.NextCar);
+        localizator.addLocalizable(previousButton, Messages.PreviousCar);
+        localizator.addLocalizable(speedLabel, Messages.SpeedLabel);
+        localizator.addLocalizable(speedApplyButton, Messages.SpeedApply);
 
         this.add(title);
         this.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.LINE_START);

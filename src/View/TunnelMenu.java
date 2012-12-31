@@ -22,7 +22,7 @@ public class TunnelMenu extends JMenuBar {
     public TunnelMenu(final TunnelView frame, final TunnelController controller, final Localizator localizator){
         this.controller=controller;
         carModelsDialog = new CarModelsDialog(frame, controller, localizator);
-        frame.setParamRecursively(carModelsDialog);
+        frame.setParamRecursively(carModelsDialog, false);
         //File  menu:
         JMenu fileMenu = new JMenu("File");
         this.add(fileMenu);

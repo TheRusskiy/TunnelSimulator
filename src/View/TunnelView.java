@@ -123,32 +123,35 @@ public class TunnelView extends JFrame{
 
         this.setVisible(true);
         controller.askForNotify();
-        setParamRecursively(this);
+        setParamRecursively(this, true);
         this.pack();
     }
 
-    public void setParamRecursively(Container container){
+    public void setParamRecursively(Container container, boolean hotkeyEnabled){
 
 
-        container.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
+        if (hotkeyEnabled){
+            container.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent e) {
 
-            }
+                }
 
-            @Override
-            public void keyPressed(KeyEvent e) {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    if (e.getKeyCode()==KeyEvent.VK_RIGHT) controller.nextCar();
+                    if (e.getKeyCode()==KeyEvent.VK_LEFT) controller.previousCar();
+                    if (e.getKeyCode()==KeyEvent.VK_UP) controller.currentCarSpeedUp();
+                    if (e.getKeyCode()==KeyEvent.VK_DOWN) controller.currentCarSpeedDown();
+                    if (e.getKeyCode()==KeyEvent.VK_SPACE) controller.nextStep();
+                }
 
-            }
+                @Override
+                public void keyReleased(KeyEvent e) {
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode()==KeyEvent.VK_RIGHT) controller.nextCar();
-                if (e.getKeyCode()==KeyEvent.VK_LEFT) controller.previousCar();
-                if (e.getKeyCode()==KeyEvent.VK_UP) controller.currentCarSpeedUp();
-                if (e.getKeyCode()==KeyEvent.VK_DOWN) controller.currentCarSpeedDown();
-            }
-        });
+                }
+            });
+        }
 
 
 
@@ -180,7 +183,7 @@ public class TunnelView extends JFrame{
                 Object o = menuElement.getComponent();
                 if (o instanceof JPopupMenu){
                     JPopupMenu jPopupMenu = (JPopupMenu)menuElement.getComponent();
-                    setParamRecursively(jPopupMenu);
+                    setParamRecursively(jPopupMenu, hotkeyEnabled);
                 }
             }
         }
@@ -199,7 +202,7 @@ public class TunnelView extends JFrame{
         Component[] cs = container.getComponents();
         for(Component c:cs){
             if (Container.class.isAssignableFrom(c.getClass())){
-                setParamRecursively((Container)c);
+                setParamRecursively((Container)c, hotkeyEnabled);
             }
         }
     }

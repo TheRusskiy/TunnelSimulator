@@ -24,7 +24,7 @@ public class Car implements Movable {
     private static boolean acceleration_enabled = false;
     public final static int MINIMUM_SPEED = 0; //METERS!!
     public final static int MINIMUM_ACC_DIVIDER = 1; //METERS!!
-    public final static int MAXIMUM_ACC_DIVIDER = 10; //METERS!!
+    public final static int MAXIMUM_ACC_DIVIDER = 30; //METERS!!
     public static final int CAR_LENGTH = 5;
 
     public Car(CarModel model, int speed){

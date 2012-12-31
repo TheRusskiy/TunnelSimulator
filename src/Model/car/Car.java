@@ -18,9 +18,13 @@ public class Car implements Movable {
     private CarModel model;
     private Road road;
     private int acceleration=1;
+    private static int accelerationDivider=1;
+    private int accelerationAcc=0;
     private int thisCarSpeed;
     private static boolean acceleration_enabled = false;
     public final static int MINIMUM_SPEED = 0; //METERS!!
+    public final static int MINIMUM_ACC_DIVIDER = 1; //METERS!!
+    public final static int MAXIMUM_ACC_DIVIDER = 10; //METERS!!
     public static final int CAR_LENGTH = 5;
 
     public Car(CarModel model, int speed){
@@ -52,6 +56,21 @@ public class Car implements Movable {
        acceleration_enabled=isAccelerationOn;
     }
 
+    public static void setAccelerationDivider(int divider) {
+        if (divider<MINIMUM_ACC_DIVIDER){
+            divider=MINIMUM_ACC_DIVIDER;
+        }
+        if (divider>MAXIMUM_ACC_DIVIDER){
+            divider=MAXIMUM_ACC_DIVIDER;
+        }
+        accelerationDivider = divider;
+
+    }
+
+    public static int getAccelerationDivider(){
+        return accelerationDivider;
+    }
+
     public void setSpeed(int speed) {
         if (speed<MINIMUM_SPEED){
             speed=MINIMUM_SPEED;
@@ -78,7 +97,11 @@ public class Car implements Movable {
         assert road!=null: "Car's road wasn't set!";
         Coordinate oldPosition=position;
         if (acceleration_enabled){
-            speed+=acceleration;
+            accelerationAcc++;
+            if (accelerationAcc==accelerationDivider){
+                speed+=acceleration;
+                accelerationAcc=0;
+            }
         }else {
 
         }

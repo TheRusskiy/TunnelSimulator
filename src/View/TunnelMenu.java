@@ -19,10 +19,10 @@ public class TunnelMenu extends JMenuBar {
     private TunnelController controller;
     private CarModelsDialog carModelsDialog;
 
-    public TunnelMenu(final JFrame frame, final TunnelController controller, final Localizator localizator){
+    public TunnelMenu(final TunnelView frame, final TunnelController controller, final Localizator localizator){
         this.controller=controller;
         carModelsDialog = new CarModelsDialog(frame, controller, localizator);
-        TunnelView.setParamRecursively(carModelsDialog);
+        frame.setParamRecursively(carModelsDialog);
         //File  menu:
         JMenu fileMenu = new JMenu("File");
         this.add(fileMenu);

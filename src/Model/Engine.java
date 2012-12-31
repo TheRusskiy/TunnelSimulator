@@ -149,6 +149,9 @@ public class Engine {
         timeThread.setEnabled(false);
         notifyListenersOfPropertiesChange();
     }
+    public boolean isAutoEnabled(){
+        return timeThread.isEnabled();
+    }
     public void setAutoTickTime(int tickTimeInSeconds){
         timeThread.setTickTimeInMilis(tickTimeInSeconds);
         notifyListenersOfPropertiesChange();
@@ -302,6 +305,11 @@ public class Engine {
             selected.setSpeed(selectedCarSpeed);
         }
         notifyListenersOfDataChange();
+        notifyListenersOfPropertiesChange();
+    }
+
+    public void setAccelerationDivider(int divider) {
+        Car.setAccelerationDivider(divider);
         notifyListenersOfPropertiesChange();
     }
 

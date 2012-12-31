@@ -25,11 +25,12 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
     private JLabel title = new JLabel("Time Controls");
     private JLabel autoDelayLabel = new JLabel("Auto Delay(ms):");
     private JTextField autoDelayTextField = new JTextField();
-    private JButton autoDelayApplyButton = new JButton("Apply auto delay");
+    private JButton autoDelayApplyButton = new JButton("Apply");
     private JButton nextStepButton = new JButton("Next Step");
-    private JLabel autoLabel = new JLabel("Auto simulation:");
-    private JButton autoDelayOnButton = new JButton("On");
-    private JButton autoDelayOffButton = new JButton("Off");
+//    private JLabel autoLabel = new JLabel("Auto simulation:");
+    private JCheckBox autoCheckBox = new JCheckBox("Enable auto simulation");
+//    private JButton autoDelayOnButton = new JButton("On");
+//    private JButton autoDelayOffButton = new JButton("Off");
     private TunnelController controller;
     private Engine engine;
 
@@ -42,19 +43,21 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
         this.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.LINE_START);
         this.add(autoDelayLabel);
         this.add(autoDelayTextField);
-        this.add(autoDelayApplyButton);
         this.add(nextStepButton);
-        this.add(autoLabel);
-        this.add(autoDelayOnButton);
-        this.add(autoDelayOffButton);
+//        this.add(autoLabel);
+//        this.add(autoDelayOnButton);
+//        this.add(autoDelayOffButton);
+        this.add(autoCheckBox);
+        this.add(autoDelayApplyButton);
 
         localizator.addLocalizable(title, Messages.TimeControlsTitle);
         localizator.addLocalizable(autoDelayLabel, Messages.AutoDelayLabel);
         localizator.addLocalizable(autoDelayApplyButton, Messages.AutoDelayApply);
         localizator.addLocalizable(nextStepButton, Messages.NextStepButton);
-        localizator.addLocalizable(autoLabel, Messages.AutoSimulationLabel);
-        localizator.addLocalizable(autoDelayOnButton, Messages.AutoOn);
-        localizator.addLocalizable(autoDelayOffButton, Messages.AutoOff);
+//        localizator.addLocalizable(autoLabel, Messages.AutoSimulationLabel);
+//        localizator.addLocalizable(autoDelayOnButton, Messages.AutoOn);
+//        localizator.addLocalizable(autoDelayOffButton, Messages.AutoOff);
+        localizator.addLocalizable(autoCheckBox, Messages.TimeControlsAutoCheckbox);
 
         BoxLayout layoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layoutManager);
@@ -66,19 +69,19 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
 
         EmptyLabel emptyLabel = new EmptyLabel(this, EmptyLabel.Direction.Y_AXIS);
 
-        autoDelayOnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.autoOn();
-            }
-        });
-
-        autoDelayOffButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.autoOff();
-            }
-        });
+//        autoDelayOnButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                controller.autoOn();
+//            }
+//        });
+//
+//        autoDelayOffButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                controller.autoOff();
+//            }
+//        });
 
         nextStepButton.addActionListener(new ActionListener() {
             @Override
@@ -90,7 +93,9 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
         autoDelayApplyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                boolean buffer =autoCheckBox.isSelected();
                 controller.changeAutoDelay(autoDelayTextField.getText());
+                controller.autoSimulationEnabled(buffer);
             }
         });
 
@@ -106,6 +111,7 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
     @Override
     public void notifyOfPropertiesChange() {
         this.autoDelayTextField.setText("" + engine.getAutoTickTime());
+        this.autoCheckBox.setSelected(engine.isAutoEnabled());
     }
 
     @Override

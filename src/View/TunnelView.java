@@ -10,10 +10,7 @@ import View.Utility.Localizator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -50,7 +47,7 @@ public class TunnelView extends JFrame{
     private Localizator localizator = new Localizator();
 
 
-    public TunnelView(TunnelController controller){
+    public TunnelView(final TunnelController controller){
         super("Tunnel simulator");
         this.controller = controller;
 
@@ -130,7 +127,31 @@ public class TunnelView extends JFrame{
         this.pack();
     }
 
-    public static void setParamRecursively(Container container){
+    public void setParamRecursively(Container container){
+
+
+        container.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode()==KeyEvent.VK_RIGHT) controller.nextCar();
+                if (e.getKeyCode()==KeyEvent.VK_LEFT) controller.previousCar();
+                if (e.getKeyCode()==KeyEvent.VK_UP) controller.currentCarSpeedUp();
+                if (e.getKeyCode()==KeyEvent.VK_DOWN) controller.currentCarSpeedDown();
+            }
+        });
+
+
+
         container.setBackground(Color.BLACK);
         container.setForeground(new Color(236, 125, 0));
         if (container instanceof JButton){

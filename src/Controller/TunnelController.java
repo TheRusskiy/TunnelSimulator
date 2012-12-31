@@ -41,12 +41,13 @@ public class TunnelController {
         return visualPanel.getScale();
     }
 
-    public void autoOn() {
-        engine.enableAuto();
-    }
-
-    public void autoOff() {
-        engine.disableAuto();
+    public void autoSimulationEnabled(boolean isAutoOn) {
+        if (isAutoOn){
+            engine.enableAuto();
+        }
+        else{
+            engine.disableAuto();
+        }
     }
 
     public void nextStep() {
@@ -59,12 +60,15 @@ public class TunnelController {
     }
 
 
-    public void changeStepTimeAndVMaxAndAcceleration(String stepTimeInSeconds, String roadSpeedLimit, boolean isAccelerationOn) {
+    public void changeStepTimeAndVMaxAndAccelerationAndAccDivider(String stepTimeInSeconds, String roadSpeedLimit, boolean isAccelerationOn, String accDivider) {
         int digital=new Integer(stepTimeInSeconds);
         engine.setStepTime(digital);
 
         digital=new Integer(roadSpeedLimit);
         engine.setSpeedLimit(digital);
+
+        digital=new Integer(accDivider);
+        engine.setAccelerationDivider(digital);
 
         engine.setAcceleration(isAccelerationOn);
     }
@@ -80,6 +84,18 @@ public class TunnelController {
     public void changeSelectedCarSpeed(String newSpeed) {
         int digital=new Integer(newSpeed);
         engine.setSelectedCarSpeed(digital);
+    }
+
+    public void currentCarSpeedUp(){
+        int previousSpeed = engine.getSelectedCar().getSpeed();
+        previousSpeed++;
+        engine.setSelectedCarSpeed(previousSpeed);
+    }
+
+    public void currentCarSpeedDown(){
+        int previousSpeed = engine.getSelectedCar().getSpeed();
+        previousSpeed--;
+        engine.setSelectedCarSpeed(previousSpeed);
     }
 
     public void changeRoadLengthAndScale(String roadLength, String roadScale) {

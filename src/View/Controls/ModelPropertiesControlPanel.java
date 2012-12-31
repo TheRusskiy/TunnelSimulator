@@ -31,6 +31,9 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
     private JLabel stepTimeLabel = new JLabel("Step time(sec):");
     private JTextField stepTimeField = new JTextField();
 
+    private JLabel accDividerLabel = new JLabel("Accelerate every(sec):");
+    private JTextField accDividerField = new JTextField();
+
     private JCheckBox accelerationCheckBox = new JCheckBox("Acceleration:");
 
     private JButton applyButton = new JButton("Apply ");
@@ -46,6 +49,7 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
         localizator.addLocalizable(vMaxLabel, Messages.VMaxLabel);
         localizator.addLocalizable(stepTimeLabel, Messages.StepTimeLabel);
         localizator.addLocalizable(applyButton, Messages.ModelPropertiesApply);
+        localizator.addLocalizable(accDividerLabel, Messages.ModelPropertiesAccDividerLabel);
         localizator.addLocalizable(accelerationCheckBox, Messages.ModelPropertiesAcceleration);
 
         this.add(title);
@@ -54,6 +58,8 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
         this.add(vMaxTextField);
         this.add(stepTimeLabel);
         this.add(stepTimeField);
+        this.add(accDividerLabel);
+        this.add(accDividerField);
         this.add(accelerationCheckBox);
         this.add(applyButton);
 
@@ -71,7 +77,7 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.changeStepTimeAndVMaxAndAcceleration(stepTimeField.getText(), vMaxTextField.getText(), accelerationCheckBox.isSelected());
+                controller.changeStepTimeAndVMaxAndAccelerationAndAccDivider(stepTimeField.getText(), vMaxTextField.getText(), accelerationCheckBox.isSelected(), accDividerField.getText());
             }
         });
 
@@ -79,6 +85,7 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
                 Road.MAXIMUM_SPEED_LIMIT);
         NumberKeyFilter.addFilterTo(stepTimeField, Engine.MINIMUM_STEP_TIME,
                 Engine.MAXIMUM_STEP_TIME);
+        NumberKeyFilter.addFilterTo(accDividerField, Car.MINIMUM_ACC_DIVIDER, Car.MAXIMUM_ACC_DIVIDER);
     }
 
     @Override
@@ -90,6 +97,7 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
     public void notifyOfPropertiesChange() {
         this.vMaxTextField.setText(engine.getRoad().getSpeedLimitation()+"");
         this.stepTimeField.setText(engine.getStepTime()+"");
+        this.accDividerField.setText(Car.getAccelerationDivider()+"");
         this.accelerationCheckBox.setSelected(Car.isAccelerationEnabled());
     }
 

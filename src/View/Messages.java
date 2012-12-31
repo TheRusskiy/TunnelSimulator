@@ -32,6 +32,7 @@ public enum Messages {
     ModelPropertiesTitle("Model properties", "Параметры модели"),
     VMaxLabel("Vmax (m/s)", "Vмакс (м/с)"),
     StepTimeLabel("Step time(sec)", "Время шага(сек)"),
+    ModelPropertiesAccDividerLabel("Time to accelerate(sec)", "Время для ускорения(сек)"),
     ModelPropertiesAcceleration("Acceleration", "Ускорение"),
     ModelPropertiesApply("Apply", "Применить"),
 
@@ -42,11 +43,12 @@ public enum Messages {
 
     TimeControlsTitle("Time Controls", "Контроль времени"),
     AutoDelayLabel("Auto delay(ms)", "Задержка(мс)"),
-    AutoDelayApply("Apply auto delay", "Применить"),
+    AutoDelayApply("Apply", "Применить"),
     NextStepButton("Next Step", "Следующий шаг"),
-    AutoSimulationLabel("Auto simulation", "Автосимуляция"),
-    AutoOn("On", "Вкл"),
-    AutoOff("Off", "Выкл"),
+//    TunnelView.AutoSimulationLabel("Auto simulation", "Автосимуляция"),
+//    AutoOn("On", "Вкл"),
+//    AutoOff("Off", "Выкл"),
+    TimeControlsAutoCheckbox("Autosimulation", "Автосимуляция"),
 
     TimePast("Time past(sec):", "Время симуляции(сек):"),
 

@@ -217,7 +217,7 @@ public class CarModelsDialog extends JFrame{
         CarModelsList models = controller.getEngine().getCarGenerator().getModels();
         tableModel.setNumRows(0);
         tableModel.setColumnCount(6);
-        tableModel.setColumnIdentifiers(new String[]{"Name", "Speed", "R", "G", "B", "sda"});
+        tableModel.setColumnIdentifiers(new String[]{"Name", "Speed", "R", "G", "B", "Picture"});
         for(CarModel mer: models){
             tableModel.addRow(new Object[]{
                     mer, //ROW CAR MODEL OBJECT
@@ -282,7 +282,10 @@ public class CarModelsDialog extends JFrame{
     private void saveTo(){
         try {
             String file = getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE}, Messages.SaveCarsDialog.getMessage(), Messages.SaveCarsDialogAccept.getMessage(), this);
-            file=file+"."+CAR_FILE_TYPE;
+            if (!file.contains("."+CAR_FILE_TYPE)){
+                file=file+"."+CAR_FILE_TYPE;
+            }
+
             saveToFile(new File(file), controller.getEngine().getCarGenerator().getModels());
             drawTable();
             this.pack();

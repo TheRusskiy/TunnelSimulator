@@ -71,6 +71,7 @@ public enum Messages {
     CarModelName("Name", "Название"),
     //CarModelNameFiller("", ""),
     CarModelSpeed("Max Speed(m/s)", "Макс. скорость(м/с)"),
+    CarPictureLabel("Picture", "Картинка"),
     //CarModelSPeedFiller("", ""),
     CarModelAdd("Add model", "Добавить модель"),
     CarModelDelete("Delete selected", "Удалить выбранную"),

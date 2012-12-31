@@ -130,7 +130,7 @@ public class TunnelView extends JFrame{
         this.pack();
     }
 
-    private static void setParamRecursively(Container container){
+    public static void setParamRecursively(Container container){
         container.setBackground(Color.BLACK);
         container.setForeground(new Color(236, 125, 0));
         if (container instanceof JButton){

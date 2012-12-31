@@ -25,7 +25,7 @@ public class CarGenerator {
         /*
         it should load models from a file
          */
-        CarModel stubModel = new CarModel(16, "StubCar", new CarIcon(100, 100, 100));
+        CarModel stubModel = new CarModel(10, "StubCar", new CarIcon(100, 100, 100));
         CarModelsList newModelsList = new CarModelsList();
         newModelsList.putModel(stubModel);
         return newModelsList;

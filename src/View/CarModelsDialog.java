@@ -50,6 +50,8 @@ public class CarModelsDialog extends JFrame{
     private JLabel bLabel = new JLabel(" B:");
     private JTextField bField = new JTextField("50");
 
+    private JLabel pictureLabel = new JLabel("Picture:");
+
     private JButton addButton = new JButton("Add car");
 
     private JButton loadButton = new JButton("Load cars");
@@ -76,6 +78,7 @@ public class CarModelsDialog extends JFrame{
         localizator.addLocalizable(loadButton, Messages.CarModelLoad);
         localizator.addLocalizable(saveButton, Messages.CarModelSave);
         localizator.addLocalizable(deleteButton, Messages.CarModelDelete);
+        localizator.addLocalizable(pictureLabel, Messages.CarPictureLabel);
 
 
         parentPanel = new JPanel();
@@ -85,12 +88,13 @@ public class CarModelsDialog extends JFrame{
 
 
         captionsPanel = new JPanel();
-        captionsPanel.setLayout(new GridLayout(1, 5));
+        captionsPanel.setLayout(new GridLayout(1, 6));
         captionsPanel.add(nameLabel);
         captionsPanel.add(speedLabel);
         captionsPanel.add(rLabel);
         captionsPanel.add(gLabel);
         captionsPanel.add(bLabel);
+        captionsPanel.add(pictureLabel);
         parentPanel.add(captionsPanel);
 
 
@@ -105,7 +109,12 @@ public class CarModelsDialog extends JFrame{
 
         };
 
-        jTable = new JTable(tableModel);
+        jTable = new JTable(tableModel){
+            public Class getColumnClass(int column)
+            {
+                return getValueAt(0, column).getClass();
+            }
+        };
         jTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION );
         //dataTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new String[]{"12","23"})));
         jTable.getTableHeader().setReorderingAllowed(false);
@@ -114,41 +123,39 @@ public class CarModelsDialog extends JFrame{
         parentPanel.add(tableScrollPanel);
 
         controlsPanel = new JPanel();
-        controlsPanel.setLayout(new GridLayout(2,5));
+        controlsPanel.setLayout(new GridLayout(2,6));
 
         controlsPanel.add(nameField);
         controlsPanel.add(speedField);
         controlsPanel.add(rField);
         controlsPanel.add(gField);
         controlsPanel.add(bField);
-        controlsPanel.add(addButton);
+        controlsPanel.add(new JLabel());
 
         NumberKeyFilter.addFilterTo(speedField, CarModel.MINIMUM_MODEL_SPEED, CarModel.MAXIMUM_MODEL_SPEED);
         NumberKeyFilter.addFilterTo(rField, 0, 255);
         NumberKeyFilter.addFilterTo(gField, 0, 255);
         NumberKeyFilter.addFilterTo(bField, 0, 255);
 
+        controlsPanel.add(addButton);
         controlsPanel.add(deleteButton);
         controlsPanel.add(new JLabel());
         controlsPanel.add(loadButton);
         controlsPanel.add(saveButton);
+        controlsPanel.add(new JLabel());
 
         parentPanel.add(new JSeparator(JSeparator.VERTICAL), BorderLayout.AFTER_LAST_LINE);
         parentPanel.add(controlsPanel);
 
 
         bottomPanel = new JPanel();
-        bottomPanel.setLayout(new GridLayout(2,5));
-        bottomPanel.add(new JLabel(""));
-        bottomPanel.add(new JLabel(""));
+        bottomPanel.setLayout(new GridLayout(2,3));
         bottomPanel.add(new JLabel(""));
         bottomPanel.add(new JLabel(""));
         bottomPanel.add(new JLabel(""));
 
         bottomPanel.add(new JLabel(""));
-        bottomPanel.add(new JLabel(""));
         bottomPanel.add(hideButton);
-        bottomPanel.add(new JLabel(""));
         bottomPanel.add(new JLabel(""));
         parentPanel.add(bottomPanel);
 
@@ -209,15 +216,16 @@ public class CarModelsDialog extends JFrame{
     private void drawTable(){
         CarModelsList models = controller.getEngine().getCarGenerator().getModels();
         tableModel.setNumRows(0);
-        tableModel.setColumnCount(5);
-        tableModel.setColumnIdentifiers(new String[]{"Name", "Speed", "R", "G", "B"});
+        tableModel.setColumnCount(6);
+        tableModel.setColumnIdentifiers(new String[]{"Name", "Speed", "R", "G", "B", "sda"});
         for(CarModel mer: models){
             tableModel.addRow(new Object[]{
                     mer, //ROW CAR MODEL OBJECT
                     new Integer(mer.getMaxSpeed()).toString(),
                     new Integer(mer.getIcon().getR()).toString(),
                     new Integer(mer.getIcon().getG()).toString(),
-                    new Integer(mer.getIcon().getB()).toString()
+                    new Integer(mer.getIcon().getB()).toString(),
+                    new ImageIcon(mer.getIcon().getImage())
             });
         }
     }

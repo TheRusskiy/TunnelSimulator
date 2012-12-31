@@ -36,7 +36,7 @@ public class CarGenerator {
     }
 
     public Car createCar(){
-        assert models.size()>0 :"Zero models in a list!";
+        if (models.size()==0) return null;
 
         int modelIndex = randomModelGenerator.nextInt(models.size());
         int newCarMaxSpeed = models.get(modelIndex).getMaxSpeed();

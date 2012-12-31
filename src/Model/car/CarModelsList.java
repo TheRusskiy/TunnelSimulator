@@ -15,7 +15,7 @@ import java.util.List;
 public class CarModelsList implements Iterable<CarModel>, Serializable {
     private List<CarModel> carModelList;
     public CarModelsList(List<CarModel> carModels) {
-        assert (carModels.size()!=0): "Car models list was zero sized";
+        assert (carModels!=null): "Car models list constructor was passed null";
         carModelList = carModels;
     }
 

@@ -1,6 +1,5 @@
 package Model.car;
 
-import java.util.LinkedList;
 import java.util.Random;
 
 /**
@@ -11,7 +10,7 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public class CarGenerator {
-    private LinkedList<CarModel> models;
+    private CarModelsList models;
     private Random randomModelGenerator;
     private Random randomSpeedGenerator;
 
@@ -21,23 +20,24 @@ public class CarGenerator {
         randomSpeedGenerator = new Random();
     }
 
-    private LinkedList<CarModel> loadCarModels() {
+    private CarModelsList loadCarModels() {
         //TODO replace this stub
         /*
         it should load models from a file
          */
-        LinkedList<CarModel>  loadedModels = new LinkedList<>();
         CarModel stubModel = new CarModel(16, "StubCar", new CarIcon(100, 100, 100));
-        loadedModels.add(stubModel);
-        return loadedModels;
+        CarModelsList newModelsList = new CarModelsList();
+        newModelsList.putModel(stubModel);
+        return newModelsList;
     }
 
-    public LinkedList<CarModel> getModels() {
+    public CarModelsList getModels() {
         return models;
     }
 
     public Car createCar(){
         assert models.size()>0 :"Zero models in a list!";
+
         int modelIndex = randomModelGenerator.nextInt(models.size());
         int newCarMaxSpeed = models.get(modelIndex).getMaxSpeed();
         int newCarSpeed = randomSpeedGenerator.nextInt(newCarMaxSpeed);

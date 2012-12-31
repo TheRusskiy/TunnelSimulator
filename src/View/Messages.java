@@ -83,6 +83,8 @@ public enum Messages {
     CarsFileDescription("Car models file(.cars)", "Файл с моделями машин(.cars)"),
     CarsLoadExceptionTitle("Loading error", "Ошибка загрузки"),
     CarsLoadExceptionMessage("Can't load models from selected file!", "Невозможно прочесть выбранный файл"),
+    CarsDeleteNoneSelectedDialogTitle("No selected models", "Нет выбранных моделей"),
+    CarsDeleteNoneSelectedDialogMessage("No selected rows, you have to click on a row you want to delete!", "Нет выбранных моделей, необходимо выделить мышью модель, которую вы хотите удалить!"),
     ;
 
 

@@ -1,6 +1,9 @@
 package Controller;
 
 import Model.Engine;
+import Model.car.CarIcon;
+import Model.car.CarModel;
+import Model.car.CarModelsList;
 import View.Controls.VisualPanel;
 
 /**
@@ -109,5 +112,26 @@ public class TunnelController {
     public void changeDeterminedT(String newT) {
         int digital=new Integer(newT);
         engine.getDeterminedCarFlow().setParam_T(digital);
+    }
+    public void addCarModel(String maxSpeed, String name, String r, String g, String b){
+        int maxSpeedInt = new Integer(maxSpeed);
+        if (name.equals("")) name="<NoName>";
+        int rInt = new Integer(r);
+        int gInt = new Integer(g);
+        int bInt = new Integer(b);
+        CarIcon icon = new CarIcon(rInt, gInt, bInt);
+        CarModel model = new CarModel(maxSpeedInt, name, icon);
+        CarModelsList models = engine.getCarGenerator().getModels();
+        models.putModel(model);
+    }
+
+    public void replaceCarModels(CarModelsList newModels){
+        CarModelsList oldModels = engine.getCarGenerator().getModels();
+        oldModels.replaceModels(newModels);
+    }
+
+    public void deleteModel(CarModel model){
+        CarModelsList models = engine.getCarGenerator().getModels();
+        models.remove(model);
     }
 }

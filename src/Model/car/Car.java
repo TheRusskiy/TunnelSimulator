@@ -21,6 +21,9 @@ public class Car implements Movable {
     public static final int CAR_LENGTH = 5;
 
     public Car(CarModel model, int speed){
+        if (speed<MINIMUM_SPEED){
+            speed=MINIMUM_SPEED;
+        }
         this.model=model;
         this.speed=speed;
     }

@@ -40,4 +40,8 @@ public class CarModel implements Serializable {
     public CarIcon getIcon() {
         return icon;
     }
+
+    public String toString(){
+        return this.name;
+    }
 }

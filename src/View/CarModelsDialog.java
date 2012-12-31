@@ -1,8 +1,8 @@
 package View;
 
 import Controller.TunnelController;
-import Model.car.CarIcon;
 import Model.car.CarModel;
+import Model.car.CarModelsList;
 import View.Utility.Localizator;
 import View.Utility.NumberKeyFilter;
 
@@ -13,7 +13,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.LinkedList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +28,7 @@ public class CarModelsDialog extends JFrame{
     private JFrame parentFrame;
     private JPanel parentPanel;
 
+    private JPanel captionsPanel;
     private JPanel tablePanel;
     private JTable jTable;
     private JPanel controlsPanel;
@@ -83,6 +83,17 @@ public class CarModelsDialog extends JFrame{
         this.setContentPane(parentPanel);
         this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
+
+        captionsPanel = new JPanel();
+        captionsPanel.setLayout(new GridLayout(1, 5));
+        captionsPanel.add(nameLabel);
+        captionsPanel.add(speedLabel);
+        captionsPanel.add(rLabel);
+        captionsPanel.add(gLabel);
+        captionsPanel.add(bLabel);
+        parentPanel.add(captionsPanel);
+
+
         tablePanel = new JPanel();
         tablePanel.setLayout(new GridLayout(1, 1));
 
@@ -103,13 +114,8 @@ public class CarModelsDialog extends JFrame{
         parentPanel.add(tableScrollPanel);
 
         controlsPanel = new JPanel();
-        controlsPanel.setLayout(new GridLayout(3,5));
+        controlsPanel.setLayout(new GridLayout(2,5));
 
-        controlsPanel.add(nameLabel);
-        controlsPanel.add(speedLabel);
-        controlsPanel.add(rLabel);
-        controlsPanel.add(gLabel);
-        controlsPanel.add(bLabel);
         controlsPanel.add(nameField);
         controlsPanel.add(speedField);
         controlsPanel.add(rField);
@@ -127,8 +133,8 @@ public class CarModelsDialog extends JFrame{
         controlsPanel.add(loadButton);
         controlsPanel.add(saveButton);
 
+        parentPanel.add(new JSeparator(JSeparator.VERTICAL), BorderLayout.AFTER_LAST_LINE);
         parentPanel.add(controlsPanel);
-
 
 
         bottomPanel = new JPanel();
@@ -190,7 +196,7 @@ public class CarModelsDialog extends JFrame{
 
     public void showDialog(){
         //parentFrame.disable();
-        drawTable(controller.getEngine().getCarGenerator().getModels());
+        drawTable();
         this.pack();
         this.setVisible(true);
     }
@@ -200,12 +206,14 @@ public class CarModelsDialog extends JFrame{
         this.setVisible(false);
     }
 
-    private void drawTable(java.util.List<CarModel> models){
+    private void drawTable(){
+        CarModelsList models = controller.getEngine().getCarGenerator().getModels();
         tableModel.setNumRows(0);
+        tableModel.setColumnCount(5);
         tableModel.setColumnIdentifiers(new String[]{"Name", "Speed", "R", "G", "B"});
         for(CarModel mer: models){
-            tableModel.addRow(new String[]{
-                    mer.getName().toString(),
+            tableModel.addRow(new Object[]{
+                    mer, //ROW CAR MODEL OBJECT
                     new Integer(mer.getMaxSpeed()).toString(),
                     new Integer(mer.getIcon().getR()).toString(),
                     new Integer(mer.getIcon().getG()).toString(),
@@ -214,15 +222,13 @@ public class CarModelsDialog extends JFrame{
         }
     }
     private void addCar(){
-        int speed = new Integer(speedField.getText());
-        int r = new Integer(rField.getText());
-        int g = new Integer(gField.getText());
-        int b = new Integer(bField.getText());
-        CarIcon icon = new CarIcon(r, g, b);
-        CarModel model = new CarModel(speed, nameField.getText(), icon);
-
-        controller.getEngine().getCarGenerator().getModels().add(model);
-        drawTable(controller.getEngine().getCarGenerator().getModels());
+        controller.addCarModel(speedField.getText(),
+                nameField.getText(),
+                rField.getText(),
+                gField.getText(),
+                bField.getText()
+                );
+        drawTable();
         this.pack();
     }
 
@@ -270,7 +276,7 @@ public class CarModelsDialog extends JFrame{
             String file = getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE}, Messages.SaveCarsDialog.getMessage(), Messages.SaveCarsDialogAccept.getMessage(), this);
             file=file+"."+CAR_FILE_TYPE;
             saveToFile(new File(file), controller.getEngine().getCarGenerator().getModels());
-            drawTable(controller.getEngine().getCarGenerator().getModels());
+            drawTable();
             this.pack();
         } catch (Exception e) {
             e.printStackTrace();
@@ -280,17 +286,16 @@ public class CarModelsDialog extends JFrame{
     private void loadFrom(){
         try {
             String file = getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE},  Messages.LoadCarsDialog.getMessage(),  Messages.LoadCarsDialogAccept.getMessage(), this);
-            LinkedList<CarModel> newModels = loadObjectFromFile(new File(file));
-            LinkedList<CarModel> oldModels= controller.getEngine().getCarGenerator().getModels();
-            oldModels.clear();
-            oldModels.addAll(newModels);
-            drawTable(controller.getEngine().getCarGenerator().getModels());
+            CarModelsList newModels = loadObjectFromFile(new File(file));
+            controller.replaceCarModels(newModels);
+            drawTable();
             this.pack();
 
         }catch (DialogAbortedException e){
             //NOTHING TO DO HERE :-)
         }
         catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(this,
                     Messages.CarsLoadExceptionMessage.getMessage(),
                     Messages.CarsLoadExceptionTitle.getMessage(),
@@ -299,8 +304,18 @@ public class CarModelsDialog extends JFrame{
     }
 
     private void deleteSelected(){
-        //todo implement
-         assert false: "implement";
+        int selectedRow = jTable.getSelectedRow();
+        if (selectedRow==-1){
+            JOptionPane.showMessageDialog(this,
+                    Messages.CarsDeleteNoneSelectedDialogMessage.getMessage(),
+                    Messages.CarsDeleteNoneSelectedDialogTitle.getMessage(),
+                    JOptionPane.ERROR_MESSAGE);
+        }else{
+            CarModel selectedModel = (CarModel)tableModel.getValueAt(selectedRow, 0);
+            controller.deleteModel(selectedModel);
+            drawTable();
+            this.pack();
+        }
     }
 
     private static class DialogAbortedException extends Exception{

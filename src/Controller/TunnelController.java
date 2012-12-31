@@ -144,8 +144,7 @@ public class TunnelController {
     }
 
     public void replaceCarModels(CarModelsList newModels){
-        CarModelsList oldModels = engine.getCarGenerator().getModels();
-        oldModels.replaceModels(newModels);
+        engine.replaceCarModels(newModels);
     }
 
     public void deleteModel(CarModel model){

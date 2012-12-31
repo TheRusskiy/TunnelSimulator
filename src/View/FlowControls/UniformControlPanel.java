@@ -89,6 +89,8 @@ public class UniformControlPanel extends JPanel implements ModelListener {
         else{
             this.setVisible(false);
         }
-
+    }
+    @Override
+    public void notifyOfCarModelsChange() {
     }
 }

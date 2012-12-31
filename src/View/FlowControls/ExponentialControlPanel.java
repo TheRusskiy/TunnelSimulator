@@ -95,4 +95,7 @@ public class ExponentialControlPanel extends JPanel implements ModelListener {
             this.setVisible(false);
         }
     }
+    @Override
+    public void notifyOfCarModelsChange() {
+    }
 }

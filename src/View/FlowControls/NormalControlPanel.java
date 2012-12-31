@@ -101,4 +101,7 @@ public class NormalControlPanel extends JPanel implements ModelListener {
         }
 
     }
+    @Override
+    public void notifyOfCarModelsChange() {
+    }
 }

@@ -12,4 +12,5 @@ public interface ModelListener {
     public void notifyOfPropertiesChange();
     public void notifyOfStructureChange();
     public void notifyOfFlowChange();
+    public void notifyOfCarModelsChange();
 }

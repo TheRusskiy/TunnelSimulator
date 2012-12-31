@@ -1,5 +1,6 @@
 package View;
 
+import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.car.CarModel;
 import Model.car.CarModelsList;
@@ -7,12 +8,10 @@ import View.Utility.Localizator;
 import View.Utility.NumberKeyFilter;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,9 +20,9 @@ import java.io.*;
  * Time: 6:55
  * To change this template use File | Settings | File Templates.
  */
-public class CarModelsDialog extends JFrame{
+public class CarModelsDialog extends JFrame implements ModelListener{
 
-    private final String CAR_FILE_TYPE = "cars";
+
     private JButton hideButton = new JButton("OK");
     private JFrame parentFrame;
     private JPanel parentPanel;
@@ -54,9 +53,9 @@ public class CarModelsDialog extends JFrame{
 
     private JButton addButton = new JButton("Add car");
 
-    private JButton loadButton = new JButton("Load cars");
-
-    private JButton saveButton = new JButton("Save cars");
+//    private JButton loadButton = new JButton("Load cars");
+//
+//    private JButton saveButton = new JButton("Save cars");
 
     private JButton deleteButton = new JButton("Delete cars");
 
@@ -72,11 +71,8 @@ public class CarModelsDialog extends JFrame{
         this.controller=controller;
         this.localizator=localizator;
         localizator.addLocalizable(nameLabel, Messages.CarModelName);
-//        localizator.addLocalizable(nameField, Messages.CarModelNameFiller);
         localizator.addLocalizable(speedLabel, Messages.CarModelSpeed);
         localizator.addLocalizable(addButton, Messages.CarModelAdd);
-        localizator.addLocalizable(loadButton, Messages.CarModelLoad);
-        localizator.addLocalizable(saveButton, Messages.CarModelSave);
         localizator.addLocalizable(deleteButton, Messages.CarModelDelete);
         localizator.addLocalizable(pictureLabel, Messages.CarPictureLabel);
 
@@ -116,7 +112,6 @@ public class CarModelsDialog extends JFrame{
             }
         };
         jTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION );
-        //dataTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new String[]{"12","23"})));
         jTable.getTableHeader().setReorderingAllowed(false);
         tablePanel.add(jTable);
         JScrollPane tableScrollPanel=new JScrollPane(tablePanel);
@@ -130,33 +125,35 @@ public class CarModelsDialog extends JFrame{
         controlsPanel.add(rField);
         controlsPanel.add(gField);
         controlsPanel.add(bField);
-        controlsPanel.add(new JLabel());
+        controlsPanel.add(addButton);
 
         NumberKeyFilter.addFilterTo(speedField, CarModel.MINIMUM_MODEL_SPEED, CarModel.MAXIMUM_MODEL_SPEED);
         NumberKeyFilter.addFilterTo(rField, 0, 255);
         NumberKeyFilter.addFilterTo(gField, 0, 255);
         NumberKeyFilter.addFilterTo(bField, 0, 255);
 
-        controlsPanel.add(addButton);
+        controlsPanel.add(new JLabel());
+        controlsPanel.add(new JLabel());
+        controlsPanel.add(new JLabel());
+        controlsPanel.add(new JLabel());
+        controlsPanel.add(new JLabel());
         controlsPanel.add(deleteButton);
-        controlsPanel.add(new JLabel());
-        controlsPanel.add(loadButton);
-        controlsPanel.add(saveButton);
-        controlsPanel.add(new JLabel());
 
         parentPanel.add(new JSeparator(JSeparator.VERTICAL), BorderLayout.AFTER_LAST_LINE);
         parentPanel.add(controlsPanel);
 
 
         bottomPanel = new JPanel();
-        bottomPanel.setLayout(new GridLayout(2,3));
-        bottomPanel.add(new JLabel(""));
-        bottomPanel.add(new JLabel(""));
-        bottomPanel.add(new JLabel(""));
+        bottomPanel.setLayout(new GridLayout(1,3));
 
         bottomPanel.add(new JLabel(""));
         bottomPanel.add(hideButton);
         bottomPanel.add(new JLabel(""));
+        Dimension bottomPanelDimension = new Dimension(
+                bottomPanel.getPreferredSize().width*2,
+                bottomPanel.getPreferredSize().height*2
+        );
+        bottomPanel.setPreferredSize(bottomPanelDimension);
         parentPanel.add(bottomPanel);
 
 
@@ -179,25 +176,14 @@ public class CarModelsDialog extends JFrame{
                 addCar();
             }
         });
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveTo();
-            }
-        });
-        loadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loadFrom();
-            }
-        });
+
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 deleteSelected();
             }
         });
-
+        controller.registerListener(this);
         this.pack();
     }
 
@@ -240,79 +226,7 @@ public class CarModelsDialog extends JFrame{
         this.pack();
     }
 
-    private static <ObjectType> void saveToFile(File fileName, ObjectType objectToSave) throws IOException {
-        File file=new File(fileName.getPath());
-        file.getParentFile().mkdirs();
-        file.createNewFile();
-        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));){
-            oos.writeObject(objectToSave);
-        }
-    }
 
-    private static <ObjectType> ObjectType loadObjectFromFile(File file) throws IOException, ClassNotFoundException {
-        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))){
-            return (ObjectType)ois.readObject();
-        }
-    }
-
-
-    private static String getFileName(String typeDescription, String[] fileTypes,
-                                      String dialogTitle, String approveButton, JFrame frame)
-            throws Exception  {
-        String fileName ="";
-        JFileChooser fc = new JFileChooser();
-        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        if (typeDescription!=null)
-        {
-            FileNameExtensionFilter filter = new FileNameExtensionFilter( typeDescription, fileTypes);
-            fc.setFileFilter(filter);
-        }
-        fc.setApproveButtonText(approveButton);
-        fc.setDialogTitle(dialogTitle);
-        int returnVal = fc.showOpenDialog(frame);
-        if(returnVal == JFileChooser.APPROVE_OPTION)
-        {
-            fileName = fc.getSelectedFile().getAbsolutePath();
-        }
-        if (fileName.equals("")) throw new DialogAbortedException("Open File Dialog exception, try again!");
-        return fileName;
-    }
-
-
-    private void saveTo(){
-        try {
-            String file = getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE}, Messages.SaveCarsDialog.getMessage(), Messages.SaveCarsDialogAccept.getMessage(), this);
-            if (!file.contains("."+CAR_FILE_TYPE)){
-                file=file+"."+CAR_FILE_TYPE;
-            }
-
-            saveToFile(new File(file), controller.getEngine().getCarGenerator().getModels());
-            drawTable();
-            this.pack();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadFrom(){
-        try {
-            String file = getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE},  Messages.LoadCarsDialog.getMessage(),  Messages.LoadCarsDialogAccept.getMessage(), this);
-            CarModelsList newModels = loadObjectFromFile(new File(file));
-            controller.replaceCarModels(newModels);
-            drawTable();
-            this.pack();
-
-        }catch (DialogAbortedException e){
-            //NOTHING TO DO HERE :-)
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this,
-                    Messages.CarsLoadExceptionMessage.getMessage(),
-                    Messages.CarsLoadExceptionTitle.getMessage(),
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    }
 
     private void deleteSelected(){
         int selectedRow = jTable.getSelectedRow();
@@ -329,15 +243,30 @@ public class CarModelsDialog extends JFrame{
         }
     }
 
-    private static class DialogAbortedException extends Exception{
-        public DialogAbortedException() {
-            super();
-        }
 
-        public DialogAbortedException(String message) {
-            super(message);
-        }
+    @Override
+    public void notifyOfDataChange() {
+
     }
 
+    @Override
+    public void notifyOfPropertiesChange() {
 
+    }
+
+    @Override
+    public void notifyOfStructureChange() {
+
+    }
+
+    @Override
+    public void notifyOfFlowChange() {
+
+    }
+
+    @Override
+    public void notifyOfCarModelsChange() {
+        drawTable();
+        this.pack();
+    }
 }

@@ -229,4 +229,7 @@ public class VisualPanel extends JPanel implements ModelListener {
     @Override
     public void notifyOfFlowChange() {
     }
+    @Override
+    public void notifyOfCarModelsChange() {
+    }
 }

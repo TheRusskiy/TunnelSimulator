@@ -95,4 +95,7 @@ public class RoadPropertiesControlPanel extends JPanel implements ModelListener 
     @Override
     public void notifyOfFlowChange() {
     }
+    @Override
+    public void notifyOfCarModelsChange() {
+    }
 }

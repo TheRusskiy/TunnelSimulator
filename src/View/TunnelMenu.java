@@ -2,11 +2,14 @@ package View;
 
 import Controller.TunnelController;
 import Model.Engine;
+import Model.car.CarModelsList;
 import View.Utility.Localizator;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,9 +21,12 @@ import java.awt.event.ActionListener;
 public class TunnelMenu extends JMenuBar {
     private TunnelController controller;
     private CarModelsDialog carModelsDialog;
+    private final String CAR_FILE_TYPE = "cars";
+    private TunnelView frame;
 
     public TunnelMenu(final TunnelView frame, final TunnelController controller, final Localizator localizator){
         this.controller=controller;
+        this.frame=frame;
         carModelsDialog = new CarModelsDialog(frame, controller, localizator);
         frame.setParamRecursively(carModelsDialog, false);
         //File  menu:
@@ -41,6 +47,13 @@ public class TunnelMenu extends JMenuBar {
         JMenuItem showCarsItem = new JMenuItem("Show cars");
         carMenu.add(showCarsItem);
         localizator.addLocalizable(showCarsItem, Messages.ShowCars);
+
+        JMenuItem loadCarsMenuItem = new JMenuItem("Show cars");
+        carMenu.add(loadCarsMenuItem);
+        localizator.addLocalizable(loadCarsMenuItem, Messages.CarModelLoad);
+        JMenuItem saveCarsMenuItem = new JMenuItem("Show cars");
+        carMenu.add(saveCarsMenuItem);
+        localizator.addLocalizable(saveCarsMenuItem, Messages.CarModelSave);
 
         //Car  flow:
         JMenu flowMenu = new JMenu("Car flow");
@@ -123,6 +136,19 @@ public class TunnelMenu extends JMenuBar {
             }
         });
 
+        saveCarsMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveTo();
+            }
+        });
+
+        loadCarsMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadFrom();
+            }
+        });
 
 
         exitFileItem.addActionListener(new ActionListener() {
@@ -131,7 +157,6 @@ public class TunnelMenu extends JMenuBar {
                 System.exit(0);
             }
         });
-
 
 
 
@@ -173,4 +198,85 @@ public class TunnelMenu extends JMenuBar {
         }
         return lookAndFeelMenu;
     }
+
+    private static <ObjectType> void saveToFile(File fileName, ObjectType objectToSave) throws IOException {
+        File file=new File(fileName.getPath());
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));){
+            oos.writeObject(objectToSave);
+        }
+    }
+
+    private static <ObjectType> ObjectType loadObjectFromFile(File file) throws IOException, ClassNotFoundException {
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))){
+            return (ObjectType)ois.readObject();
+        }
+    }
+
+
+    private static String getFileName(String typeDescription, String[] fileTypes,
+                                      String dialogTitle, String approveButton, JFrame frame)
+            throws Exception  {
+        String fileName ="";
+        JFileChooser fc = new JFileChooser();
+        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        if (typeDescription!=null)
+        {
+            FileNameExtensionFilter filter = new FileNameExtensionFilter( typeDescription, fileTypes);
+            fc.setFileFilter(filter);
+        }
+        fc.setApproveButtonText(approveButton);
+        fc.setDialogTitle(dialogTitle);
+        int returnVal = fc.showOpenDialog(frame);
+        if(returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            fileName = fc.getSelectedFile().getAbsolutePath();
+        }
+        if (fileName.equals("")) throw new DialogAbortedException("Open File Dialog exception, try again!");
+        return fileName;
+    }
+
+
+    private void saveTo(){
+        try {
+            String file = getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE}, Messages.SaveCarsDialog.getMessage(), Messages.SaveCarsDialogAccept.getMessage(), frame);
+            if (!file.contains("."+CAR_FILE_TYPE)){
+                file=file+"."+CAR_FILE_TYPE;
+            }
+
+            saveToFile(new File(file), controller.getEngine().getCarGenerator().getModels());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFrom(){
+        try {
+            String file = getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE},  Messages.LoadCarsDialog.getMessage(),  Messages.LoadCarsDialogAccept.getMessage(), frame);
+            CarModelsList newModels = loadObjectFromFile(new File(file));
+            controller.replaceCarModels(newModels);
+
+        }catch (DialogAbortedException e){
+            //NOTHING TO DO HERE :-)
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    Messages.CarsLoadExceptionMessage.getMessage(),
+                    Messages.CarsLoadExceptionTitle.getMessage(),
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private static class DialogAbortedException extends Exception{
+        public DialogAbortedException() {
+            super();
+        }
+
+        public DialogAbortedException(String message) {
+            super(message);
+        }
+    }
+
 }

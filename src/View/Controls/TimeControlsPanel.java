@@ -122,4 +122,7 @@ public class TimeControlsPanel extends JPanel implements ModelListener {
     @Override
     public void notifyOfFlowChange() {
     }
+    @Override
+    public void notifyOfCarModelsChange() {
+    }
 }

@@ -3,6 +3,7 @@ package Model;
 import Controller.ModelListener;
 import Model.car.Car;
 import Model.car.CarGenerator;
+import Model.car.CarModelsList;
 import Model.carflow.*;
 
 import java.util.LinkedHashSet;
@@ -67,6 +68,12 @@ public class Engine {
         }
         this.stepTime = stepTime;
         notifyListenersOfPropertiesChange();
+    }
+
+    public void replaceCarModels(CarModelsList newModels){
+        CarModelsList oldModels = getCarGenerator().getModels();
+        oldModels.replaceModels(newModels);
+        notifyListenersOfCarModelsChange();
     }
 
     public void setSpeedLimit(int speedLimit) {
@@ -292,10 +299,17 @@ public class Engine {
         }
     }
 
+    public void notifyListenersOfCarModelsChange(){
+        for(ModelListener listener: listeners){
+            listener.notifyOfCarModelsChange();
+        }
+    }
+
     public void notifyAllListeners(){
         notifyListenersOfDataChange();
         notifyListenersOfPropertiesChange();
         notifyListenersOfStructureChange();
+        notifyListenersOfCarModelsChange();
         notifyListenersOfFlowChange();
     }
 

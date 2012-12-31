@@ -13,6 +13,8 @@ public enum Messages {
     File("File", "Файл"),
     Cars("Cars","Машины"),
     ShowCars("Show car models","Показать модели"),
+    CarModelLoad("Load models", "Загрузить модели"),
+    CarModelSave("Save models", "Сохранить модели"),
     CarFlow("Car Flow","Поток машин"),
     NormalFlow("Normal","Нормальный"),
     ExponentialFlow("Exponential","Показательный"),
@@ -77,8 +79,6 @@ public enum Messages {
     //CarModelSPeedFiller("", ""),
     CarModelAdd("Add model", "Добавить модель"),
     CarModelDelete("Delete selected", "Удалить выбранную"),
-    CarModelLoad("Load models", "Загрузить модели"),
-    CarModelSave("Save models", "Сохранить модели"),
 
     SaveCarsDialog("Save car models", "Сохранить модели в файл"),
     SaveCarsDialogAccept("Save", "Сохранить"),

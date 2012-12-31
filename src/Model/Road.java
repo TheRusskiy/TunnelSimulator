@@ -156,4 +156,14 @@ public class Road {
     public int getRoadLength() {
         return coordinates.length;
     }
+
+    public static int getDistanceBetween(Coordinate coordinate_1, Coordinate coordinate_2){
+        if (coordinate_1==null || coordinate_2==null){
+            assert false: "can't compare zero coordinates!";
+            return 0;
+        }
+        else{
+            return Math.abs(coordinate_1.getXAxis()-coordinate_2.getXAxis());
+        }
+    }
 }

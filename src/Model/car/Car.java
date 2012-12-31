@@ -17,6 +17,9 @@ public class Car implements Movable {
     private int speed;
     private CarModel model;
     private Road road;
+    private int acceleration=1;
+    private int thisCarSpeed;
+    private static boolean acceleration_enabled = false;
     public final static int MINIMUM_SPEED = 0; //METERS!!
     public static final int CAR_LENGTH = 5;
 
@@ -26,6 +29,7 @@ public class Car implements Movable {
         }
         this.model=model;
         this.speed=speed;
+        thisCarSpeed=model.getMaxSpeed();
     }
 
     public void setPosition(Coordinate position) {
@@ -40,12 +44,26 @@ public class Car implements Movable {
         return speed;
     }
 
+    public static boolean isAccelerationEnabled() {
+        return acceleration_enabled;
+    }
+
+    public static void setAcceleration(boolean isAccelerationOn){
+       acceleration_enabled=isAccelerationOn;
+    }
+
     public void setSpeed(int speed) {
         if (speed<MINIMUM_SPEED){
             speed=MINIMUM_SPEED;
         }
-        if (speed>model.getMaxSpeed()){
-            speed=model.getMaxSpeed();
+//        if (speed>model.getMaxSpeed()){
+//            speed=model.getMaxSpeed();
+//        }
+        if (speed>CarModel.MAXIMUM_MODEL_SPEED){
+            speed=CarModel.MAXIMUM_MODEL_SPEED;
+        }
+        if (speed>thisCarSpeed){
+            thisCarSpeed=speed;
         }
         this.speed = speed;
     }
@@ -58,11 +76,22 @@ public class Car implements Movable {
     public boolean move(int time) {
         assert position!=null: "Car coordinate wasn't set!";
         assert road!=null: "Car's road wasn't set!";
-        if (speed>road.getSpeedLimitation()) speed=road.getSpeedLimitation();
+        Coordinate oldPosition=position;
+        if (acceleration_enabled){
+            speed+=acceleration;
+        }else {
+
+        }
+//        int limiter=Math.min(road.getSpeedLimitation(), model.getMaxSpeed());
+        int limiter=Math.min(road.getSpeedLimitation(), thisCarSpeed);
+        if (speed>limiter) speed=limiter;
         int wantsToDrive = speed*time;
         position=road.moveBy(position, wantsToDrive, CAR_LENGTH);
         if (position==null){
             return false;  //REACHED END OF TUNNEL
+        }
+        if (acceleration_enabled){
+            speed = road.getDistanceBetween(oldPosition, position)/time;
         }
         return true;
     }

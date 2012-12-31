@@ -46,6 +46,9 @@ public class Localizator {
     public void addLocalizable(JFrame field, Messages message){
         localizables.add(new Localizable(field, message));
     }
+    public void addLocalizable(JCheckBox field, Messages message){
+        localizables.add(new Localizable(field, message));
+    }
 
 
     private class Localizable{
@@ -55,6 +58,7 @@ public class Localizator {
         JMenuItem jMenuItem;
         JButton jButton;
         JFrame jFrame;
+        JCheckBox jCheckBox;
 
         Messages message;
 
@@ -82,6 +86,10 @@ public class Localizator {
             this.jFrame=field;
             this.message=message;
         }
+        public Localizable(JCheckBox field, Messages message){
+            this.jCheckBox=field;
+            this.message=message;
+        }
 
         public void refreshText(){
             if (jLabel !=null){
@@ -106,6 +114,10 @@ public class Localizator {
             }
             if (jFrame!=null){
                 jFrame.setTitle(message.getMessage());
+                return;
+            }
+            if (jCheckBox!=null){
+                jCheckBox.setText(message.getMessage());
                 return;
             }
         }

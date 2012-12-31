@@ -59,12 +59,14 @@ public class TunnelController {
     }
 
 
-    public void changeStepTimeAndVMax(String stepTimeInSeconds, String roadSpeedLimit) {
+    public void changeStepTimeAndVMaxAndAcceleration(String stepTimeInSeconds, String roadSpeedLimit, boolean isAccelerationOn) {
         int digital=new Integer(stepTimeInSeconds);
         engine.setStepTime(digital);
 
         digital=new Integer(roadSpeedLimit);
         engine.setSpeedLimit(digital);
+
+        engine.setAcceleration(isAccelerationOn);
     }
 
     public void previousCar() {

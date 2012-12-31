@@ -32,6 +32,7 @@ public enum Messages {
     ModelPropertiesTitle("Model properties", "Параметры модели"),
     VMaxLabel("Vmax (m/s)", "Vмакс (м/с)"),
     StepTimeLabel("Step time(sec)", "Время шага(сек)"),
+    ModelPropertiesAcceleration("Acceleration", "Ускорение"),
     ModelPropertiesApply("Apply", "Применить"),
 
     RoadPropertiesTitle("Road Properties", "Параметры дороги"),

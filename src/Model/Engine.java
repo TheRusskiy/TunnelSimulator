@@ -305,6 +305,11 @@ public class Engine {
         notifyListenersOfPropertiesChange();
     }
 
+    public void setAcceleration(boolean isAccelerationOn){
+        Car.setAcceleration(isAccelerationOn);
+        notifyListenersOfPropertiesChange();
+    }
+
     public void setRoadLength(int newRoadLength) {
         timePast=0;
         road = new Road(road.getSpeedLimitation(), newRoadLength);

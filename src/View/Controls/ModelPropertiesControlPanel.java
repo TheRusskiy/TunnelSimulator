@@ -4,6 +4,7 @@ import Controller.ModelListener;
 import Controller.TunnelController;
 import Model.Engine;
 import Model.Road;
+import Model.car.Car;
 import View.Messages;
 import View.Utility.EmptyLabel;
 import View.Utility.Localizator;
@@ -30,6 +31,8 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
     private JLabel stepTimeLabel = new JLabel("Step time(sec):");
     private JTextField stepTimeField = new JTextField();
 
+    private JCheckBox accelerationCheckBox = new JCheckBox("Acceleration:");
+
     private JButton applyButton = new JButton("Apply ");
     private JLabel emptyLabel = new JLabel();
     private TunnelController controller;
@@ -43,6 +46,7 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
         localizator.addLocalizable(vMaxLabel, Messages.VMaxLabel);
         localizator.addLocalizable(stepTimeLabel, Messages.StepTimeLabel);
         localizator.addLocalizable(applyButton, Messages.ModelPropertiesApply);
+        localizator.addLocalizable(accelerationCheckBox, Messages.ModelPropertiesAcceleration);
 
         this.add(title);
         this.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.LINE_START);
@@ -50,6 +54,7 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
         this.add(vMaxTextField);
         this.add(stepTimeLabel);
         this.add(stepTimeField);
+        this.add(accelerationCheckBox);
         this.add(applyButton);
 
 
@@ -66,7 +71,7 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.changeStepTimeAndVMax(stepTimeField.getText(), vMaxTextField.getText());
+                controller.changeStepTimeAndVMaxAndAcceleration(stepTimeField.getText(), vMaxTextField.getText(), accelerationCheckBox.isSelected());
             }
         });
 
@@ -85,6 +90,7 @@ public class ModelPropertiesControlPanel extends JPanel implements ModelListener
     public void notifyOfPropertiesChange() {
         this.vMaxTextField.setText(engine.getRoad().getSpeedLimitation()+"");
         this.stepTimeField.setText(engine.getStepTime()+"");
+        this.accelerationCheckBox.setSelected(Car.isAccelerationEnabled());
     }
 
     @Override

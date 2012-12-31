@@ -24,8 +24,8 @@ public enum Messages {
     Exit("Exit", "Выход"),
 
     CarControlsTitle("Car Controls", "Ручное управление"),
-    NextCar("Next Car", "Следующая машина"),
-    PreviousCar("Previous Car", "Предыдущая машина"),
+    NextCar("Next Car", "Следующая"),
+    PreviousCar("Previous Car", "Предыдущая"),
     SpeedLabel("Speed", "Скорость"),
     SpeedApply("Apply Speed", "Применить"),
 

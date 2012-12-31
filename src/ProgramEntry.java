@@ -16,7 +16,8 @@ public class ProgramEntry {
         SplashScreen mySplash =SplashScreen.getSplashScreen();
         try
         {
-            Thread.sleep(6000);
+            //FIXME 6000
+            Thread.sleep(0);
         }
         catch (InterruptedException ex)
         {}

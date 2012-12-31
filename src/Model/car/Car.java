@@ -18,7 +18,7 @@ public class Car implements Movable {
     private CarModel model;
     private Road road;
     private int acceleration=1;
-    private static int accelerationDivider=1;
+    private static int accelerationDivider=10;
     private int accelerationAcc=0;
     private int thisCarSpeed;
     private static boolean acceleration_enabled = false;

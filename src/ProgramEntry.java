@@ -23,7 +23,7 @@ public class ProgramEntry {
         {}
 
         Engine engine = new Engine();
-        engine.enableAuto();
+//        engine.enableAuto();
 
         TunnelController controller = new TunnelController(engine);
 

@@ -25,6 +25,7 @@ public class ExponentialControlPanel extends JPanel implements ModelListener {
     private JLabel title = new JLabel("Exponential flow controls");
     private JLabel param_T_label = new JLabel("T:");
     private JLabel param_lambda_label = new JLabel("Lambda:");
+    private JLabel param_lambda_value_label = new JLabel("iokjofdho");
     private JTextField param_T_TextField = new JTextField();
     private JButton applyButton = new JButton("Apply");
     private TunnelController controller;
@@ -38,6 +39,7 @@ public class ExponentialControlPanel extends JPanel implements ModelListener {
         this.add(title);
         this.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.LINE_START);
         this.add(param_lambda_label);
+        this.add(param_lambda_value_label);
         this.add(param_T_label);
         this.add(param_T_TextField);
         this.add(applyButton);
@@ -87,7 +89,7 @@ public class ExponentialControlPanel extends JPanel implements ModelListener {
     @Override
     public void notifyOfFlowChange() {
         param_T_TextField.setText(engine.getExponentialCarFlow().getParam_T()+"");
-        param_lambda_label.setText("Lambda = "+engine.getExponentialCarFlow().getParam_lambda());
+        param_lambda_value_label.setText("="+engine.getExponentialCarFlow().getParam_lambda()+"");
         if (engine.getCarFlow() instanceof ExponentialCarFlow){
             this.setVisible(true);
         }

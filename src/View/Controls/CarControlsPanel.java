@@ -34,7 +34,7 @@ public class CarControlsPanel extends JPanel implements ModelListener{
 
     private TunnelController controller;
     private Engine engine;
-    private Car previouslySelectedCar;
+    int previousCarSpeed = 0;
 
     public CarControlsPanel(Dimension preferredSize, final TunnelController controller, Localizator localizator){
         this.controller=controller;
@@ -79,33 +79,9 @@ public class CarControlsPanel extends JPanel implements ModelListener{
         speedApplyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                String sad = ((JTextField).getFocusOwner()).getText();
                 controller.changeSelectedCarSpeed(speedTextField.getText());
             }
         });
-
-//        speedTextField.addFocusListener(new FocusListener() {
-//
-//            @Override
-//            public void focusGained(FocusEvent e) {
-//                speedIsFocused=true;
-//            }
-//
-//            @Override
-//            public void focusLost(FocusEvent e) {
-//                speedIsFocused=false;
-//                Object s = e.getComponent();
-//                int i=0;
-//            }
-//        });
-
-//        speedTextField.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyTyped(KeyEvent e) {
-//                int i=0;
-//                //if speedI
-//            }
-//        });
 
         NumberKeyFilter.addFilterTo(speedTextField, Car.MINIMUM_SPEED,
                 Road.MAXIMUM_SPEED_LIMIT);
@@ -114,7 +90,14 @@ public class CarControlsPanel extends JPanel implements ModelListener{
     private void showSelectedCarSpeed(){
 
         Car selectedCar=engine.getSelectedCar();
-        if (selectedCar!=previouslySelectedCar){
+        int selectedCarSpeed = 0;
+        if (selectedCar!=null){
+            selectedCarSpeed=selectedCar.getSpeed();
+        }else{
+            speedTextField.setText("0");
+        }
+
+        if (selectedCarSpeed!=previousCarSpeed){
             int speed;
             if (selectedCar!=null){
                 speed = selectedCar.getSpeed();
@@ -123,8 +106,8 @@ public class CarControlsPanel extends JPanel implements ModelListener{
                 speed=0;
             }
             speedTextField.setText(speed+"");
-            previouslySelectedCar=selectedCar;
         }
+        previousCarSpeed=selectedCarSpeed;
 
     }
 

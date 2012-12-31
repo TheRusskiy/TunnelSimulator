@@ -2,6 +2,8 @@ import Controller.TunnelController;
 import Model.Engine;
 import View.TunnelView;
 
+import java.awt.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User: TheRusskiy
@@ -11,19 +13,19 @@ import View.TunnelView;
  */
 public class ProgramEntry {
     public static void main(String[] args){
+        SplashScreen mySplash =SplashScreen.getSplashScreen();
+        try
+        {
+            Thread.sleep(6000);
+        }
+        catch (InterruptedException ex)
+        {}
+
         Engine engine = new Engine();
         engine.enableAuto();
 
         TunnelController controller = new TunnelController(engine);
 
         TunnelView view = new TunnelView(controller);
-//        while (1==1){
-//            try {
-//                System.out.println("Inside Engine simulation println to be replaced iwth Swing thread");
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
     }
 }

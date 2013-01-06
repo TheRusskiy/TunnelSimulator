@@ -1,4 +1,4 @@
 TunnelSimulator
 ===============
 
-fuckDatShit......
+Simulate car traffic in a tunnel

@@ -230,7 +230,7 @@ public class Engine {
         if (movables.size()==0) {
             no_selected_car =true;
         }
-
+        synchronized (movables){
         for(int i=movables.size()-1; i>=0; i--){
             road.textVisualize(timePast);
             current=movables.get(i);
@@ -254,6 +254,7 @@ public class Engine {
             carsOutOfRange=0;
         }
         movables.removeAll(toExcludeFromRoad);
+        }
     }
 
     private Car createCarAtTheBeginningIfPossible(int time){

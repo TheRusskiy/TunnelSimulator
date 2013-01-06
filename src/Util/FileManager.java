@@ -19,7 +19,7 @@ import java.util.jar.JarInputStream;
  */
 public class FileManager {
     private static final String RESOURCE_FOLDER="resources";
-    private static final String IDE_FOLDER="src";
+    //TODO get rid of JAR_NAME hardcode
     private static final String JAR_NAME="TunnelSimulator.jar";
 
     public static <ObjectType> void saveToFile(File fileName, ObjectType objectToSave) throws IOException {
@@ -61,7 +61,7 @@ public class FileManager {
     }
 
     public static void openResource(String fileName) throws IOException{
-        String currDirectory = currentDirectory();//System.getProperty("user.dir");
+        String currDirectory = currentDirectory();
         if (isInsideJar()){
             createTempFileOutsideJar(fileName, RESOURCE_FOLDER);
             File insideJarFile = new File(currDirectory
@@ -69,7 +69,6 @@ public class FileManager {
             open(insideJarFile);
         }else{
             File insideIdeFile = new File(currDirectory
-                    //+File.separator+IDE_FOLDER
                     +File.separator+RESOURCE_FOLDER
                     +File.separator+fileName);
             open(insideIdeFile);

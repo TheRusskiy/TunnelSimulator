@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +21,7 @@ public class CarModelsList implements Iterable<CarModel>, Serializable {
     }
 
     public CarModelsList(){
-        carModelList = new ArrayList<>();
+        carModelList = new CopyOnWriteArrayList<>();//ArrayList<>();
     }
     @Override
     public Iterator<CarModel> iterator() {

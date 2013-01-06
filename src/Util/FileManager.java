@@ -4,8 +4,11 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.*;
+import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.jar.JarInputStream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -58,16 +61,15 @@ public class FileManager {
     }
 
     public static void openResource(String fileName) throws IOException{
-        String currDirectory = System.getProperty("user.dir");
+        String currDirectory = currentDirectory();//System.getProperty("user.dir");
         if (isInsideJar()){
-            //open(new File("F:\\cars.txt"));
             createTempFileOutsideJar(fileName, RESOURCE_FOLDER);
             File insideJarFile = new File(currDirectory
                     +File.separator+fileName);
             open(insideJarFile);
         }else{
             File insideIdeFile = new File(currDirectory
-                    +File.separator+IDE_FOLDER
+                    //+File.separator+IDE_FOLDER
                     +File.separator+RESOURCE_FOLDER
                     +File.separator+fileName);
             open(insideIdeFile);
@@ -75,29 +77,39 @@ public class FileManager {
     }
 
     private static void open(File document) throws IOException {
+        //if(1==1) throw new IOException("inside open");
         Desktop dt = Desktop.getDesktop();
         dt.open(document);
     }
     private static void createTempFileOutsideJar(String name, String jarPath ) throws IOException{
-        String currDirectory = System.getProperty("user.dir");
+
+        String currDirectory =  currentDirectory();
         //TempFile:
         File file = new File(currDirectory, name);
         file.createNewFile();
         file.deleteOnExit();
 
-        JarFile jar = new JarFile(currDirectory+File.separator+JAR_NAME);
-        JarEntry entry=jar.getJarEntry(jarPath + "/" + name);
-        InputStream input = jar.getInputStream(entry);
-        OutputStream output = new FileOutputStream(file);
-        try {
-            byte[] buffer = new byte[input.available()];
-            for (int i = 0; i != -1; i = input.read(buffer)) {
-                output.write(buffer, 0, i);
+        JarEntry entry;
+        FileInputStream fileInputStream = new FileInputStream(currDirectory+File.separator+JAR_NAME);
+        JarInputStream jarInputStream = new JarInputStream((fileInputStream));
+
+        entry=jarInputStream.getNextJarEntry();
+        while(entry!=null){
+            if (entry.getName().equals(jarPath+"/"+name)){
+                OutputStream output = new FileOutputStream(file);
+                try {
+                    byte[] buffer = new byte[jarInputStream.available()];
+                    for (int i = 0; i != -1; i = jarInputStream.read(buffer)) {
+                        output.write(buffer, 0, i);
+                    }
+                }
+                finally{
+                    output.close();
+                    jarInputStream.close();
+                    }
+                break;
             }
-        } finally {
-            jar.close();
-            input.close();
-            output.close();
+            entry=jarInputStream.getNextJarEntry();
         }
     }
 
@@ -109,6 +121,19 @@ public class FileManager {
         }else{
             return false;
         }
+    }
+
+    private static String currentDirectory()
+    {
+        Class cls = FileManager.class;
+        ProtectionDomain pDomain = cls.getProtectionDomain();
+        CodeSource cSource = pDomain.getCodeSource();
+        URL loc = cSource.getLocation();
+        String currClassDir = loc.getPath();
+        if (isInsideJar()){
+            currClassDir = currClassDir.substring(0, currClassDir.lastIndexOf(JAR_NAME));
+        }
+        return currClassDir;
     }
 
 }

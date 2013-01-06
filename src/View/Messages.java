@@ -24,6 +24,10 @@ public enum Messages {
     EnglishLanguage("English","English"),
     RussianLanguage("Русский","Русский"),
     Exit("Exit", "Выход"),
+    HelpMenu("Help","Помощь"),
+    GuideItem("User guide", "Руководство пользователя"),
+    AuthorsItem("Authors", "Об авторах"),
+    AboutItem("About", "О программе"),
 
     CarControlsTitle("Car Controls", "Ручное управление"),
     NextCar("Next Car", "Следующая"),
@@ -72,6 +76,7 @@ public enum Messages {
     UniformT("T", "Т"),
     UniformApply("Apply", "Применить"),
 
+    CarModelsTitle("Car models", "Модели машин"),
     CarModelName("Name", "Название"),
     //CarModelNameFiller("", ""),
     CarModelSpeed("Max Speed(m/s)", "Макс. скорость(м/с)"),
@@ -89,6 +94,51 @@ public enum Messages {
     CarsLoadExceptionMessage("Can't load models from selected file!", "Невозможно прочесть выбранный файл"),
     CarsDeleteNoneSelectedDialogTitle("No selected models", "Нет выбранных моделей"),
     CarsDeleteNoneSelectedDialogMessage("No selected rows, you have to click on a row you want to delete!", "Нет выбранных моделей, необходимо выделить мышью модель, которую вы хотите удалить!"),
+
+    UserGuideTitle("User guide", "Руководство пользователя"),
+    UserGuideText(
+            //ENG:
+            ""
+            ,//RUS:
+            ""
+    ),
+    UserGuidePath("guide_en.html", "guide_ru.html"),
+    UserGuideExceptionTitle("Missing file", "Отсутствие файла"),
+    UserGuideExceptionMessage("Guide file can't be found!", "Отсутствует файл справки!"),
+    AuthorsTitle("Authors", "Об авторах"),
+    AuthorsText(
+            //ENG:
+            "MINISTRY OF EDUCATION AND SCIENCE OF THE RUSSIAN FEDERATION\n" +
+            "FEDERAL STATE EDUCATIONAL INSTITUTION\n" +
+            "OF HIGHER PROFESSIONAL EDUCATION\n" +
+            "«SAMARA STATE AEROSPACE UNIVERSITY\n" +
+            "OF ACADEMICIAN S.P. KOROLYOV»\n" +
+            "(NATIONAL RESEARCH UNIVERSITY) (SSAU) \n" +
+            "Chair of Computer Systems\n" +
+            "\n" +
+            "Author: Dmitry Ishkov\n" +
+            "Group: 6402\n" +
+            "Instructor: associate professor Larisa Zelenko"
+            ,//RUS:
+            "МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ\n" +
+            "ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ\n" +
+            "ВЫСШЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ\n" +
+            "«САМАРСКИЙ ГОСУДАРСТВЕННЫЙ АЭРОКОСМИЧЕСКИЙ УНИВЕРСИТЕТ\n" +
+            "ИМЕНИ АКАДЕМИКА С. П. КОРОЛЕВА»\n" +
+            "(НАЦИОНАЛЬНЫЙ ИССЛЕДОВАТЕЛЬСКИЙ УНИВЕРСИТЕТ) (СГАУ) \n" +
+            "Кафедра программных систем\n" +
+            "\n" +
+            "Автор: Ишков Д.С.\n" +
+            "Группа: 6402\n" +
+            "Руководитель: доцент кафедры ПС Зеленко Л.С."
+    ),
+    AboutTitle("About", "О программе"),
+    AboutText(
+            //ENG:
+            ""
+            ,//RUS:
+            ""
+    ),
     ;
 
 
@@ -119,4 +169,5 @@ public enum Messages {
             }
         }
     }
+    private String userGuideEng = "";
 }

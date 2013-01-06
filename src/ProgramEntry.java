@@ -13,13 +13,14 @@ import java.awt.*;
  */
 public class ProgramEntry {
     public static void main(String[] args){
-        SplashScreen mySplash =SplashScreen.getSplashScreen();
         try
         {
             //FIXME 6000
-            Thread.sleep(0);
+            SplashScreen mySplash =SplashScreen.getSplashScreen();
+            if (mySplash==null) throw new Exception("Splash can't be loaded");
+            Thread.sleep(1000);
         }
-        catch (InterruptedException ex)
+        catch (Exception ex)
         {}
 
         Engine engine = new Engine();

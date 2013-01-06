@@ -3,13 +3,14 @@ package View;
 import Controller.TunnelController;
 import Model.Engine;
 import Model.car.CarModelsList;
+import Util.DialogAbortedException;
+import Util.FileManager;
 import View.Utility.Localizator;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.File;
 
 /**
  * Created with IntelliJ IDEA.
@@ -90,6 +91,24 @@ public class TunnelMenu extends JMenuBar {
         languageMenu.add(russianLanguageItem);
         localizator.addLocalizable(russianLanguageItem, Messages.RussianLanguage);
 
+        //Help menu:
+        JMenu helpMenu = new JMenu("Help");
+        this.add(helpMenu);
+        localizator.addLocalizable(helpMenu, Messages.HelpMenu);
+
+        //Help menu items:
+        JMenuItem guideMenuItem = new JMenuItem("User Guide");
+        helpMenu.add(guideMenuItem);
+        localizator.addLocalizable(guideMenuItem, Messages.GuideItem);
+
+        JMenuItem authorsMenuItem = new JMenuItem("Authors");
+        helpMenu.add(authorsMenuItem);
+        localizator.addLocalizable(authorsMenuItem, Messages.AuthorsItem);
+
+        JMenuItem aboutMenuItem = new JMenuItem("About");
+        //helpMenu.add(aboutMenuItem);
+        localizator.addLocalizable(aboutMenuItem, Messages.AboutItem);
+
         exponentialFlowItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -151,6 +170,27 @@ public class TunnelMenu extends JMenuBar {
         });
 
 
+        guideMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //showGuideDialog();
+                openExternalGuide();
+            }
+        });
+        authorsMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAuthorsDialog();
+            }
+        });
+
+        aboutMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAboutDialog();
+            }
+        });
+
         exitFileItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -199,53 +239,17 @@ public class TunnelMenu extends JMenuBar {
         return lookAndFeelMenu;
     }
 
-    private static <ObjectType> void saveToFile(File fileName, ObjectType objectToSave) throws IOException {
-        File file=new File(fileName.getPath());
-        file.getParentFile().mkdirs();
-        file.createNewFile();
-        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));){
-            oos.writeObject(objectToSave);
-        }
-    }
 
-    private static <ObjectType> ObjectType loadObjectFromFile(File file) throws IOException, ClassNotFoundException {
-        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))){
-            return (ObjectType)ois.readObject();
-        }
-    }
-
-
-    private static String getFileName(String typeDescription, String[] fileTypes,
-                                      String dialogTitle, String approveButton, JFrame frame)
-            throws Exception  {
-        String fileName ="";
-        JFileChooser fc = new JFileChooser();
-        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        if (typeDescription!=null)
-        {
-            FileNameExtensionFilter filter = new FileNameExtensionFilter( typeDescription, fileTypes);
-            fc.setFileFilter(filter);
-        }
-        fc.setApproveButtonText(approveButton);
-        fc.setDialogTitle(dialogTitle);
-        int returnVal = fc.showOpenDialog(frame);
-        if(returnVal == JFileChooser.APPROVE_OPTION)
-        {
-            fileName = fc.getSelectedFile().getAbsolutePath();
-        }
-        if (fileName.equals("")) throw new DialogAbortedException("Open File Dialog exception, try again!");
-        return fileName;
-    }
 
 
     private void saveTo(){
         try {
-            String file = getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE}, Messages.SaveCarsDialog.getMessage(), Messages.SaveCarsDialogAccept.getMessage(), frame);
+            String file = FileManager.getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE}, Messages.SaveCarsDialog.getMessage(), Messages.SaveCarsDialogAccept.getMessage(), frame);
             if (!file.contains("."+CAR_FILE_TYPE)){
                 file=file+"."+CAR_FILE_TYPE;
             }
 
-            saveToFile(new File(file), controller.getEngine().getCarGenerator().getModels());
+            FileManager.saveToFile(new File(file), controller.getEngine().getCarGenerator().getModels());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -253,8 +257,8 @@ public class TunnelMenu extends JMenuBar {
 
     private void loadFrom(){
         try {
-            String file = getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE},  Messages.LoadCarsDialog.getMessage(),  Messages.LoadCarsDialogAccept.getMessage(), frame);
-            CarModelsList newModels = loadObjectFromFile(new File(file));
+            String file = FileManager.getFileName(Messages.CarsFileDescription.getMessage(), new String[]{CAR_FILE_TYPE},  Messages.LoadCarsDialog.getMessage(),  Messages.LoadCarsDialogAccept.getMessage(), frame);
+            CarModelsList newModels = FileManager.loadObjectFromFile(new File(file));
             controller.replaceCarModels(newModels);
 
         }catch (DialogAbortedException e){
@@ -269,14 +273,38 @@ public class TunnelMenu extends JMenuBar {
         }
     }
 
-    private static class DialogAbortedException extends Exception{
-        public DialogAbortedException() {
-            super();
-        }
 
-        public DialogAbortedException(String message) {
-            super(message);
-        }
+    private void showGuideDialog(){
+        //ToDelete
+        JOptionPane.showMessageDialog(this,
+                Messages.UserGuideText.getMessage(),
+                Messages.UserGuideTitle.getMessage(),
+                JOptionPane.PLAIN_MESSAGE);
     }
 
+    private void showAuthorsDialog(){
+        JOptionPane.showMessageDialog(this,
+                Messages.AuthorsText.getMessage(),
+                Messages.AuthorsTitle.getMessage(),
+                JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void showAboutDialog(){
+        JOptionPane.showMessageDialog(this,
+                Messages.AboutText.getMessage(),
+                Messages.AboutTitle.getMessage(),
+                JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void openExternalGuide(){
+        try {
+            String guideFileName=Messages.UserGuidePath.getMessage();
+            FileManager.openResource(guideFileName);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    Messages.UserGuideExceptionMessage.getMessage(),
+                    Messages.UserGuideExceptionTitle.getMessage(),
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

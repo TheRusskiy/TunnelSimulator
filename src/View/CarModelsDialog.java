@@ -158,6 +158,7 @@ public class CarModelsDialog extends JFrame implements ModelListener{
 
 
 
+        localizator.addLocalizable(this, Messages.CarModelsTitle);
         this.setResizable(false);
         this.setAlwaysOnTop(true);
         this.setLocation(parentFrame.getBounds().getLocation());

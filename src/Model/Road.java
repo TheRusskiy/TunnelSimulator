@@ -18,6 +18,7 @@ public class Road {
     public static final int MAXIMUM_SPEED_LIMIT=300;
     public static final int MINIMUM_LENGTH=200;
     public static final int MAXIMUM_LENGTH=2000;
+    public static final int BETWEEN_CAR_GAP=1;
     private Coordinate[] coordinates;
     private volatile int speedLimitation;
 
@@ -67,6 +68,7 @@ public class Road {
      * @return NULL if moves beyond coordinates
      */
     public Coordinate moveBy(Coordinate from, int moveBy, int objectLength){
+        objectLength+=BETWEEN_CAR_GAP;
         int fromIndex=from.getXAxis();
         int canMoveCoordinateCount = 0;
         for(int i=1; i<= moveBy; i++){
@@ -122,6 +124,10 @@ public class Road {
     }
 
     public void setOccupation(int from, int toInclusive, boolean isOccupied){
+        if (from<0){
+            if (Engine.DEBUG_MODE) System.err.println("WARNING: From is < 0, setting to 0!");
+            from=0;
+        }
         if (toInclusive>=coordinates.length){
             toInclusive=coordinates.length-1;
         }

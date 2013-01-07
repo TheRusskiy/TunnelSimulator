@@ -274,13 +274,6 @@ public class TunnelMenu extends JMenuBar {
     }
 
 
-    private void showGuideDialog(){
-        //ToDelete
-        JOptionPane.showMessageDialog(this,
-                Messages.UserGuideText.getMessage(),
-                Messages.UserGuideTitle.getMessage(),
-                JOptionPane.PLAIN_MESSAGE);
-    }
 
     private void showAuthorsDialog(){
         JOptionPane.showMessageDialog(this,

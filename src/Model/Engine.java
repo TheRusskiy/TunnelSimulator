@@ -232,6 +232,7 @@ public class Engine {
         }
         synchronized (movables){
         for(int i=movables.size()-1; i>=0; i--){
+      //for(int i=0; i<movables.size(); i++){
             road.textVisualize(timePast);
             current=movables.get(i);
             if (current.move(time)==false){

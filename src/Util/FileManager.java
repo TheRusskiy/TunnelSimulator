@@ -122,7 +122,7 @@ public class FileManager {
         }
     }
 
-    private static String currentDirectory()
+    public static String currentDirectory()
     {
         Class cls = FileManager.class;
         ProtectionDomain pDomain = cls.getProtectionDomain();

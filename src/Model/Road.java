@@ -1,7 +1,9 @@
 package Model;
 
 import Model.car.Car;
+import Util.FileManager;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,7 +20,7 @@ public class Road {
     public static final int MAXIMUM_SPEED_LIMIT=300;
     public static final int MINIMUM_LENGTH=200;
     public static final int MAXIMUM_LENGTH=2000;
-    public static final int BETWEEN_CAR_GAP=1;
+    public static final int BETWEEN_CAR_GAP=0;
     private Coordinate[] coordinates;
     private volatile int speedLimitation;
 
@@ -139,7 +141,7 @@ public class Road {
     public void textVisualize(int timePast){
         try {
             if (!Engine.DEBUG_MODE) return;
-            FileWriter fileWriter = new FileWriter("F:\\cars.txt");
+            FileWriter fileWriter = new FileWriter(FileManager.currentDirectory()+ File.separator+"cars_debug.txt");
             PrintWriter pw = new PrintWriter(fileWriter);
             pw.println("Time past: "+timePast);
             for(Coordinate c: coordinates){

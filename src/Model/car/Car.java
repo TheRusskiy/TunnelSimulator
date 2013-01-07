@@ -93,6 +93,22 @@ public class Car implements Movable {
 
     @Override
     public boolean move(int time) {
+        /*TODO moving overhaul
+        Car should give road self-coordinate and desiredDistance=(speed+acc)*time
+        Road should either return null or car
+        1) Null:
+        if null was returned, then car availableDistance = desiredDistance
+        2) Car:
+        if another Car was returned, then availableDistance gets calculated based on:
+            1. Distance between cars
+            2. Another car speed
+            3. Maximum deceleration
+
+        Based on availableDistance car adjust speed and calculates moveByDistance.
+        After that car passes moveByDistance to Road and gets coordinate
+        which this car assign to itself as a position.
+        Road sets and releases appropriate occupations.
+         */
         assert position!=null: "Car coordinate wasn't set!";
         assert road!=null: "Car's road wasn't set!";
         Coordinate oldPosition=position;

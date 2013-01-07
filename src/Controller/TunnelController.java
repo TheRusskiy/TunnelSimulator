@@ -100,10 +100,11 @@ public class TunnelController {
 
     public void changeRoadLengthAndScale(String roadLength, String roadScale) {
         int digital=new Integer(roadLength);
-        engine.setRoadLength(digital);
+        if (engine.getRoad().getRoadLength()!=digital){
+            engine.setRoadLength(digital);
+        }
         digital=new Integer(roadScale);
         visualPanel.setScale(digital);
-
     }
 
     public void changeUniformT(String newT) {

@@ -299,8 +299,8 @@ public class TunnelMenu extends JMenuBar {
             FileManager.openResource(guideFileName);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                    //Messages.UserGuideExceptionMessage.getMessage(),
-                    e.toString(),
+                    Messages.UserGuideExceptionMessage.getMessage(),
+                    //e.toString(),
                     Messages.UserGuideExceptionTitle.getMessage(),
                     JOptionPane.ERROR_MESSAGE);
         }

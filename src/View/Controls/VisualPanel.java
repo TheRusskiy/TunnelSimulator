@@ -177,6 +177,10 @@ public class VisualPanel extends JPanel implements ModelListener {
                     g.setColor(normalCarColor);
                 }
                 g.drawLine(speedXShift+fromStart, speedLineY0,speedXShift+fromStart, speedLineY1);
+                if (car.isSelected()) {
+                    g.drawLine(speedXShift+fromStart+1, speedLineY0,speedXShift+fromStart+1, speedLineY1);
+                    g.drawLine(speedXShift+fromStart-1, speedLineY0,speedXShift+fromStart-1, speedLineY1);
+                }
                 g.drawString(car.getSpeed()+"", speedXShift+fromStart-meter*2, speedLineY0);
             }
         }

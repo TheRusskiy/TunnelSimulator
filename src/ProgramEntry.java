@@ -18,7 +18,7 @@ public class ProgramEntry {
             //FIXME 6000
             SplashScreen mySplash =SplashScreen.getSplashScreen();
             if (mySplash==null) throw new Exception("Splash can't be loaded");
-            Thread.sleep(1000);
+            Thread.sleep(6000);
         }
         catch (Exception ex)
         {}

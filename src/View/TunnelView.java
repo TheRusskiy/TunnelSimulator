@@ -44,6 +44,7 @@ public class TunnelView extends JFrame{
     private Container parentPanel;
     private TunnelController controller;
     private Color backGroundColor = Color.BLUE;
+    private boolean ORANGE_n_BLACK=true;
     private Localizator localizator = new Localizator();
 
 
@@ -153,49 +154,50 @@ public class TunnelView extends JFrame{
         }
 
 
-
-        container.setBackground(Color.BLACK);
-        container.setForeground(new Color(236, 125, 0));
-        if (container instanceof JButton){
-            JButton jButton = (JButton) container;
-            Dimension buttonDimension = new Dimension(140, 80);
-            jButton.setMaximumSize(buttonDimension);
-            jButton.setMinimumSize(buttonDimension);
-            jButton.setSize(buttonDimension);
-            jButton.setBackground(Color.WHITE);
-            jButton.setForeground(Color.BLACK);
-            return;
-        }
-        if (container instanceof JTextField){
-            JTextField textField = (JTextField)container;
-            Dimension textDimension = new Dimension(280, 80);
-            textField.setMaximumSize(textDimension);
-            textField.setSize(textDimension);
-            textField.setBackground(Color.WHITE);
-            textField.setForeground(Color.BLACK);
-            return;
-        }
-        if (container instanceof JMenu){
-            JMenu jMenu = (JMenu)container;
-            MenuElement[] menus=jMenu.getSubElements();
-            for(MenuElement menuElement:menus){
-                Object o = menuElement.getComponent();
-                if (o instanceof JPopupMenu){
-                    JPopupMenu jPopupMenu = (JPopupMenu)menuElement.getComponent();
-                    setParamRecursively(jPopupMenu, hotkeyEnabled);
+        if (ORANGE_n_BLACK){
+            container.setBackground(Color.BLACK);
+            container.setForeground(new Color(236, 125, 0));
+            if (container instanceof JButton){
+                JButton jButton = (JButton) container;
+                Dimension buttonDimension = new Dimension(140, 80);
+                jButton.setMaximumSize(buttonDimension);
+                jButton.setMinimumSize(buttonDimension);
+                jButton.setSize(buttonDimension);
+                jButton.setBackground(Color.WHITE);
+                jButton.setForeground(Color.BLACK);
+                return;
+            }
+            if (container instanceof JTextField){
+                JTextField textField = (JTextField)container;
+                Dimension textDimension = new Dimension(280, 80);
+                textField.setMaximumSize(textDimension);
+                textField.setSize(textDimension);
+                textField.setBackground(Color.WHITE);
+                textField.setForeground(Color.BLACK);
+                return;
+            }
+            if (container instanceof JMenu){
+                JMenu jMenu = (JMenu)container;
+                MenuElement[] menus=jMenu.getSubElements();
+                for(MenuElement menuElement:menus){
+                    Object o = menuElement.getComponent();
+                    if (o instanceof JPopupMenu){
+                        JPopupMenu jPopupMenu = (JPopupMenu)menuElement.getComponent();
+                        setParamRecursively(jPopupMenu, hotkeyEnabled);
+                    }
                 }
             }
-        }
-        if (container instanceof JMenuItem){
-            JMenuItem jMenu = (JMenuItem)container;
-            MenuElement[] menus=jMenu.getSubElements();
-        }
-        if (container instanceof JMenuBar){
-            JMenuBar jMenu = (JMenuBar)container;
-            MenuElement[] menus=jMenu.getSubElements();
-        }
-        if (container instanceof JScrollPane){
-            return;
+            if (container instanceof JMenuItem){
+                JMenuItem jMenu = (JMenuItem)container;
+                MenuElement[] menus=jMenu.getSubElements();
+            }
+            if (container instanceof JMenuBar){
+                JMenuBar jMenu = (JMenuBar)container;
+                MenuElement[] menus=jMenu.getSubElements();
+            }
+            if (container instanceof JScrollPane){
+                return;
+            }
         }
 
         Component[] cs = container.getComponents();

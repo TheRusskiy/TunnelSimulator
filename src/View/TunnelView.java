@@ -129,7 +129,6 @@ public class TunnelView extends JFrame{
 
     public void setParamRecursively(Container container, boolean hotkeyEnabled){
 
-
         if (hotkeyEnabled){
             container.addKeyListener(new KeyListener() {
                 @Override

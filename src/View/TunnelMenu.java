@@ -252,6 +252,10 @@ public class TunnelMenu extends JMenuBar {
             FileManager.saveToFile(new File(file), controller.getEngine().getCarGenerator().getModels());
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    Messages.CarsSaveExceptionMessage.getMessage(),
+                    Messages.CarsSaveExceptionTitle.getMessage(),
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 

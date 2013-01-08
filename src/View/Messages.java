@@ -59,21 +59,21 @@ public enum Messages {
     TimePast("Time past(sec):", "Время симуляции(сек):"),
 
     DeterminedTitle("Determined flow controls", "Детерминированный поток"),
-    DeterminedT("T", "T"),
+    DeterminedT("ΔT(sec)", "ΔT(сек)"),
     DeterminedApply("Apply", "Применить"),
 
     ExponentialTitle("Exponential flow controls", "Показательный поток"),
-    ExponentialT("T", "Т"),
-    ExponentialLambda("Lambda", "Лямбда"),
+    ExponentialT("Scale(%)", "Масштаб(%)"),
+    ExponentialLambda("Rate", "Интенсивность"),
     ExponentialApply("Apply", "Применить"),
 
     NormalTitle("Normal flow controls", "Нормальный поток"),
-    NormalMean("Mean", "Среднее"),
-    NormalDeviation("Deviation", "Отклонение"),
+    NormalMean("Mean(%)", "Мат. ожидание(%)"),
+    NormalDeviation("Variance((%)", "Дисперсия(%)"),
     NormalApply("Apply", "Применить"),
 
     UniformTitle("Uniform flow controls", "Равномерный поток"),
-    UniformT("T", "Т"),
+    UniformT("T(sec)", "Т(сек)"),
     UniformApply("Apply", "Применить"),
 
     CarModelsTitle("Car models", "Модели машин"),
@@ -92,6 +92,8 @@ public enum Messages {
     CarsFileDescription("Car models file(.cars)", "Файл с моделями машин(.cars)"),
     CarsLoadExceptionTitle("Loading error", "Ошибка загрузки"),
     CarsLoadExceptionMessage("Can't load models from selected file!", "Невозможно прочесть выбранный файл"),
+    CarsSaveExceptionTitle("Saving error", "Ошибка сохранения"),
+    CarsSaveExceptionMessage("Can't save models to file!", "Невозможно сохранить в файл"),
     CarsDeleteNoneSelectedDialogTitle("No selected models", "Нет выбранных моделей"),
     CarsDeleteNoneSelectedDialogMessage("No selected rows, you have to click on a row you want to delete!", "Нет выбранных моделей, необходимо выделить мышью модель, которую вы хотите удалить!"),
 
@@ -169,5 +171,4 @@ public enum Messages {
             }
         }
     }
-    private String userGuideEng = "";
 }
